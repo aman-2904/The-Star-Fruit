@@ -14,7 +14,7 @@ export default function CategoryFilters() {
   const activeCategory = 'pool';
 
   return (
-    <div className="flex items-center gap-8 md:gap-14 overflow-x-auto no-scrollbar pb-1 border-b border-gray-100 mb-10 w-full justify-center md:justify-center">
+    <div className="flex items-center justify-start md:justify-center gap-8 md:gap-14 overflow-x-auto no-scrollbar pb-1 border-b border-gray-100 mb-10 w-full">
       {categories.map((cat) => (
         <button
           key={cat.id}
