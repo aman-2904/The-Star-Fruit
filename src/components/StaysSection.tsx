@@ -47,6 +47,22 @@ const stays = [
     rating: 4.7,
     image: "/images/stays/azure_suite.png",
   },
+  {
+    id: 6,
+    title: "Eco-Glasshouse",
+    location: "Siolim",
+    description: "4 BHK Forest retreat",
+    rating: 4.9,
+    image: "/images/stays/forest_glasshouse.png",
+  },
+  {
+    id: 7,
+    title: "Sunset Villa",
+    location: "Assagao",
+    description: "5 BHK Luxury Stay",
+    rating: 4.8,
+    image: "/images/stays/pool_villa.png",
+  },
 ];
 
 const FilterDropdown = ({ label }: { label: string }) => (
@@ -111,7 +127,7 @@ export default function StaysSection() {
         {/* Carousel / Grid of Stays */}
         <div 
           ref={scrollRef}
-          className="flex gap-6 md:gap-10 overflow-x-auto no-scrollbar pb-10 -mx-4 px-4 md:-mx-0 md:px-0 scroll-smooth"
+          className="flex gap-6 overflow-x-auto no-scrollbar pb-10 -mx-4 px-4 md:-mx-0 md:px-0 scroll-smooth snap-x snap-proximity"
         >
           {stays.map((stay) => (
             <StayCard key={stay.id} {...stay} />

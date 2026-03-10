@@ -12,7 +12,7 @@ interface StayCardProps {
 
 export default function StayCard({ image, title, location, description, rating, trending }: StayCardProps) {
   return (
-    <div className="flex-shrink-0 w-[300px] md:w-[340px] group cursor-pointer">
+    <div className="flex-shrink-0 w-[280px] sm:w-[320px] lg:w-[calc((100%-96px)/5)] group cursor-pointer snap-start">
       <div className="relative aspect-[4/5] rounded-[24px] overflow-hidden mb-5 shadow-sm group-hover:shadow-2xl transition-all duration-500">
         <Image
           src={image}
