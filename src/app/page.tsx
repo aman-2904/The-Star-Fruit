@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SearchWidget from "@/components/SearchWidget";
 import StaysSection from "@/components/StaysSection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -10,11 +11,7 @@ export default function Home() {
       <Hero />
       <SearchWidget />
       <StaysSection />
-      
-      {/* Simple Footer/Bottom Padding */}
-      <div className="pb-24 pt-10 text-center text-gray-400 text-sm italic font-serif bg-gray-50/20">
-        The Starfruit — Stays you trust.
-      </div>
+      <Footer />
     </main>
   );
 }
