@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+  
+  --color-brand: #000000;
+  --color-accent: #f3f4f6;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  @apply bg-white text-gray-900 font-sans antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif {
+  @apply font-serif;
+}
