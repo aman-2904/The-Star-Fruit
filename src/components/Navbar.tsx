@@ -3,7 +3,7 @@ import { Globe, User, Menu } from "lucide-react";
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-4 md:px-10 py-4 md:py-6 bg-white sticky top-0 z-50">
+    <nav className="flex items-center justify-between px-4 md:px-10 py-3 md:py-3 bg-white sticky top-0 z-50">
       {/* Left: Menu Items (Desktop) */}
       <div className="hidden lg:flex items-center space-x-12">
         <Link href="#" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Villas</Link>

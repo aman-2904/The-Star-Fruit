@@ -17,11 +17,10 @@ export default function SearchWidget() {
           {tabs.map((tab) => (
             <button
               key={tab.label}
-              className={`pb-4 md:pb-5 text-[13px] md:text-[15px] font-extrabold transition-all relative flex items-center gap-2 md:gap-2.5 whitespace-nowrap ${
-                activeTab === tab.label 
-                  ? "text-black border-b-[3px] border-black" 
+              className={`pb-4 md:pb-5 text-[13px] md:text-[15px] font-extrabold transition-all relative flex items-center gap-2 md:gap-2.5 whitespace-nowrap ${activeTab === tab.label
+                  ? "text-black border-b-[3px] border-black"
                   : "text-gray-400 hover:text-gray-600"
-              }`}
+                }`}
             >
               {tab.icon}
               {tab.label}
