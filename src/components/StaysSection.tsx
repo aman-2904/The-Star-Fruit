@@ -170,7 +170,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Stay[] }) => {
 
       <div 
         ref={scrollRef}
-        className="flex gap-6 overflow-x-auto no-scrollbar pb-10 -mx-4 px-4 md:-mx-0 md:px-0 scroll-smooth snap-x snap-proximity"
+        className="flex gap-6 overflow-x-auto no-scrollbar pb-10 -mx-4 px-4 md:-mx-0 md:px-0 scroll-smooth snap-x snap-mandatory"
       >
         {stays.map((stay: Stay) => (
           <StayCard key={stay.id} {...stay} />
