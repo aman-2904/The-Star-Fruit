@@ -73,7 +73,7 @@ export default function SearchWidget() {
 
         {/* Search Button */}
         <div className="flex justify-center -mb-12 md:-mb-16 px-4">
-          <button className="w-full sm:w-auto bg-[#1C2024] text-white px-8 md:px-14 py-3.5 md:py-5 rounded-[20px] md:rounded-[28px] flex items-center justify-center gap-3 md:gap-4 hover:bg-[#1C2024] transition-all hover:scale-[1.02] active:scale-[0.98] font-black text-sm md:text-base shadow-2xl border-4 border-[#1C2024] uppercase tracking-widest">
+          <button className="w-full sm:w-auto bg-[#1C2024] text-white px-8 md:px-20 py-3.5 md:py-4 rounded-[30px] md:rounded-[48px] flex items-center justify-center gap-3 md:gap-4 hover:bg-[#1C2024] transition-all hover:scale-[1.02] active:scale-[0.98] font-black text-sm md:text-base shadow-2xl border-4 border-[#1C2024] uppercase tracking-widest">
             <Search size={20} strokeWidth={3} />
             Search
           </button>
