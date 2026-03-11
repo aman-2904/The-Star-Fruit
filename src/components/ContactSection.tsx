@@ -6,17 +6,17 @@ import { Mail, Phone, Send } from "lucide-react";
 export default function ContactSection() {
   return (
     <section className="py-28 px-4 md:px-10 bg-white">
-      <div className="max-w-[1400px] mx-auto relative rounded-[32px] md:rounded-[48px] overflow-hidden min-h-[600px] md:min-h-[700px] flex items-center shadow-2xl">
+      <div className="max-w-[1400px] mx-auto relative rounded-[32px] md:rounded-[48px] overflow-hidden min-h-[600px] md:min-h-[700px] flex items-center shadow-xl">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/contact_bg.png"
+            src="/images/contactus.jpg"
             alt="Luxury Villa Background"
             fill
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px]" />
         </div>
 
         <div className="relative z-10 w-full h-full px-6 py-12 md:px-20 md:py-20 flex flex-col md:flex-row items-center gap-12 md:gap-20">
