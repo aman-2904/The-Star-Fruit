@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Globe, User, Menu } from "lucide-react";
 
 export default function Navbar() {
@@ -20,8 +21,17 @@ export default function Navbar() {
       </div>
 
       {/* Center: Logo */}
-      <div className="absolute left-1/2 -translate-x-1/2 text-[24px] md:text-[32px] font-serif font-black tracking-tighter text-black">
-        LuxeVillaz
+      <div className="absolute left-1/2 -translate-x-1/2">
+        <Link href="/">
+          <Image
+            src="/images/logo.png"
+            alt="LuxeVillaz Logo"
+            width={160}
+            height={40}
+            className="h-8 md:h-10 w-auto object-contain"
+            priority
+          />
+        </Link>
       </div>
 
       {/* Right: Actions */}
