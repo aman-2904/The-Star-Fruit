@@ -206,7 +206,7 @@ const EnquirySection = () => (
 
 export default function StaysSection() {
   return (
-    <section className="pt-44 md:pt-32 pb-12 bg-white">
+    <section className="pt-20 md:pt-32 pb-12 bg-white">
       <div className="max-w-[1400px] mx-auto px-4 md:px-10">
         {/* Category Icons */}
         <CategoryFilters />
