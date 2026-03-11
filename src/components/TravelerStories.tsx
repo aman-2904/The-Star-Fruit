@@ -1,8 +1,19 @@
 "use client";
 
-import { Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, ChevronDown } from "lucide-react";
 
-const testimonials = [
+interface Testimonial {
+  id: number;
+  text: string;
+  author: string;
+  location: string;
+  bgColor: string;
+  textColor: string;
+  starColor: string;
+}
+
+const testimonials: Testimonial[] = [
   {
     id: 1,
     text: "Booked a weekend stay within minutes. Smooth experience and great suggestions based on my location. Really loved how easy the interface felt.",
@@ -78,6 +89,22 @@ const testimonials = [
 ];
 
 export default function TravelerStories() {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const visibleTestimonials = isMobile && !isExpanded 
+    ? testimonials.slice(0, 4) 
+    : testimonials;
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-[1400px] mx-auto px-8 md:px-20">
@@ -86,10 +113,10 @@ export default function TravelerStories() {
         </h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {testimonials.map((item) => (
+          {visibleTestimonials.map((item) => (
             <div
               key={item.id}
-              className={`${item.bgColor} ${item.textColor} p-6 md:p-8 rounded-[20px] md:rounded-[24px] flex flex-col min-h-[280px] md:min-h-[340px] transition-transform hover:scale-[1.02] duration-300`}
+              className={`${item.bgColor} ${item.textColor} p-6 md:p-8 rounded-[20px] md:rounded-[24px] flex flex-col min-h-[280px] md:min-h-[340px] transition-all hover:scale-[1.02] duration-300 animate-in fade-in slide-in-from-bottom-4`}
             >
               <div className="flex gap-0.5 mb-4 md:mb-6">
                 {[...Array(5)].map((_, i) => (
@@ -113,6 +140,18 @@ export default function TravelerStories() {
             </div>
           ))}
         </div>
+
+        {isMobile && !isExpanded && testimonials.length > 4 && (
+          <div className="mt-12 flex justify-center">
+            <button
+              onClick={() => setIsExpanded(true)}
+              className="flex items-center gap-2 px-8 py-4 bg-black text-white rounded-full font-bold text-sm tracking-wide hover:bg-gray-900 transition-all active:scale-95 shadow-xl"
+            >
+              Read More
+              <ChevronDown size={18} />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
