@@ -21,7 +21,7 @@ export default function Navbar() {
 
       {/* Center: Logo */}
       <div className="absolute left-1/2 -translate-x-1/2 text-[24px] md:text-[32px] font-serif font-black tracking-tighter text-black">
-        The Starfruit
+        LuxeVillaz
       </div>
 
       {/* Right: Actions */}

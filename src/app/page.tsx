@@ -4,6 +4,7 @@ import SearchWidget from "@/components/SearchWidget";
 import StaysSection from "@/components/StaysSection";
 import StayTypesSection from "@/components/StayTypesSection";
 import TravelerStories from "@/components/TravelerStories";
+import ContactSection from "@/components/ContactSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 
@@ -17,6 +18,7 @@ export default function Home() {
       <StayTypesSection />
       <TravelerStories />
       <FAQSection />
+      <ContactSection />
       <Footer />
     </main>
   );
