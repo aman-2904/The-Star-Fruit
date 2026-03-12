@@ -259,6 +259,69 @@ export default function HostDashboard() {
           </div>
         </div>
       </section>
+
+      {/* How it Works Section */}
+      <section className="px-6 md:px-20 py-24 bg-white">
+        <div className="max-w-[1400px] mx-auto bg-[#FCF8F5] rounded-[48px] p-8 md:p-16 lg:p-24 overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="order-2 lg:order-1">
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-16 tracking-tight">
+                How it Works
+              </h2>
+
+              <div className="space-y-12">
+                {/* Step 1 */}
+                <div className="flex gap-6">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#EC5B13] text-white rounded-full flex items-center justify-center font-black text-sm">
+                    1
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-gray-900 mb-2">List your space</h3>
+                    <p className="text-gray-500 font-medium leading-relaxed max-w-sm">
+                      Share your property details, high-res photos, and set your own rules and pricing.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="flex gap-6">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#EC5B13] text-white rounded-full flex items-center justify-center font-black text-sm">
+                    2
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-gray-900 mb-2">Welcome guests</h3>
+                    <p className="text-gray-500 font-medium leading-relaxed max-w-sm">
+                      Screen potential guests and message them through our secure platform.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="flex gap-6">
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#EC5B13] text-white rounded-full flex items-center justify-center font-black text-sm">
+                    3
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-gray-900 mb-2">Get paid</h3>
+                    <p className="text-gray-500 font-medium leading-relaxed max-w-sm">
+                      Receive payments automatically 24 hours after guest check-in, minus our low service fee.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2 w-full h-[300px] md:h-[500px] relative rounded-[32px] overflow-hidden shadow-2xl">
+              <Image 
+                src="/images/reception.png" 
+                alt="Luxury Reception" 
+                fill 
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
