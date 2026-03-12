@@ -33,14 +33,14 @@ const FAQItem = ({ question, answer, isOpen, onClick }: FAQItemProps) => {
         </span>
         <div 
           className={cn(
-            "flex-shrink-0 w-8 h-8 rounded-full bg-black flex items-center justify-center transition-all duration-500",
+            "flex-shrink-0 w-10 h-10 rounded-full bg-black flex items-center justify-center transition-all duration-500",
             isOpen ? "rotate-180" : "rotate-0"
           )}
         >
           <div className="relative w-4 h-4">
-            {/* Horizontal line (always visible, becomes the minus) */}
+            {/* Horizontal line (Minus) */}
             <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white -translate-y-1/2" />
-            {/* Vertical line (rotates/fades to hide) */}
+            {/* Vertical line (Plus component) */}
             <div 
               className={cn(
                 "absolute top-0 left-1/2 w-[2px] h-full bg-white -translate-x-1/2 transition-all duration-500",

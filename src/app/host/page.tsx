@@ -6,7 +6,68 @@ import { User, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Minus } from "lucide-react";
+
+const FAQ_DATA = [
+  {
+    question: "What types of stays can I book on The starfruit?",
+    answer: "We offer a curated selection of luxury hotels, serviced apartments, private villas, and exclusive resorts across Goa's most prestigious locations."
+  },
+  {
+    question: "What payment options are available?",
+    answer: "We support all major credit cards, UPI, and bank transfers. Payments are processed through our secure gateway to ensure your transactions are safe."
+  },
+  {
+    question: "Do you offer free cancellation?",
+    answer: "Cancellation policies vary by property. You can find specific details on each listing's page under the 'Booking Policy' section."
+  },
+  {
+    question: "Are the stays verified?",
+    answer: "Yes, every property on The starfruit undergoes a rigorous verification process to ensure it meets our high standards of luxury and hospitality."
+  },
+  {
+    question: "Do you have long-stay options?",
+    answer: "Absolutely! Many of our villas and apartments are ideal for extended stays. Look for the 'Monthly Stays' badge or contact our concierge for personalized recommendations."
+  },
+  {
+    question: "Is support available if I need help?",
+    answer: "Our dedicated support team is available 24/7 via chat and phone to assist with any questions or issues during your hosting journey."
+  }
+];
+
+function FAQItem({ question, answer }: { question: string, answer: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className={`bg-white rounded-2xl mb-4 overflow-hidden shadow-sm border transition-all duration-300 ${isOpen ? 'border-black' : 'border-gray-100 hover:border-gray-200 shadow-sm'}`}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-8 py-6 flex items-center justify-between text-left group"
+      >
+        <span className="text-gray-900 font-bold text-lg group-hover:text-black transition-colors">
+          {question}
+        </span>
+        <div className={`flex-shrink-0 w-10 h-10 rounded-full bg-black flex items-center justify-center transition-all duration-500 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
+          <div className="relative w-4 h-4">
+            {/* Horizontal line (Minus) */}
+            <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white -translate-y-1/2" />
+            {/* Vertical line (Plus component) */}
+            <div
+              className={`absolute top-0 left-1/2 w-[2px] h-full bg-white -translate-x-1/2 transition-all duration-500 ${isOpen ? 'rotate-90 scale-y-0 opacity-0' : 'rotate-0 scale-y-100 opacity-100'}`}
+            />
+          </div>
+        </div>
+      </button>
+      <div className={`grid transition-all duration-500 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 pb-8' : 'grid-rows-[0fr] opacity-0'}`}>
+        <div className="overflow-hidden px-8">
+          <p className="text-gray-600 font-medium leading-relaxed max-w-3xl">
+            {answer}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const CATEGORIES = [
   {
@@ -312,13 +373,27 @@ export default function HostDashboard() {
             </div>
 
             <div className="order-1 lg:order-2 w-full h-[300px] md:h-[500px] relative rounded-[32px] overflow-hidden shadow-2xl">
-              <Image 
-                src="/images/reception.png" 
-                alt="Luxury Reception" 
-                fill 
+              <Image
+                src="/images/reception.png"
+                alt="Luxury Reception"
+                fill
                 className="object-cover"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 md:px-20 py-16 bg-[#EEEEEE]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-serif font-black text-center text-gray-900 mb-16 tracking-tight">
+            Have questions? We’re here to help
+          </h2>
+
+          <div className="space-y-4">
+            {FAQ_DATA.map((item, idx) => (
+              <FAQItem key={idx} {...item} />
+            ))}
           </div>
         </div>
       </section>
