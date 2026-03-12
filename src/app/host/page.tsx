@@ -397,6 +397,48 @@ export default function HostDashboard() {
           </div>
         </div>
       </section>
+
+      {/* Final CTA Section */}
+      <section className="px-6 md:px-20 py-14 bg-white">
+        <div className="max-w-[1400px] mx-auto relative rounded-[48px] overflow-hidden min-h-[450px] flex flex-col items-center justify-center text-center px-6">
+          <Image
+            src="/images/hostCTA.jpg"
+            alt="Luxury Villa Golden Hour"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/30" />
+
+          <div className="relative z-10 w-full max-w-4xl py-12">
+            <h2 className="text-4xl md:text-5xl font-serif font-black text-white mb-4 tracking-tight drop-shadow-2xl">
+              Connect with Excellence
+            </h2>
+            <p className="text-white font-medium text-xs md:text-sm max-w-lg mx-auto mb-10 leading-relaxed opacity-90">
+              Whether you're looking for a seasonal retreat or a permanent luxury residence in Goa, our team is dedicated to finding your perfect sanctuary.
+            </p>
+
+            {/* Glass Card */}
+            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-[40px] p-8 md:px-12 md:py-6 shadow-2xl max-w-xl mx-auto">
+              <h3 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">Ready to Host?</h3>
+              <p className="text-white text-xs md:text-sm font-bold mb-8 max-w-md mx-auto leading-relaxed opacity-80">
+                Join Goa's most exclusive network of luxury property owners and start earning today.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button className="w-full sm:w-auto px-8 py-4 bg-white text-[#EC5B13] rounded-2xl font-black text-base hover:bg-gray-50 transition-all hover:scale-[1.02] active:scale-95 shadow-xl">
+                  Start Your Listing
+                </button>
+                <button className="w-full sm:w-auto px-8 py-4 bg-[#96897E]/40 text-white border border-white/20 rounded-2xl font-black text-base hover:bg-[#96897E]/50 transition-all hover:scale-[1.02] active:scale-95 backdrop-blur-md">
+                  Talk to an Expert
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+
     </div>
   );
 }
