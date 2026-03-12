@@ -67,9 +67,9 @@ export default function HostDashboard() {
             <Globe size={18} />
             <span>English</span>
           </button>
-          
+
           <div className="relative">
-            <div 
+            <div
               className="flex items-center space-x-3 cursor-pointer group"
               onClick={() => setShowUserMenu(!showUserMenu)}
             >
@@ -93,7 +93,7 @@ export default function HostDashboard() {
                   <button className="w-full text-left px-4 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors">
                     List Your Property
                   </button>
-                  <button 
+                  <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2.5 text-sm font-bold text-[#FF5A5F] hover:bg-red-50 transition-colors"
                   >
@@ -101,8 +101,8 @@ export default function HostDashboard() {
                   </button>
                 </div>
                 {/* Click outside to close */}
-                <div 
-                  className="fixed inset-0 z-40" 
+                <div
+                  className="fixed inset-0 z-40"
                   onClick={() => setShowUserMenu(false)}
                 />
               </>
@@ -115,16 +115,16 @@ export default function HostDashboard() {
       <main className="p-4 md:p-8">
         <div className="max-w-[1400px] mx-auto relative rounded-[40px] overflow-hidden min-h-[600px] flex items-center justify-center text-center">
           <Image
-            src="/images/host_hero.png"
+            src="/images/contactus.jpg"
             alt="Host Background"
             fill
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/60" />
 
           <div className="relative z-10 px-6 mt-12">
-            <span className="inline-block px-4 py-1.5 bg-[#FF5A5F]/20 text-[#FF5A5F] text-[10px] font-black tracking-[0.2em] rounded-full mb-8 backdrop-blur-md border border-[#FF5A5F]/30 uppercase">
+            <span className="inline-block px-4 py-1.5 bg-[#EC5B13]/20 text-[#EC5B13] text-[10px] font-black tracking-[0.2em] rounded-full mb-8 backdrop-blur-md border border-[#EC5B13]/30 uppercase">
               Exclusive Hosting
             </span>
             <h1 className="text-5xl md:text-[90px] font-black text-white leading-[0.95] mb-8 tracking-tight">
@@ -134,12 +134,12 @@ export default function HostDashboard() {
               Reach global travelers, secure premium bookings, and manage your luxury property with ease on Goa's most exclusive hospitality platform.
             </p>
 
-            <button className="px-10 py-5 bg-[#FF5A5F] text-white rounded-2xl font-black text-lg shadow-2xl shadow-black/20 hover:bg-[#FF4147] transition-all hover:scale-105 active:scale-95">
+            <button className="px-10 py-5 bg-[#EC5B13B2] text-white rounded-2xl font-black text-lg shadow-2xl shadow-black/20 hover:bg-[#EC5B13B2] transition-all hover:scale-105 active:scale-95">
               Get Started Now
             </button>
 
             {/* Stats */}
-            <div className="mt-20 grid grid-cols-3 gap-12 max-w-4xl mx-auto">
+            <div className="mt-10 grid grid-cols-3 gap-12 max-w-4xl mx-auto">
               <div className="text-white">
                 <p className="text-3xl md:text-4xl font-black">500+</p>
                 <p className="text-[10px] md:text-xs font-bold uppercase tracking-widest opacity-60 mt-1">Active Hosts</p>
@@ -161,8 +161,8 @@ export default function HostDashboard() {
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_12px_rgba(34,197,94,0.6)]" />
                 <div className="flex flex-col gap-0.5">
-                    <span className="text-[10px] font-black text-white/50 uppercase tracking-widest leading-none">Live Now</span>
-                    <span className="text-sm font-bold text-white tracking-tight">High Demand Area</span>
+                  <span className="text-[10px] font-black text-white/50 uppercase tracking-widest leading-none">Live Now</span>
+                  <span className="text-sm font-bold text-white tracking-tight">High Demand Area</span>
                 </div>
               </div>
               <p className="text-white/80 text-sm italic font-medium leading-relaxed">
