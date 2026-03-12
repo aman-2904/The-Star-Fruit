@@ -36,7 +36,9 @@ export default function Navbar() {
 
       {/* Right: Actions */}
       <div className="flex items-center space-x-2 md:space-x-8">
-        <button className="hidden sm:block text-[15px] font-bold text-gray-800 hover:text-black transition-colors">Become a host</button>
+        <Link href="/auth" className="hidden sm:block text-[15px] font-bold text-gray-800 hover:text-black transition-colors">
+          Become a host
+        </Link>
         <button className="flex items-center space-x-1 md:space-x-2 text-[15px] font-bold text-gray-800 hover:text-black transition-colors">
           <Globe size={20} strokeWidth={2.5} className="w-[18px] h-[18px] md:w-5 md:h-5" />
           <span className="hidden md:inline">English | INR</span>
