@@ -6,6 +6,34 @@ import { User, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const CATEGORIES = [
+  {
+    title: "Hotels",
+    description: "Experience full-service comfort with modern rooms, on-site dining, and warm hospitality. Perfect for short trips, business stays, or weekend getaways.",
+    image: "/images/cat_hotel.png",
+    linkText: "List Hotels"
+  },
+  {
+    title: "Apartments",
+    description: "Stay like a local in modern serviced apartments with kitchen and living space. Perfect for long stays or travelers who love home-like comfort.",
+    image: "/images/cat_apartment.png",
+    linkText: "List Apartments"
+  },
+  {
+    title: "Villas",
+    description: "Enjoy spacious private homes designed for relaxation and togetherness. Ideal for families or groups who want luxury, privacy, and a personal touch.",
+    image: "/images/cat_villa.png",
+    linkText: "List Villas"
+  },
+  {
+    title: "Resorts",
+    description: "Escape to destinations that combine comfort, dining, and leisure in one place. Great for holidays, celebrations, and peaceful retreats.",
+    image: "/images/cat_resort.png",
+    linkText: "List Resorts"
+  }
+];
 
 export default function HostDashboard() {
   const [loading, setLoading] = useState(true);
@@ -175,6 +203,62 @@ export default function HostDashboard() {
           </div>
         </div>
       </main>
+
+      {/* Property Categories Section */}
+      <section className="px-6 md:px-20 py-24 bg-white">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex items-end justify-between mb-16">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-serif font-black text-gray-900 mb-4 tracking-tight">
+                Luxury Property Categories
+              </h2>
+              <p className="text-gray-500 font-medium text-lg">
+                Whatever your slice of paradise, we have a place for it.
+              </p>
+            </div>
+
+            {/* Carousel Controls (Visual only for now as requested) */}
+            <div className="hidden md:flex items-center space-x-4">
+              <button className="p-4 border border-gray-100 rounded-full text-gray-400 hover:bg-gray-50 hover:text-black transition-all">
+                <ChevronLeft size={24} />
+              </button>
+              <button className="p-4 border border-gray-100 rounded-full text-gray-400 hover:bg-gray-50 hover:text-black transition-all">
+                <ChevronRight size={24} />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {CATEGORIES.map((cat, idx) => (
+              <div
+                key={idx}
+                className="group bg-[#EEEEEE] rounded-[32px] overflow-hidden border border-transparent hover:border-gray-200 hover:shadow-2xl hover:shadow-black/5 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
+              >
+                <div className="relative h-64 overflow-hidden m-4 rounded-[24px]">
+                  <Image
+                    src={cat.image}
+                    alt={cat.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                <div className="p-8 pt-4">
+                  <h3 className="text-2xl font-black text-gray-900 mb-4">{cat.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-8 font-medium">
+                    {cat.description}
+                  </p>
+                  <button className="text-sm font-black text-gray-900 flex items-center gap-2 group/btn">
+                    {cat.linkText}
+                    <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white transition-transform group-hover/btn:translate-x-1">
+                      <ChevronRight size={12} />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
