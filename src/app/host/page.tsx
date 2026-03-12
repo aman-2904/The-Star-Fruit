@@ -202,7 +202,7 @@ export default function HostDashboard() {
 
       {/* Hero Section */}
       <main className="p-4 md:p-8">
-        <div className="max-w-[1400px] mx-auto relative rounded-[40px] overflow-hidden min-h-[600px] flex items-center justify-center text-center">
+        <div className="max-w-[1400px] mx-auto relative rounded-[40px] overflow-hidden min-h-[650px] flex items-center justify-center text-center">
           <Image
             src="/images/contactus.jpg"
             alt="Host Background"
