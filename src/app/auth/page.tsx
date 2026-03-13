@@ -46,8 +46,8 @@ export default function AuthPage() {
         if (error) throw error;
         router.push("/host");
       } else {
-        const { error } = await supabase.auth.signUp({ 
-          email, 
+        const { error } = await supabase.auth.signUp({
+          email,
           password,
           options: {
             data: {
@@ -94,7 +94,7 @@ export default function AuthPage() {
               <label className="text-sm font-bold text-gray-700 ml-1">Full Name</label>
               <input
                 type="text"
-                placeholder="Aman Jha"
+                placeholder="Your Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all"
