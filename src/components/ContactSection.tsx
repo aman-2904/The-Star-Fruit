@@ -5,7 +5,7 @@ import { Mail, Phone, Send } from "lucide-react";
 
 export default function ContactSection() {
   return (
-    <section className="py-28 px-4 md:px-10 bg-white">
+    <section className="py-4 px-4 md:px-10 bg-white">
       <div className="max-w-[1400px] mx-auto relative rounded-[32px] md:rounded-[48px] overflow-hidden min-h-[600px] md:min-h-[700px] flex items-center shadow-xl">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
