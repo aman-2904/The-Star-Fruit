@@ -25,7 +25,7 @@ export default function SearchWidget() {
     <div className="w-full max-w-7xl mx-auto px-4 md:px-6 -mt-[380px] md:-mt-80 relative z-10 transition-all">
       <div className="bg-white/70 backdrop-blur-2xl rounded-[32px] md:rounded-[48px] px-4 py-4 md:px-10 md:py-8 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.25)] border border-white/40">
         {/* Tabs */}
-        <div className="flex justify-start md:justify-center overflow-x-auto no-scrollbar space-x-6 md:space-x-10 mb-6 md:mb-8 border-b border-gray-100/30">
+        <div className="flex justify-center overflow-x-auto no-scrollbar space-x-6 md:space-x-10 mb-6 md:mb-8 border-b border-gray-100/30 w-full">
           {tabs.map((tab) => (
             <button
               key={tab.label}
