@@ -1,13 +1,12 @@
-import { Search, MapPin, Calendar, Users, Hotel, Ship, Home, Building } from "lucide-react";
+import { Search, MapPin, Calendar, Users, Hotel, Ship, Home } from "lucide-react";
 
 export default function SearchWidget() {
   const tabs = [
-    { label: "Hotels", icon: <Hotel size={18} /> },
-    { label: "Cruise", icon: <Ship size={18} /> },
     { label: "Villas", icon: <Home size={18} /> },
-    { label: "Hostels", icon: <Building size={18} /> },
+    { label: "Cruise", icon: <Ship size={18} /> },
+    { label: "Stays", icon: <Hotel size={18} /> },
   ];
-  const activeTab = "Hotels";
+  const activeTab = "Villas";
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 md:px-6 -mt-[380px] md:-mt-80 relative z-10 transition-all">
