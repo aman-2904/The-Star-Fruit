@@ -44,8 +44,8 @@ export default function SearchWidget() {
         {/* Search Fields Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-3.5 mb-6 md:mb-8">
           {/* Location */}
-          <div className="col-span-2 lg:col-span-1 bg-white/80 p-3.5 md:p-4 rounded-[24px] border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group">
-            <div className="flex items-center gap-2 text-gray-400 mb-0.5">
+          <div className="col-span-2 lg:col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group">
+            <div className="flex items-center gap-2 text-gray-400 mb-0.5 ml-2 md:ml-3">
               <MapPin size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
               <label htmlFor="location" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Location</label>
             </div>
@@ -55,17 +55,17 @@ export default function SearchWidget() {
               placeholder="Where to go?" 
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold text-gray-900 placeholder:text-gray-400 ml-6 md:ml-7 outline-none border-none p-0 focus:ring-0" 
+              className="w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold text-gray-900 placeholder:text-gray-400 ml-8 md:ml-[42px] pr-4 outline-none border-none p-0 focus:ring-0" 
             />
           </div>
 
           {/* Check-in */}
-          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-[24px] border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group relative">
-            <div className="flex items-center gap-2 text-gray-400 mb-0.5">
+          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group relative">
+            <div className="flex items-center gap-2 text-gray-400 mb-0.5 ml-2 md:ml-3">
               <Calendar size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
               <label htmlFor="checkin" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Check-in</label>
             </div>
-            <div className="relative ml-6 md:ml-7">
+            <div className="relative ml-8 md:ml-[42px] pr-4">
               <input 
                 id="checkin"
                 type="date" 
@@ -78,12 +78,12 @@ export default function SearchWidget() {
           </div>
 
           {/* Check-out */}
-          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-[24px] border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group relative">
-            <div className="flex items-center gap-2 text-gray-400 mb-0.5">
+          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group relative">
+            <div className="flex items-center gap-2 text-gray-400 mb-0.5 ml-2 md:ml-3">
               <Calendar size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
               <label htmlFor="checkout" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Check-out</label>
             </div>
-            <div className="relative ml-6 md:ml-7">
+            <div className="relative ml-8 md:ml-[42px] pr-4">
               <input 
                 id="checkout"
                 type="date" 
@@ -97,8 +97,8 @@ export default function SearchWidget() {
           </div>
 
           {/* Guests */}
-          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-[24px] border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group">
-            <div className="flex items-center gap-2 text-gray-400 mb-0.5">
+          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group overflow-hidden">
+            <div className="flex items-center gap-2 text-gray-400 mb-0.5 ml-2 md:ml-3">
               <Users size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
               <label htmlFor="guests" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Guests</label>
             </div>
@@ -106,7 +106,7 @@ export default function SearchWidget() {
               id="guests"
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
-              className="w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold text-gray-900 ml-5 md:ml-6 outline-none border-none p-0 focus:ring-0 cursor-pointer"
+              className="w-[calc(100%-1rem)] bg-transparent text-[12.5px] md:text-[14.5px] font-bold text-gray-900 ml-6 md:ml-8 pr-2 outline-none border-none p-0 focus:ring-0 cursor-pointer"
             >
               <option value="1">1 Guest</option>
               <option value="2">2 Guests</option>
@@ -118,8 +118,8 @@ export default function SearchWidget() {
           </div>
 
           {/* Purpose */}
-          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-[24px] border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group">
-            <div className="flex items-center gap-2 text-gray-400 mb-0.5">
+          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group overflow-hidden">
+            <div className="flex items-center gap-2 text-gray-400 mb-0.5 ml-2 md:ml-3">
               <Calendar size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
               <label htmlFor="purpose" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Purpose</label>
             </div>
@@ -127,7 +127,7 @@ export default function SearchWidget() {
               id="purpose"
               value={purpose}
               onChange={(e) => setPurpose(e.target.value)}
-              className={`w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold ml-5 md:ml-6 outline-none border-none p-0 focus:ring-0 cursor-pointer ${purpose ? 'text-gray-900' : 'text-gray-400'}`}
+              className={`w-[calc(100%-1rem)] bg-transparent text-[12.5px] md:text-[14.5px] font-bold ml-6 md:ml-8 pr-2 outline-none border-none p-0 focus:ring-0 cursor-pointer ${purpose ? 'text-gray-900' : 'text-gray-400'}`}
             >
               <option value="" disabled hidden>Why go?</option>
               <option value="leisure" className="text-gray-900">Leisure</option>
