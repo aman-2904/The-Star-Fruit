@@ -193,7 +193,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Stay[] }) => {
 
 
 export default function StaysSection() {
-  const [activeCategory, setActiveCategory] = useState("pool");
+  const [activeCategories, setActiveCategories] = useState<string[]>(["pool"]);
   const [filters, setFilters] = useState({
     reviewScore: "",
     hotelStar: "",
@@ -206,8 +206,14 @@ export default function StaysSection() {
       <div className="max-w-[1400px] mx-auto px-4 md:px-10">
         {/* Category Icons */}
         <CategoryFilters 
-          activeCategory={activeCategory} 
-          onCategoryChange={setActiveCategory} 
+          activeCategories={activeCategories} 
+          onCategoryChange={(id) => {
+            setActiveCategories(prev => 
+              prev.includes(id) 
+                ? prev.filter(c => c !== id) 
+                : [...prev, id]
+            );
+          }} 
         />
 
         {/* Property Filters Row */}

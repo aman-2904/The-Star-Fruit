@@ -11,11 +11,11 @@ const categories = [
 ];
 
 interface CategoryFiltersProps {
-  activeCategory: string;
+  activeCategories: string[];
   onCategoryChange: (id: string) => void;
 }
 
-export default function CategoryFilters({ activeCategory, onCategoryChange }: CategoryFiltersProps) {
+export default function CategoryFilters({ activeCategories, onCategoryChange }: CategoryFiltersProps) {
 
   return (
     <div className="flex items-center justify-start md:justify-center gap-8 md:gap-14 overflow-x-auto no-scrollbar pb-1 border-b border-gray-100 mb-10 w-full">
@@ -24,20 +24,20 @@ export default function CategoryFilters({ activeCategory, onCategoryChange }: Ca
           key={cat.id}
           onClick={() => onCategoryChange(cat.id)}
           className={`flex flex-col items-center gap-4 pb-5 relative transition-all whitespace-nowrap group ${
-            activeCategory === cat.id ? "text-black" : "text-gray-400 hover:text-gray-600"
+            activeCategories.includes(cat.id) ? "text-black" : "text-gray-400 hover:text-gray-600"
           }`}
         >
           <div className={`transition-all duration-300 ${
-            activeCategory === cat.id ? "text-[#FF5A5F]" : "text-gray-400 opacity-60 group-hover:opacity-100"
+            activeCategories.includes(cat.id) ? "text-[#FF5A5F]" : "text-gray-400 opacity-60 group-hover:opacity-100"
           }`}>
             {cat.icon}
           </div>
           <span className={`text-[11px] md:text-[12px] font-extrabold tracking-[0.1em] uppercase ${
-            activeCategory === cat.id ? "opacity-100" : "opacity-70 group-hover:opacity-100"
+            activeCategories.includes(cat.id) ? "opacity-100" : "opacity-70 group-hover:opacity-100"
           }`}>
             {cat.label}
           </span>
-          {activeCategory === cat.id && (
+          {activeCategories.includes(cat.id) && (
             <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#FF5A5F] rounded-full" />
           )}
         </button>
