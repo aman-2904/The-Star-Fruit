@@ -7,6 +7,7 @@ import TravelerStories from "@/components/TravelerStories";
 import ContactSection from "@/components/ContactSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
+import EnquirySection from "@/components/EnquirySection";
 
 export default function Home() {
   return (
@@ -15,10 +16,13 @@ export default function Home() {
       <Hero />
       <SearchWidget />
       <StaysSection />
+      <ContactSection />
+      <EnquirySection />
       <StayTypesSection />
       <TravelerStories />
       <FAQSection />
-      <ContactSection />
+
+
       <Footer />
     </main>
   );
