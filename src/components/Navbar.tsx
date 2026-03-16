@@ -62,9 +62,8 @@ export default function Navbar() {
         <div className="lg:hidden fixed left-0 right-0 top-[60px] md:top-[68px] bg-white border-b border-gray-100 px-6 py-4 shadow-sm z-40 animate-in slide-in-from-top-2">
           <div className="flex flex-col space-y-4">
             <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Villas</Link>
-            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Hotels</Link>
             <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Cruise</Link>
-            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Hostels</Link>
+            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Stays</Link>
             <div className="border-t border-gray-100 pt-4 mt-2">
               <Link href="/auth" className="text-base font-bold text-[#EC5B13] hover:text-[#D14F10]">Become a host</Link>
             </div>
