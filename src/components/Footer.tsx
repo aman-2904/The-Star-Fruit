@@ -2,6 +2,7 @@
 
 import { Globe, Instagram, AtSign } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -10,7 +11,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Column 1: Brand */}
           <div className="max-w-xs">
-            <h3 className="text-[18px] font-bold text-gray-900 mb-6">The Starfruit</h3>
+            <Link href="/" className="inline-block mb-6">
+              <Image
+                src="/images/logo.png"
+                alt="LuxeVillaz"
+                width={160}
+                height={40}
+                className="h-8 md:h-10 w-auto object-contain"
+              />
+            </Link>
             <p className="text-[14px] md:text-[15px] leading-relaxed text-[#6B7280]">
               Curating the finest staycations in Goa since 2018. Luxury, privacy, and local charm in every stay.
             </p>
