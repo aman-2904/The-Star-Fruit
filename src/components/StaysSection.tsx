@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import StayCard from "./StayCard";
 import CategoryFilters from "./CategoryFilters";
@@ -128,11 +128,20 @@ interface Stay {
   trending?: boolean;
 }
 
-const FilterDropdown = ({ label }: { label: string }) => (
-  <button className="flex items-center gap-3 px-6 py-2.5 bg-[#FFF7F4] border border-[#FFD0B9] rounded-full text-[13px] md:text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all group shadow-sm">
-    {label}
-    <ChevronDown size={16} className="text-gray-400 group-hover:text-gray-600 transition-colors" />
-  </button>
+const FilterDropdown = ({ label, options, value, onChange }: { label: string, options: string[], value: string, onChange: (val: string) => void }) => (
+  <div className="relative group">
+    <select 
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="appearance-none flex items-center gap-3 pl-6 pr-10 py-2.5 bg-[#FFF7F4] border border-[#FFD0B9] rounded-full text-[13px] md:text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all shadow-sm outline-none cursor-pointer"
+    >
+      <option value="">{label}</option>
+      {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+    </select>
+    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-gray-600 transition-colors">
+      <ChevronDown size={16} />
+    </div>
+  </div>
 );
 
 const StayCarousel = ({ title, stays }: { title: string, stays: Stay[] }) => {
@@ -184,18 +193,49 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Stay[] }) => {
 
 
 export default function StaysSection() {
+  const [activeCategory, setActiveCategory] = useState("pool");
+  const [filters, setFilters] = useState({
+    reviewScore: "",
+    hotelStar: "",
+    facilities: "",
+    theme: ""
+  });
+
   return (
     <section className="pt-20 md:pt-32 pb-12 bg-white">
       <div className="max-w-[1400px] mx-auto px-4 md:px-10">
         {/* Category Icons */}
-        <CategoryFilters />
+        <CategoryFilters 
+          activeCategory={activeCategory} 
+          onCategoryChange={setActiveCategory} 
+        />
 
         {/* Property Filters Row */}
         <div className="flex flex-wrap items-center gap-4 mb-10 md:justify-center">
-          <FilterDropdown label="Review Score" />
-          <FilterDropdown label="Hotel Star" />
-          <FilterDropdown label="Facilities" />
-          <FilterDropdown label="Hotel Theme" />
+          <FilterDropdown 
+            label="Review Score" 
+            options={["9+ Superb", "8+ Very Good", "7+ Good"]} 
+            value={filters.reviewScore}
+            onChange={(val) => setFilters({...filters, reviewScore: val})}
+          />
+          <FilterDropdown 
+            label="Hotel Star" 
+            options={["5 Stars", "4 Stars", "3 Stars"]} 
+            value={filters.hotelStar}
+            onChange={(val) => setFilters({...filters, hotelStar: val})}
+          />
+          <FilterDropdown 
+            label="Facilities" 
+            options={["Pool", "Spa", "Gym", "Restaurant"]} 
+            value={filters.facilities}
+            onChange={(val) => setFilters({...filters, facilities: val})}
+          />
+          <FilterDropdown 
+            label="Hotel Theme" 
+            options={["Luxury", "Boutique", "Resort", "Business"]} 
+            value={filters.theme}
+            onChange={(val) => setFilters({...filters, theme: val})}
+          />
 
           <button className="flex items-center gap-2.5 px-7 py-2.5 bg-[#FFF7F4] border border-[#FFD0B9] rounded-full text-[13px] md:text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all shadow-sm">
             <SlidersHorizontal size={16} />
