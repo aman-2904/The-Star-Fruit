@@ -12,11 +12,11 @@ const stayTypes = [
     linkText: "View Hotels",
   },
   {
-    id: "apartments",
-    title: "Apartments",
-    description: "Stay like a local in modern serviced apartments with kitchen and living space. Perfect for long stays or travelers who love home-like comfort.",
-    image: "/images/stay_apartment.png",
-    linkText: "View Apartments",
+    id: "resorts",
+    title: "Resorts",
+    description: "Escape to destinations that combine comfort, dining, and leisure in one place. Great for holidays, celebrations, and peaceful retreats.",
+    image: "/images/stay_resort.png",
+    linkText: "View Resorts",
   },
   {
     id: "villas",
@@ -26,13 +26,14 @@ const stayTypes = [
     linkText: "View Villas",
   },
   {
-    id: "resorts",
-    title: "Resorts",
-    description: "Escape to destinations that combine comfort, dining, and leisure in one place. Great for holidays, celebrations, and peaceful retreats.",
-    image: "/images/stay_resort.png",
-    linkText: "View Resorts",
-    active: true,
+    id: "cruise",
+    title: "Cruise",
+    description: "Set sail on an unforgettable journey across the seas. Enjoy world-class dining, magnificent ocean views, and premium entertainment all in one place.",
+    image: "/images/stay_cruise.png",
+    linkText: "View Cruises",
   },
+
+
 ];
 
 export default function StayTypesSection() {
@@ -54,8 +55,7 @@ export default function StayTypesSection() {
           {stayTypes.map((type) => (
             <div
               key={type.id}
-              className={`group flex flex-col bg-[#F3F3F3] rounded-[24px] overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${type.active ? "ring-1 ring-gray-900 shadow-lg" : ""
-                }`}
+              className="bg-[#F8F9FA] rounded-[24px] overflow-hidden group hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1 flex flex-col h-full"
             >
               <div className="relative h-[250px] w-full overflow-hidden m-4 rounded-[18px]">
                 <Image
@@ -71,10 +71,10 @@ export default function StayTypesSection() {
                   {type.description}
                 </p>
                 <div className="flex items-center justify-between group/link">
-                  <span className="text-[14px] font-bold text-gray-900">{type.linkText}</span>
-                  <div className={`p-2 rounded-full transition-all ${type.active ? 'bg-gray-100' : 'group-hover/link:bg-gray-100'}`}>
-                    <MoveRight size={18} className={`transition-transform duration-300 ${type.active ? 'translate-x-0' : 'group-hover/link:translate-x-1'}`} />
-                  </div>
+                  <span className="text-[13px] md:text-[14px] font-bold text-gray-900 group-hover:text-black transition-colors">
+                    {type.linkText}
+                  </span>
+                  <MoveRight size={18} className="text-gray-400 group-hover:text-black group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
             </div>
