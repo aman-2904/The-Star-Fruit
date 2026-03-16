@@ -1,10 +1,16 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Globe, User, Menu } from "lucide-react";
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <nav className="flex items-center justify-between px-4 md:px-10 py-3 md:py-3 bg-white sticky top-0 z-50">
+    <>
+      <nav className="flex items-center justify-between px-4 md:px-10 py-3 md:py-3 bg-white sticky top-0 z-50">
       {/* Left: Menu Items (Desktop) */}
       <div className="hidden lg:flex items-center space-x-12">
         <Link href="#" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Villas</Link>
@@ -15,7 +21,10 @@ export default function Navbar() {
 
       {/* Mobile Menu Button */}
       <div className="lg:hidden">
-        <button className="p-2 text-gray-800">
+        <button 
+          className="p-2 text-gray-800"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <Menu size={24} />
         </button>
       </div>
@@ -48,5 +57,21 @@ export default function Navbar() {
         </button>
       </div>
     </nav>
+    
+    {/* Mobile Menu Dropdown */}
+    {isOpen && (
+      <div className="lg:hidden fixed left-0 right-0 top-[60px] md:top-[68px] bg-white border-b border-gray-100 px-6 py-4 shadow-sm z-40 animate-in slide-in-from-top-2">
+        <div className="flex flex-col space-y-4">
+          <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Villas</Link>
+          <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Hotels</Link>
+          <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Cruise</Link>
+          <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Hostels</Link>
+          <div className="border-t border-gray-100 pt-4 mt-2">
+            <Link href="/auth" className="text-base font-bold text-[#EC5B13] hover:text-[#D14F10]">Become a host</Link>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

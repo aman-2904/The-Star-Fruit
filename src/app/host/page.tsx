@@ -6,7 +6,8 @@ import { User, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Plus, Minus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Minus, Menu } from "lucide-react";
+import Footer from "@/components/Footer";
 
 const FAQ_DATA = [
   {
@@ -100,6 +101,7 @@ export default function HostDashboard() {
   const [loading, setLoading] = useState(true);
   const [hostName, setHostName] = useState("");
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -140,10 +142,20 @@ export default function HostDashboard() {
     <div className="min-h-screen bg-white font-sans">
       {/* Host Navbar */}
       <nav className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-20 py-4 border-b border-gray-200/50 bg-white transition-all duration-300">
-        <div className="flex items-center space-x-12">
+        <div className="hidden md:flex items-center space-x-12">
           <Link href="/" className="text-sm font-bold text-gray-800 hover:text-black">Home</Link>
           <Link href="#" className="text-sm font-bold text-gray-800 hover:text-black">Dashboard</Link>
           <Link href="#" className="text-sm font-bold text-gray-800 hover:text-black">Listings</Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button 
+            className="p-2 text-gray-800 -ml-2"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+          >
+            <Menu size={24} />
+          </button>
         </div>
 
         <div className="absolute left-1/2 -translate-x-1/2">
@@ -199,6 +211,18 @@ export default function HostDashboard() {
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Dropdown */}
+      {showMobileMenu && (
+        <div className="md:hidden border-b border-gray-100 bg-white px-6 py-4 animate-in slide-in-from-top-2">
+          <div className="flex flex-col space-y-4">
+            <Link href="/" className="text-base font-bold text-gray-800 hover:text-black">Home</Link>
+            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Dashboard</Link>
+            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Listings</Link>
+            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Help</Link>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <main className="p-4 md:p-8">
@@ -438,7 +462,7 @@ export default function HostDashboard() {
       </section>
 
       {/* Footer */}
-
+      <Footer />
     </div>
   );
 }
