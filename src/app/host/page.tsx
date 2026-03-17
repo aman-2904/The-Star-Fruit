@@ -247,7 +247,10 @@ export default function HostDashboard() {
               Reach global travelers, secure premium bookings, and manage your luxury property with ease on Goa's most exclusive hospitality platform.
             </p>
 
-            <button className="px-10 py-5 bg-[#EC5B13B2] text-white rounded-2xl font-black text-lg shadow-2xl shadow-black/20 hover:bg-[#EC5B13B2] transition-all hover:scale-105 active:scale-95">
+            <button 
+              onClick={() => router.push('/host/onboarding')}
+              className="px-10 py-5 bg-[#EC5B13B2] text-white rounded-2xl font-black text-lg shadow-2xl shadow-black/20 hover:bg-[#EC5B13B2] transition-all hover:scale-105 active:scale-95"
+            >
               Get Started Now
             </button>
 
@@ -449,7 +452,10 @@ export default function HostDashboard() {
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button className="w-full sm:w-auto px-8 py-4 bg-white text-[#EC5B13] rounded-2xl font-black text-base hover:bg-gray-50 transition-all hover:scale-[1.02] active:scale-95 shadow-xl">
+                <button 
+                  onClick={() => router.push('/host/onboarding')}
+                  className="w-full sm:w-auto px-8 py-4 bg-white text-[#EC5B13] rounded-2xl font-black text-base hover:bg-gray-50 transition-all hover:scale-[1.02] active:scale-95 shadow-xl"
+                >
                   Start Your Listing
                 </button>
                 <button className="w-full sm:w-auto px-8 py-4 bg-[#96897E]/40 text-white border border-white/20 rounded-2xl font-black text-base hover:bg-[#96897E]/50 transition-all hover:scale-[1.02] active:scale-95 backdrop-blur-md">
