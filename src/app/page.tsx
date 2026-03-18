@@ -17,8 +17,9 @@ export default function Home() {
       <SearchWidget />
       <StaysSection />
       <ContactSection />
-      <EnquirySection />
       <StayTypesSection />
+      <EnquirySection />
+
       <TravelerStories />
       <FAQSection />
 
