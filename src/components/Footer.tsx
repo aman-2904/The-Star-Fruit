@@ -28,7 +28,7 @@ export default function Footer() {
         </div>
 
         {/* Main content */}
-        <div className="relative z-10 px-8 md:px-16 pt-36 pb-32">
+        <div className="relative z-10 px-8 md:px-16 pt-36 pb-44">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
 
             {/* Column 1: Brand */}
