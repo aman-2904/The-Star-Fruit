@@ -233,12 +233,6 @@ export default function HostDashboardPage() {
           <Link href="#" className="hidden md:flex items-center gap-1 text-sm font-bold text-gray-500 hover:text-black">
             <HelpCircle size={15} /> Help
           </Link>
-          <button
-            onClick={() => router.push('/host/onboarding')}
-            className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-[#EC5B13] text-white text-sm font-bold rounded-xl hover:bg-[#d44f0f] transition-colors"
-          >
-            <Plus size={15} /> New Listing
-          </button>
           {/* Avatar */}
           <div className="relative">
             <button

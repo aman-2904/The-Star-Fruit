@@ -114,7 +114,33 @@ export default function PropertyDetailPage() {
         return;
       }
 
-      // 3. Delete the property from DB
+      // 3. Delete all images from Supabase Storage
+      const imageUrls: string[] = property?.images || [];
+      if (imageUrls.length > 0) {
+        // Extract the storage path from each public URL
+        // URL format: https://<project>.supabase.co/storage/v1/object/public/property-images/<path>
+        const storagePaths = imageUrls
+          .map(url => {
+            try {
+              const marker = '/property-images/';
+              const idx = url.indexOf(marker);
+              return idx !== -1 ? decodeURIComponent(url.slice(idx + marker.length)) : null;
+            } catch { return null; }
+          })
+          .filter(Boolean) as string[];
+
+        if (storagePaths.length > 0) {
+          const { error: storageError } = await supabase.storage
+            .from('property-images')
+            .remove(storagePaths);
+          if (storageError) {
+            // Log but don't block deletion — the DB row is more important
+            console.warn('[Delete] Storage cleanup warning:', storageError);
+          }
+        }
+      }
+
+      // 4. Delete the property row from DB
       const { error: delError } = await supabase
         .from('properties')
         .delete()
