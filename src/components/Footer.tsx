@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 
 const WATERMARK = "LUXEVILLAZ".split("");
@@ -70,9 +71,13 @@ export default function Footer() {
             {/* Column 1: Brand */}
             <div className="max-w-xs">
               <Link href="/" className="inline-block mb-5">
-                <span className="text-white font-black text-2xl tracking-tight">
-                  LuxeVillaz
-                </span>
+                <Image
+                  src="/images/white.png"
+                  alt="LuxeVillaz"
+                  width={160}
+                  height={40}
+                  className="h-10 md:h-12 w-auto object-contain"
+                />
               </Link>
               <p className="text-gray-400 text-sm leading-relaxed">
                 Curating the finest staycations in Goa since 2018. Luxury, privacy, and local charm in every stay.
