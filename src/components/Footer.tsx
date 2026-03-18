@@ -1,34 +1,70 @@
 "use client";
 
 import Link from "next/link";
+import { useRef, useEffect, useState } from "react";
+
+const WATERMARK = "LUXEVILLAZ".split("");
 
 export default function Footer() {
+  const footerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = footerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <footer className="px-4 md:px-8 pb-8">
+    <>
+      <style>{`
+        .wm-letter { 
+          font-size: clamp(38px, 11.5vw, 220px); 
+          letter-spacing: -0.06em;
+        }
+        @media (min-width: 768px) { 
+          .wm-letter { 
+            font-size: clamp(80px, 18vw, 220px); 
+            letter-spacing: -0.02em;
+          } 
+        }
+      `}</style>
+      <footer className="px-4 md:px-8 pb-8" ref={footerRef}>
       <div
         className="relative rounded-3xl overflow-hidden"
         style={{ background: '#1C1F26' }}
       >
-        {/* Giant watermark text */}
+        {/* Giant animated watermark */}
         <div
-          className="absolute bottom-0 left-0 right-0 leading-none select-none pointer-events-none overflow-hidden"
+          className="absolute bottom-0 left-0 right-0 leading-none select-none pointer-events-none overflow-hidden flex justify-between w-full"
           aria-hidden="true"
         >
-          <span
-            className="block text-center font-black uppercase tracking-tighter"
-            style={{
-              fontSize: 'clamp(80px, 18vw, 220px)',
-              color: 'rgba(255,255,255,0.04)',
-              letterSpacing: '-0.02em',
-              lineHeight: 0.85,
-            }}
-          >
-            LUXEVILLAZ
-          </span>
+          {WATERMARK.map((letter, i) => (
+            <span
+              key={i}
+              className="wm-letter font-black uppercase"
+              style={{
+                lineHeight: 0.85,
+                color: 'rgba(255, 255, 255, 0.06)',
+                display: 'inline-block',
+                transform: inView ? 'translateY(0)' : 'translateY(60px)',
+                opacity: inView ? 1 : 0,
+                transition: `transform 0.8s cubic-bezier(0.22,1,0.36,1), opacity 0.8s ease`,
+                transitionDelay: `${i * 60}ms`,
+              }}
+            >
+              {letter}
+            </span>
+          ))}
         </div>
 
         {/* Main content */}
-        <div className="relative z-10 px-8 md:px-16 pt-36 pb-44">
+        <div className="relative z-10 px-8 md:px-16 pt-36 pb-24 md:pb-44">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
 
             {/* Column 1: Brand */}
@@ -118,5 +154,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }
