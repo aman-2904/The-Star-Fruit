@@ -1,75 +1,119 @@
 "use client";
 
-import { Globe, Instagram, AtSign } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-white pt-20 pb-16 border-t border-gray-100">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          {/* Column 1: Brand */}
-          <div className="max-w-xs">
-            <Link href="/" className="inline-block mb-6">
-              <Image
-                src="/images/logo.png"
-                alt="LuxeVillaz"
-                width={160}
-                height={40}
-                className="h-8 md:h-10 w-auto object-contain"
-              />
-            </Link>
-            <p className="text-[14px] md:text-[15px] leading-relaxed text-[#6B7280]">
-              Curating the finest staycations in Goa since 2018. Luxury, privacy, and local charm in every stay.
-            </p>
-          </div>
+    <footer className="px-4 md:px-8 pb-8">
+      <div
+        className="relative rounded-3xl overflow-hidden"
+        style={{ background: '#1C1F26' }}
+      >
+        {/* Giant watermark text */}
+        <div
+          className="absolute bottom-0 left-0 right-0 leading-none select-none pointer-events-none overflow-hidden"
+          aria-hidden="true"
+        >
+          <span
+            className="block text-center font-black uppercase tracking-tighter"
+            style={{
+              fontSize: 'clamp(80px, 18vw, 220px)',
+              color: 'rgba(255,255,255,0.04)',
+              letterSpacing: '-0.02em',
+              lineHeight: 0.85,
+            }}
+          >
+            LUXEVILLAZ
+          </span>
+        </div>
 
-          {/* Column 2: Quick Links */}
-          <div className="lg:pl-8">
-            <h3 className="text-[18px] font-bold text-gray-900 mb-6 font-sans">Quick Links</h3>
-            <ul className="space-y-4">
-              {["Home", "Villas", "Hotels", "Cruise", "Hostels", "Become a Host"].map((item) => (
-                <li key={item}>
-                  <Link href="#" className="text-[14px] md:text-[15px] text-[#6B7280] hover:text-black transition-colors font-medium">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {/* Main content */}
+        <div className="relative z-10 px-8 md:px-16 pt-36 pb-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
 
-          {/* Column 3: Support */}
-          <div>
-            <h3 className="text-[18px] font-bold text-gray-900 mb-6">Support</h3>
-            <ul className="space-y-4">
-              {["Contact Us", "FAQs", "Terms of Service", "Privacy Policy"].map((item) => (
-                <li key={item}>
-                  <Link href="#" className="text-[14px] md:text-[15px] text-[#6B7280] hover:text-black transition-colors font-medium">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 4: Follow Us */}
-          <div className="lg:pl-4">
-            <h3 className="text-[18px] font-bold text-gray-900 mb-6">Follow Us</h3>
-            <div className="flex gap-4 mb-10">
-              <a href="#" className="p-3 bg-[#FFF1F2] text-[#FF5A5F] rounded-full hover:bg-[#FFE4E6] transition-all">
-                <Globe size={20} />
-              </a>
-              <a href="#" className="p-3 bg-[#FFF1F2] text-[#FF5A5F] rounded-full hover:bg-[#FFE4E6] transition-all">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="p-3 bg-[#FFF1F2] text-[#FF5A5F] rounded-full hover:bg-[#FFE4E6] transition-all">
-                <AtSign size={20} />
-              </a>
+            {/* Column 1: Brand */}
+            <div className="max-w-xs">
+              <Link href="/" className="inline-block mb-5">
+                <span className="text-white font-black text-2xl tracking-tight">
+                  LuxeVillaz
+                </span>
+              </Link>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Curating the finest staycations in Goa since 2018. Luxury, privacy, and local charm in every stay.
+              </p>
             </div>
-            <p className="text-[13px] text-[#9CA3AF] font-medium">
-              © 2026 the starfruit Hospitality Pvt Ltd.
-            </p>
+
+            {/* Column 2: Quick Links */}
+            <div>
+              <h3 className="text-[#EC5B13] font-bold text-sm uppercase tracking-wider mb-5">
+                Quick Links
+              </h3>
+              <ul className="space-y-3">
+                {["Home", "Villas", "Cruise", "Stays", "Become a Host"].map((item) => (
+                  <li key={item}>
+                    <Link
+                      href="#"
+                      className="text-gray-300 text-sm hover:text-white transition-colors font-medium"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 3: Support */}
+            <div>
+              <h3 className="text-[#EC5B13] font-bold text-sm uppercase tracking-wider mb-5">
+                Support
+              </h3>
+              <ul className="space-y-3">
+                {["Contact Us", "FAQs", "Terms of Service", "Privacy Policy"].map((item) => (
+                  <li key={item}>
+                    <Link
+                      href="#"
+                      className="text-gray-300 text-sm hover:text-white transition-colors font-medium"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 4: Follow Us */}
+            <div>
+              <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-5">
+                Follow Us
+              </h3>
+              <div className="flex items-center gap-3 mb-8">
+                {/* Globe / Website */}
+                <a href="#" aria-label="Website" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#EC5B13] transition-colors flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
+                </a>
+                {/* Instagram */}
+                <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#EC5B13] transition-colors flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+                </a>
+                {/* Email */}
+                <a href="#" aria-label="Email" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#EC5B13] transition-colors flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+                </a>
+                {/* Twitter/X */}
+                <a href="#" aria-label="Twitter" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#EC5B13] transition-colors flex items-center justify-center">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" /></svg>
+                </a>
+                {/* Facebook */}
+                <a href="#" aria-label="Facebook" className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#EC5B13] transition-colors flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
+                </a>
+              </div>
+
+              <p className="text-gray-500 text-xs">
+                © 2024 the luxevillaz Hospitality Pvt Ltd.
+              </p>
+            </div>
+
           </div>
         </div>
       </div>
