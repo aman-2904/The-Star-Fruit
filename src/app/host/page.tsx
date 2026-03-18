@@ -150,7 +150,7 @@ export default function HostDashboard() {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
-          <button 
+          <button
             className="p-2 text-gray-800 -ml-2"
             onClick={() => setShowMobileMenu(!showMobileMenu)}
           >
@@ -159,7 +159,7 @@ export default function HostDashboard() {
         </div>
 
         <div className="absolute left-1/2 -translate-x-1/2">
-          <Image src="/images/logo.png" alt="LuxeVilla" width={140} height={35} className="h-8 w-auto" />
+          <Image src="/images/black.png" alt="LuxeVilla" width={140} height={35} className="h-8 w-auto" />
         </div>
 
         <div className="flex items-center space-x-8">
@@ -247,7 +247,7 @@ export default function HostDashboard() {
               Reach global travelers, secure premium bookings, and manage your luxury property with ease on Goa's most exclusive hospitality platform.
             </p>
 
-            <button 
+            <button
               onClick={() => router.push('/host/onboarding')}
               className="px-10 py-5 bg-[#EC5B13B2] text-white rounded-2xl font-black text-lg shadow-2xl shadow-black/20 hover:bg-[#EC5B13B2] transition-all hover:scale-105 active:scale-95"
             >
@@ -452,7 +452,7 @@ export default function HostDashboard() {
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button 
+                <button
                   onClick={() => router.push('/host/onboarding')}
                   className="w-full sm:w-auto px-8 py-4 bg-white text-[#EC5B13] rounded-2xl font-black text-base hover:bg-gray-50 transition-all hover:scale-[1.02] active:scale-95 shadow-xl"
                 >
