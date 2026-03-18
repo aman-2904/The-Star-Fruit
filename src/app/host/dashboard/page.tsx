@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   Plus, User, Globe, Users, BedDouble, Bath,
-  Clock, CheckCircle, FileText, MoreVertical,
+  Clock, CheckCircle, FileText,
   Home, LayoutDashboard, ListChecks, HelpCircle,
-  Menu, X, ImageOff, Pencil, Eye
+  Menu, X, ImageOff
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -66,13 +66,15 @@ function EmptyState({ onAdd }: { onAdd: () => void }) {
 
 // ── Property Card ───────────────────────────────────────────────────────────
 function PropertyCard({ property }: { property: Property }) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const coverPhoto = property.images?.[0] ?? null;
   const location = [property.city, property.state].filter(Boolean).join(', ') || 'Location not set';
   const title = property.listing_title || property.category || 'Untitled Property';
 
   return (
-    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group">
+    <Link
+      href={`/host/dashboard/${property.id}`}
+      className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group block cursor-pointer"
+    >
       {/* Cover Photo */}
       <div className="relative h-52 bg-gray-100">
         {coverPhoto ? (
@@ -86,31 +88,6 @@ function PropertyCard({ property }: { property: Property }) {
         {/* Status badge overlay */}
         <div className="absolute top-3 left-3">
           <StatusBadge status={property.status} />
-        </div>
-        {/* Three-dot menu */}
-        <div className="absolute top-3 right-3 relative">
-          <button
-            onClick={() => setMenuOpen(p => !p)}
-            className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm hover:bg-white transition-colors"
-          >
-            <MoreVertical size={14} className="text-gray-600" />
-          </button>
-          {menuOpen && (
-            <>
-              <div className="absolute right-0 mt-1 w-40 bg-white rounded-2xl shadow-xl border border-gray-100 py-1.5 z-10 animate-in fade-in slide-in-from-top-1 duration-150">
-                <Link
-                  href={`/host/onboarding?id=${property.id}`}
-                  className="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-                >
-                  <Pencil size={13} /> Edit Listing
-                </Link>
-                <button className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50">
-                  <Eye size={13} /> Preview
-                </button>
-              </div>
-              <div className="fixed inset-0 z-0" onClick={() => setMenuOpen(false)} />
-            </>
-          )}
         </div>
       </div>
 
@@ -142,7 +119,7 @@ function PropertyCard({ property }: { property: Property }) {
           <p className="text-xs text-gray-400 font-medium border-t border-gray-50 pt-4">Details incomplete</p>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
 
