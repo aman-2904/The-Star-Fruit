@@ -9,7 +9,7 @@ import {
   UtensilsCrossed, Wind, Monitor, Tv2, Waves, BathIcon,
   Umbrella, ChefHat, Dumbbell, HeartPulse, Flame,
   BellElectric, BellRing, Clock, CheckCircle, FileText,
-  ImageOff, Home, LayoutDashboard
+  ImageOff, Home, LayoutDashboard, Trash2, X, Eye, EyeOff, AlertTriangle
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -69,6 +69,13 @@ export default function PropertyDetailPage() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
+  // Delete modal state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
     async function load() {
       if (!supabase || !id) { setLoading(false); return; }
@@ -83,6 +90,56 @@ export default function PropertyDetailPage() {
     }
     load();
   }, [id]);
+
+  const handleDelete = async () => {
+    if (!supabase || !deletePassword.trim()) return;
+    setDeleteError('');
+    setIsDeleting(true);
+    try {
+      // 1. Get the current user's email
+      const { data: { session } } = await supabase.auth.getSession();
+      const email = session?.user?.email;
+      if (!email) {
+        setDeleteError('Could not get user session. Please log in again.');
+        setIsDeleting(false);
+        return;
+      }
+
+      // 2. Re-authenticate with the entered password to verify identity
+      const { error: authError } = await supabase.auth.signInWithPassword({ email, password: deletePassword });
+      if (authError) {
+        console.error('[Delete] Auth failed:', authError);
+        setDeleteError('Incorrect password. Please try again.');
+        setIsDeleting(false);
+        return;
+      }
+
+      // 3. Delete the property from DB
+      const { error: delError } = await supabase
+        .from('properties')
+        .delete()
+        .eq('id', id);
+
+      if (delError) {
+        console.error('[Delete] Supabase delete error:', delError);
+        // Surface a helpful message based on error code
+        if (delError.code === '42501' || delError.message?.includes('policy')) {
+          setDeleteError('Permission denied. Make sure you have a DELETE RLS policy on the properties table.');
+        } else {
+          setDeleteError(`Error: ${delError.message || 'Failed to delete. Please try again.'}`);
+        }
+        setIsDeleting(false);
+        return;
+      }
+
+      // 4. Redirect to dashboard on success
+      router.push('/host/dashboard');
+    } catch (e: any) {
+      console.error('[Delete] Unexpected error:', e);
+      setDeleteError('Something went wrong. Please try again.');
+      setIsDeleting(false);
+    }
+  };
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-[#FDFDFD]">
@@ -142,7 +199,15 @@ export default function PropertyDetailPage() {
                 </p>
               )}
             </div>
-            <StatusBadge status={property.status} />
+            <div className="flex items-center gap-3">
+              <StatusBadge status={property.status} />
+              <button
+                onClick={() => { setShowDeleteModal(true); setDeleteError(''); setDeletePassword(''); }}
+                className="flex items-center gap-1.5 px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-sm font-bold hover:bg-red-100 transition-colors"
+              >
+                <Trash2 size={14} /> Delete
+              </button>
+            </div>
           </div>
         </div>
 
@@ -268,6 +333,83 @@ export default function PropertyDetailPage() {
           </Section>
         )}
       </main>
+
+      {/* ── Delete Confirmation Modal ── */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}>
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-2 text-red-600 font-bold text-sm">
+                <AlertTriangle size={16} /> Delete Property
+              </div>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="text-gray-400 hover:text-gray-700 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6">
+              <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
+                <Trash2 size={24} className="text-red-500" />
+              </div>
+              <h3 className="text-xl font-black text-[#1A1A24] text-center mb-1">Are you sure?</h3>
+              <p className="text-gray-500 text-sm text-center mb-6 leading-relaxed">
+                This will permanently delete <span className="font-bold text-[#1A1A24]">{property.listing_title || property.category || 'this property'}</span> and all its data. This action cannot be undone.
+              </p>
+
+              {/* Password Field */}
+              <label className="block text-sm font-bold text-[#1A1A24] mb-2">Enter your password to confirm</label>
+              <div className="relative mb-2">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={deletePassword}
+                  onChange={e => { setDeletePassword(e.target.value); setDeleteError(''); }}
+                  onKeyDown={e => e.key === 'Enter' && handleDelete()}
+                  placeholder="Your account password"
+                  className="w-full border border-gray-200 rounded-2xl px-4 py-3 pr-12 text-sm outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(p => !p)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              {deleteError && (
+                <p className="text-red-500 text-xs font-semibold mb-4 flex items-center gap-1">
+                  <AlertTriangle size={12} /> {deleteError}
+                </p>
+              )}
+
+              {/* Actions */}
+              <div className="flex gap-3 mt-5">
+                <button
+                  onClick={() => setShowDeleteModal(false)}
+                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-2xl font-bold text-sm hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={!deletePassword.trim() || isDeleting}
+                  className="flex-1 px-4 py-3 bg-red-500 text-white rounded-2xl font-bold text-sm hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {isDeleting ? (
+                    <><span className="w-4 h-4 border-2 border-white/50 border-t-white rounded-full animate-spin" /> Deleting...</>
+                  ) : (
+                    <><Trash2 size={14} /> Delete Forever</>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
