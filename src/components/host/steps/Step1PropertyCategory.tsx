@@ -45,9 +45,10 @@ interface Step1PropertyCategoryProps {
   onBack: () => void;
   onNext: () => void;
   canContinue: boolean;
+  isSaving?: boolean;
 }
 
-export default function Step1PropertyCategory({ selectedCategory, onSelect, onBack, onNext, canContinue }: Step1PropertyCategoryProps) {
+export default function Step1PropertyCategory({ selectedCategory, onSelect, onBack, onNext, canContinue, isSaving }: Step1PropertyCategoryProps) {
   return (
     <div className="w-full max-w-5xl mx-auto px-6 md:px-12 flex flex-col h-full min-h-[600px]">
       <div className="flex-1">
@@ -116,10 +117,10 @@ export default function Step1PropertyCategory({ selectedCategory, onSelect, onBa
           </button>
           <button 
             onClick={onNext}
-            disabled={!canContinue}
-            className={`px-8 py-3 text-sm font-bold rounded-xl transition-all shadow-md flex items-center gap-2 ${canContinue ? 'bg-[#1A1A24] text-white hover:bg-black hover:shadow-lg' : 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none'}`}
+            disabled={!canContinue || isSaving}
+            className={`px-8 py-3 text-sm font-bold rounded-xl transition-all shadow-md flex items-center gap-2 ${(canContinue && !isSaving) ? 'bg-[#1A1A24] text-white hover:bg-black hover:shadow-lg' : 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none'}`}
           >
-            Continue <span>&rarr;</span>
+            {isSaving ? 'Saving...' : <>Continue <span>&rarr;</span></>}
           </button>
         </div>
         

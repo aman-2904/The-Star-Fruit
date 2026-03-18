@@ -17,7 +17,7 @@ export default function OnboardingLayout({ children, onBack, onContinue, canCont
       <nav className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-20 py-4 border-b border-gray-200/50 bg-white transition-all duration-300">
         <div className="hidden md:flex items-center space-x-12">
           <Link href="/" className="text-sm font-bold text-gray-800 hover:text-black">Home</Link>
-          <Link href="/host" className="text-sm font-bold text-gray-800 hover:text-black">Dashboard</Link>
+          <Link href="/host/dashboard" className="text-sm font-bold text-gray-800 hover:text-black">Dashboard</Link>
           <Link href="/host/listings" className="text-sm font-bold text-gray-800 hover:text-black">Listings</Link>
         </div>
 

@@ -144,7 +144,7 @@ export default function HostDashboard() {
       <nav className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-20 py-4 border-b border-gray-200/50 bg-white transition-all duration-300">
         <div className="hidden md:flex items-center space-x-12">
           <Link href="/" className="text-sm font-bold text-gray-800 hover:text-black">Home</Link>
-          <Link href="#" className="text-sm font-bold text-gray-800 hover:text-black">Dashboard</Link>
+          <Link href="/host/dashboard" className="text-sm font-bold text-gray-800 hover:text-black">Dashboard</Link>
           <Link href="#" className="text-sm font-bold text-gray-800 hover:text-black">Listings</Link>
         </div>
 
@@ -217,7 +217,7 @@ export default function HostDashboard() {
         <div className="md:hidden border-b border-gray-100 bg-white px-6 py-4 animate-in slide-in-from-top-2">
           <div className="flex flex-col space-y-4">
             <Link href="/" className="text-base font-bold text-gray-800 hover:text-black">Home</Link>
-            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Dashboard</Link>
+            <Link href="/host/dashboard" className="text-base font-bold text-gray-800 hover:text-black">Dashboard</Link>
             <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Listings</Link>
             <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Help</Link>
           </div>
