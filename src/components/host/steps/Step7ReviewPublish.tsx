@@ -6,25 +6,90 @@ import {
   Pencil, MapPin, Users, BedDouble, Bath, Eye, Send,
   AlertCircle, X, CheckCircle, Wifi, UtensilsCrossed, Wind,
   Monitor, Tv2, Waves, Umbrella, ChefHat, Dumbbell, HeartPulse,
-  Flame, BellElectric, BathIcon
+  Flame, BellElectric, BathIcon, WashingMachine, Refrigerator,
+  Microwave, Coffee, Car, Trees, Home, Music, Zap, Baby, Ghost,
+  Layout, Smartphone, Book, Gamepad2, Wine, CupSoda, Shirt, Lock,
+  Shield, Thermometer, MapPinIcon, Briefcase, CalendarDays, ShowerHead
 } from 'lucide-react';
 import { PhotoItem } from './Step4PropertyPhotos';
 import { Step6SpecificationsData } from './Step6Specifications';
 
 const AMENITY_LABELS: Record<string, { label: string; icon: React.ReactNode }> = {
+  // Essentials
   wifi:          { label: 'WiFi',          icon: <Wifi size={14} /> },
-  kitchen:       { label: 'Kitchen',       icon: <UtensilsCrossed size={14} /> },
+  kitchen:       { label: 'Full Kitchen',  icon: <UtensilsCrossed size={14} /> },
   ac:            { label: 'AC',            icon: <Wind size={14} /> },
   workspace:     { label: 'Workspace',     icon: <Monitor size={14} /> },
-  tv:            { label: 'TV',            icon: <Tv2 size={14} /> },
-  private_pool:  { label: 'Private Pool',  icon: <Waves size={14} /> },
-  hot_tub:       { label: 'Hot Tub',       icon: <BathIcon size={14} /> },
-  beachfront:    { label: 'Beachfront',    icon: <Umbrella size={14} /> },
-  private_chef:  { label: 'Private Chef',  icon: <ChefHat size={14} /> },
-  private_gym:   { label: 'Private Gym',   icon: <Dumbbell size={14} /> },
-  first_aid:     { label: 'First Aid Kit', icon: <HeartPulse size={14} /> },
-  extinguisher:  { label: 'Extinguisher',  icon: <Flame size={14} /> },
-  smoke_alarm:   { label: 'Smoke Alarm',   icon: <BellElectric size={14} /> },
+  tv:            { label: 'TV/Netflix',    icon: <Tv2 size={14} /> },
+  washer:        { label: 'Washer',        icon: <WashingMachine size={14} /> },
+  dryer:         { label: 'Dryer',         icon: <Wind size={14} /> },
+  ethernet:      { label: 'Ethernet',      icon: <Zap size={14} /> },
+  housekeeping:  { label: 'Housekeeping',   icon: <CheckCircle size={14} /> },
+
+  // Luxury
+  private_pool:  { label: 'Private Pool',   icon: <Waves size={14} /> },
+  hot_tub:       { label: 'Hot Tub',        icon: <Bath size={14} /> },
+  beachfront:    { label: 'Beachfront',     icon: <Umbrella size={14} /> },
+  private_chef:  { label: 'Private Chef',   icon: <ChefHat size={14} /> },
+  private_gym:   { label: 'Private Gym',    icon: <Dumbbell size={14} /> },
+  bbq_grill:     { label: 'BBQ Grill',      icon: <Flame size={14} /> },
+  sound_system:  { label: 'Sound System',   icon: <Music size={14} /> },
+  game_console:  { label: 'Game Console',   icon: <Gamepad2 size={14} /> },
+  barbecue:      { label: 'Fire Pit',       icon: <Flame size={14} /> },
+
+  // Bathroom & Bedroom
+  hair_dryer:    { label: 'Hair Dryer',     icon: <Wind size={14} /> },
+  shampoo:       { label: 'Toiletries',     icon: <CupSoda size={14} /> },
+  hot_water:     { label: 'Hot Water',      icon: <Thermometer size={14} /> },
+  hangers:       { label: 'Hangers',        icon: <Shirt size={14} /> },
+  iron:          { label: 'Iron',           icon: <Shirt size={14} /> },
+  safe:          { label: 'Room Safe',      icon: <Lock size={14} /> },
+  bed_linens:    { label: 'Bed Linens',     icon: <Home size={14} /> },
+  mosquito_net:  { label: 'Mosquito Net',   icon: <Shield size={14} /> },
+  shower_head:   { label: 'Shower head',    icon: <ShowerHead size={14} /> },
+  towels:        { label: 'Towels',         icon: <Home size={14} /> },
+
+  // Kitchen & Dining
+  refrigerator:  { label: 'Fridge',         icon: <Refrigerator size={14} /> },
+  microwave:     { label: 'Microwave',      icon: <Microwave size={14} /> },
+  coffee_maker:  { label: 'Coffee Maker',   icon: <Coffee size={14} /> },
+  kettle:        { label: 'Electric Kettle', icon: <Coffee size={14} /> },
+  cooking_basics: { label: 'Cooking Basics', icon: <UtensilsCrossed size={14} /> },
+  dishwasher:    { label: 'Dishwasher',     icon: <WashingMachine size={14} /> },
+  stove:         { label: 'Stove/Cooktop',  icon: <Layout size={14} /> },
+  wine_glasses:  { label: 'Wine Glasses',   icon: <Wine size={14} /> },
+  dining_table:  { label: 'Dining Table',   icon: <Layout size={14} /> },
+
+  // Family & Fun
+  crib:          { label: 'Crib/Cot',       icon: <Baby size={14} /> },
+  high_chair:    { label: 'High Chair',     icon: <Baby size={14} /> },
+  board_games:   { label: 'Board Games',    icon: <Ghost size={14} /> },
+  books:         { label: 'Books',          icon: <Book size={14} /> },
+  pool_table:    { label: 'Pool Table',     icon: <Monitor size={14} /> },
+
+  // Facilities
+  free_parking:  { label: 'Free Parking',   icon: <Car size={14} /> },
+  ev_charger:    { label: 'EV Charger',     icon: <Zap size={14} /> },
+  gym:           { label: 'Gym access',     icon: <Dumbbell size={14} /> },
+  garden:        { label: 'Garden/Lawn',    icon: <Trees size={14} /> },
+  elevator:      { label: 'Elevator',       icon: <Home size={14} /> },
+  single_level:  { label: 'Single Level',   icon: <Home size={14} /> },
+
+  // Outdoor
+  patio:         { label: 'Patio/Balcony',  icon: <Layout size={14} /> },
+  backyard:      { label: 'Backyard',       icon: <Trees size={14} /> },
+  entrance:      { label: 'Private Entry',  icon: <Home size={14} /> },
+  outdoor_dining: { label: 'Outdoor Dining', icon: <UtensilsCrossed size={14} /> },
+  hammock:       { label: 'Hammock',        icon: <Umbrella size={14} /> },
+
+  // Safety & Services
+  first_aid:     { label: 'First Aid Kit',  icon: <HeartPulse size={14} /> },
+  extinguisher:  { label: 'Extinguisher',   icon: <Flame size={14} /> },
+  smoke_alarm:   { label: 'Smoke Alarm',    icon: <BellElectric size={14} /> },
+  carbon_alarm:  { label: 'CO Alarm',       icon: <BellElectric size={14} /> },
+  security_cam:  { label: 'CCTV/Security',  icon: <Shield size={14} /> },
+  luggage_drop:  { label: 'Luggage Drop',   icon: <Briefcase size={14} /> },
+  long_term:     { label: 'Long-term Stay', icon: <CalendarDays size={14} /> },
 };
 
 interface ReviewPublishProps {
@@ -294,11 +359,12 @@ export default function Step7ReviewPublish({
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-4">
                 {selectedAmenities.map(id => {
                   const amenity = AMENITY_LABELS[id];
-                  if (!amenity) return null;
+                  const label = amenity?.label || id.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                  const icon = amenity?.icon || <CheckCircle size={14} />;
                   return (
                     <div key={id} className="flex items-center gap-2 text-sm text-[#374151]">
-                      <span className="text-[#EC5B13]">{amenity.icon}</span>
-                      <span className="font-medium">{amenity.label}</span>
+                      <span className="text-[#EC5B13]">{icon}</span>
+                      <span className="font-medium">{label}</span>
                     </div>
                   );
                 })}
