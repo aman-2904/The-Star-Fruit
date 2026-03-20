@@ -10,7 +10,8 @@ import {
   Flame, BellElectric, BathIcon, WashingMachine, Refrigerator,
   Microwave, Coffee, Car, Trees, Home, Music, Zap, Baby, Ghost,
   Layout, Smartphone, Book, Gamepad2, Wine, CupSoda, Shirt, Lock,
-  Shield, Thermometer, MapPinIcon, Briefcase, CalendarDays, ShowerHead
+  Shield, Thermometer, MapPinIcon, Briefcase, CalendarDays, ShowerHead,
+  Phone, Mail
 } from 'lucide-react';
 import { PhotoItem } from './Step4PropertyPhotos';
 import { Step6SpecificationsData } from './Step6Specifications';

@@ -9,7 +9,8 @@ import {
   UtensilsCrossed, Wind, Monitor, Tv2, Waves, BathIcon,
   Umbrella, ChefHat, Dumbbell, HeartPulse, Flame,
   BellElectric, BellRing, Clock, CheckCircle, FileText,
-  ImageOff, Home, LayoutDashboard, Trash2, X, Eye, EyeOff, AlertTriangle
+  ImageOff, Home, LayoutDashboard, Trash2, X, Eye, EyeOff, AlertTriangle,
+  Phone, Mail
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -277,6 +278,8 @@ export default function PropertyDetailPage() {
               { label: 'Host Bio',       value: property.host_description },
               { label: 'Property Type',  value: property.category },
               { label: 'Listing Title',  value: property.listing_title },
+              { label: 'Host Phone',     value: property.host_phone },
+              { label: 'Host Email',     value: property.host_email },
             ].map(({ label, value }) => value && (
               <div key={label}>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{label}</p>

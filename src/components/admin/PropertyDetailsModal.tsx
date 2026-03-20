@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { X, MapPin, Users, BedDouble, Bath, ShieldCheck, Info, Globe, Calendar, User, AlignLeft, ListChecks } from "lucide-react";
+import { X, MapPin, Users, BedDouble, Bath, ShieldCheck, Info, Globe, Calendar, User, AlignLeft, ListChecks, Phone, Mail } from "lucide-react";
 
 interface Property {
   id: string;
@@ -15,6 +15,8 @@ interface Property {
   pincode: string;
   host_name: string;
   host_description: string;
+  host_phone: string;
+  host_email: string;
   max_guests: number;
   bedrooms: number;
   beds: number;
@@ -124,10 +126,22 @@ export default function PropertyDetailsModal({ property, isOpen, onClose }: Prop
                  <div className="w-14 h-14 rounded-2xl bg-[#FFF0E8] flex items-center justify-center text-[#EC5B13] font-black text-xl">
                     {property.host_name?.[0]?.toUpperCase() || 'H'}
                  </div>
-                 <div>
+                  <div>
                     <h4 className="font-bold text-gray-900 text-lg">{property.host_name}</h4>
                     <p className="text-xs text-gray-500 font-medium leading-relaxed mt-1">{property.host_description}</p>
-                 </div>
+                    <div className="flex flex-col gap-1 mt-3">
+                      {property.host_phone && (
+                        <div className="flex items-center gap-2 text-xs font-bold text-gray-600">
+                          <Phone size={12} className="text-[#EC5B13]" /> {property.host_phone}
+                        </div>
+                      )}
+                      {property.host_email && (
+                        <div className="flex items-center gap-2 text-xs font-bold text-gray-600">
+                          <Mail size={12} className="text-[#EC5B13]" /> {property.host_email}
+                        </div>
+                      )}
+                    </div>
+                  </div>
               </div>
             </section>
 

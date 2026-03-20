@@ -14,6 +14,8 @@ interface Step2PropertyLocationProps {
     pincode: string;
     hostName: string;
     hostDescription: string;
+    hostPhone: string;
+    hostEmail: string;
   };
   setFormData: (data: any) => void;
   isSaving?: boolean;
@@ -211,14 +213,40 @@ export default function Step2PropertyLocation({
           </p>
 
           <div className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-800 mb-2">Host Name</label>
+                <input
+                  type="text"
+                  name="hostName"
+                  value={formData.hostName}
+                  onChange={handleChange}
+                  placeholder="e.g. Cabrilla"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/20 focus:border-[#EC5B13] transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-800 mb-2">Phone No.</label>
+                <input
+                  type="text"
+                  name="hostPhone"
+                  value={formData.hostPhone}
+                  onChange={handleChange}
+                  placeholder="e.g. +91 9087675678"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/20 focus:border-[#EC5B13] transition-all"
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block text-sm font-bold text-gray-800 mb-2">Host Name</label>
+              <label className="block text-sm font-bold text-gray-800 mb-2">Email Address</label>
               <input
-                type="text"
-                name="hostName"
-                value={formData.hostName}
+                type="email"
+                name="hostEmail"
+                value={formData.hostEmail}
                 onChange={handleChange}
-                placeholder="Cabrilla"
+                placeholder="e.g. host@email.com"
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/20 focus:border-[#EC5B13] transition-all"
               />
             </div>

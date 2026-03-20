@@ -30,7 +30,9 @@ export default function HostOnboardingPage() {
     state: 'Goa',
     pincode: '',
     hostName: '',
-    hostDescription: ''
+    hostDescription: '',
+    hostPhone: '',
+    hostEmail: ''
   });
 
   // Step 3 State
@@ -91,7 +93,9 @@ export default function HostOnboardingPage() {
             state: data.state || 'Goa',
             pincode: data.pincode || '',
             hostName: data.host_name || '',
-            hostDescription: data.host_description || ''
+            hostDescription: data.host_description || '',
+            hostPhone: data.host_phone || '',
+            hostEmail: data.host_email || ''
           }));
 
           setStep3Data({
@@ -187,7 +191,9 @@ export default function HostOnboardingPage() {
               state: step2Data.state,
               pincode: step2Data.pincode,
               host_name: step2Data.hostName,
-              host_description: step2Data.hostDescription
+              host_description: step2Data.hostDescription,
+              host_phone: step2Data.hostPhone,
+              host_email: step2Data.hostEmail,
             })
             .eq('id', propertyId);
         }

@@ -12,6 +12,8 @@ interface Property {
   city: string;
   state: string;
   host_name: string;
+  host_phone: string;
+  host_email: string;
   max_guests: number;
   bedrooms: number;
   bathrooms: number;
@@ -103,12 +105,14 @@ export default function PropertyApproveCard({
                 </div>
               </div>
               
-              <div className="flex gap-4">
-                <div className="flex flex-col items-end">
-                   <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Host</p>
-                   <p className="text-xs font-bold text-gray-900 capitalize">{property.host_name}</p>
-                </div>
-              </div>
+               <div className="flex flex-col items-end text-right">
+                 <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Host Info</p>
+                 <p className="text-xs font-bold text-gray-900 capitalize">{property.host_name}</p>
+                 <div className="flex flex-col items-end gap-0.5 mt-1">
+                   {property.host_phone && <p className="text-[10px] text-gray-500 font-bold">{property.host_phone}</p>}
+                   {property.host_email && <p className="text-[10px] text-[#EC5B13] font-bold lowercase">{property.host_email}</p>}
+                 </div>
+               </div>
            </div>
 
            <div className="flex items-center gap-6 mt-4 pt-4 border-t border-gray-50">
@@ -214,9 +218,10 @@ export default function PropertyApproveCard({
               <span className="text-[11px] font-semibold">{property.city}, {property.state}</span>
             </div>
           </div>
-          <div className="text-right">
+          <div className="text-right flex flex-col items-end">
             <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Host</p>
-            <p className="text-xs font-bold text-gray-900 capitalize">{property.host_name}</p>
+            <p className="text-xs font-bold text-gray-900 capitalize leading-tight">{property.host_name}</p>
+            {property.host_phone && <p className="text-[9px] font-bold text-[#EC5B13] mt-0.5">{property.host_phone}</p>}
           </div>
         </div>
 

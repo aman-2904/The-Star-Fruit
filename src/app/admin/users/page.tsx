@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { User, Mail, Home, Clock, Search, ListFilter, RefreshCcw, MoreHorizontal } from "lucide-react";
+import { User, Mail, Home, Clock, Search, ListFilter, RefreshCcw, MoreHorizontal, Phone } from "lucide-react";
 import Image from "next/image";
 
 interface Host {
   host_id: string;
   host_name: string;
+  host_phone: string;
+  host_email: string;
   listing_count: number;
   last_active: string;
 }
@@ -24,9 +26,9 @@ export default function AdminUserManagement() {
       if (!supabase) throw new Error("Supabase is not configured.");
 
       // Since we don't have a separate profiles table, we aggregate unique hosts from properties
-      const { data, error: fetchError } = await supabase
-        .from('properties')
-        .select('host_id, host_name, created_at');
+        const { data, error: fetchError } = await supabase
+          .from('properties')
+          .select('host_id, host_name, host_phone, host_email, created_at');
 
       if (fetchError) throw fetchError;
 
@@ -44,6 +46,8 @@ export default function AdminUserManagement() {
           hostMap.set(p.host_id, {
             host_id: p.host_id,
             host_name: p.host_name || 'Anonymous Host',
+            host_phone: p.host_phone || 'Not provided',
+            host_email: p.host_email || 'Not provided',
             listing_count: 1,
             last_active: p.created_at
           });
@@ -93,6 +97,8 @@ export default function AdminUserManagement() {
           <thead>
             <tr className="bg-gray-50/50 border-b border-gray-100">
               <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Host Detail</th>
+              <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Contact No.</th>
+              <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Email Address</th>
               <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Listing Count</th>
               <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Last Listing</th>
               <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Actions</th>
@@ -101,12 +107,14 @@ export default function AdminUserManagement() {
           <tbody className="divide-y divide-gray-50">
             {loading ? (
               [1, 2, 3].map(i => (
-                <tr key={i} className="animate-pulse">
-                   <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-48" /></td>
-                   <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-12" /></td>
-                   <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-32" /></td>
-                   <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-10" /></td>
-                </tr>
+                 <tr key={i} className="animate-pulse">
+                    <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-48" /></td>
+                    <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-28" /></td>
+                    <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-32" /></td>
+                    <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-12" /></td>
+                    <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-32" /></td>
+                    <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-10" /></td>
+                 </tr>
               ))
             ) : hosts.length === 0 ? (
               <tr>
@@ -130,6 +138,18 @@ export default function AdminUserManagement() {
                         <p className="font-bold text-gray-900">{host.host_name}</p>
                         <p className="text-xs text-gray-400 font-medium tracking-tight">ID: {host.host_id.slice(0, 8)}...</p>
                       </div>
+                    </div>
+                  </td>
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-2">
+                       <Phone size={14} className="text-gray-400" />
+                       <span className="text-xs font-bold text-gray-700">{host.host_phone}</span>
+                    </div>
+                  </td>
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-2">
+                       <Mail size={14} className="text-gray-400" />
+                       <span className="text-xs font-bold text-[#EC5B13] lowercase">{host.host_email}</span>
                     </div>
                   </td>
                   <td className="px-8 py-6">
