@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import PropertyApproveCard from "@/components/admin/PropertyApproveCard";
 import PropertyDetailsModal from "@/components/admin/PropertyDetailsModal";
@@ -14,6 +15,10 @@ export default function AdminListings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filter, setFilter] = useState<'all' | 'pending' | 'published' | 'rejected' | 'draft'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const hostIdFilter = searchParams.get('hostId');
 
   const fetchProperties = async () => {
     setLoading(true);
@@ -87,17 +92,36 @@ export default function AdminListings() {
   };
 
   const filteredProperties = properties.filter(p => {
+    // First apply host filter if present
+    if (hostIdFilter && p.host_id !== hostIdFilter) return false;
+    
+    // Then apply status filter
     if (filter === 'all') return true;
     if (filter === 'pending') return p.status === 'pending_review';
     return p.status === filter;
   });
+
+  const activeHostName = hostIdFilter ? properties.find(p => p.host_id === hostIdFilter)?.host_name : null;
 
   return (
     <div className="max-w-[1400px] mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
         <div>
           <h2 className="text-3xl font-black text-gray-900 tracking-tight">Property Listings</h2>
-          <p className="text-gray-500 font-medium mt-1">Manage and review all property submissions.</p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-gray-500 font-medium">Manage and review all property submissions.</p>
+            {hostIdFilter && (
+              <div className="flex items-center gap-2 bg-[#FFF0E8] px-3 py-1 rounded-full border border-[#EC5B13]/20">
+                <span className="text-[10px] font-black text-[#EC5B13] uppercase tracking-wider">Host: {activeHostName || 'Filtering...'}</span>
+                <button 
+                  onClick={() => router.push('/admin/listings')}
+                  className="hover:text-black transition-colors"
+                >
+                   <RefreshCcw size={12} className="text-[#EC5B13]" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-3">

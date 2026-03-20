@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { User, Mail, Home, Clock, Search, ListFilter, RefreshCcw, MoreHorizontal, Phone } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Host {
   host_id: string;
@@ -153,10 +154,13 @@ export default function AdminUserManagement() {
                     </div>
                   </td>
                   <td className="px-8 py-6">
-                    <div className="flex items-center gap-2">
+                    <Link 
+                      href={`/admin/listings?hostId=${host.host_id}`}
+                      className="flex items-center gap-2 bg-[#FFF0E8] px-3 py-1.5 rounded-xl border border-transparent hover:border-[#EC5B13] transition-all group/link"
+                    >
                       <Home size={16} className="text-[#EC5B13]" />
-                      <span className="font-bold text-gray-700">{host.listing_count} Listings</span>
-                    </div>
+                      <span className="font-bold text-gray-700 group-hover/link:text-[#EC5B13]">{host.listing_count} Listings</span>
+                    </Link>
                   </td>
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-2">
