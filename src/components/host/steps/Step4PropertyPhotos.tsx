@@ -185,6 +185,14 @@ export default function Step4PropertyPhotos({
     }
   };
 
+  const setAsCover = (index: number) => {
+    if (index === 0) return;
+    const newPhotos = [...photos];
+    const [selectedPhoto] = newPhotos.splice(index, 1);
+    newPhotos.unshift(selectedPhoto);
+    setPhotos(newPhotos);
+  };
+
   const uploadedCount = photos.filter(p => !p.isUploading && !p.uploadError).length;
   const isAnyUploading = photos.some(p => p.isUploading);
 
@@ -311,6 +319,16 @@ export default function Step4PropertyPhotos({
                     <div className="absolute top-2 left-2 bg-[#EC5B13] text-white text-[9px] font-black tracking-widest px-2 py-1 rounded-md uppercase">
                       Cover Photo
                     </div>
+                  )}
+
+                  {/* Set as Cover (on hover for non-cover) */}
+                  {index !== 0 && !photo.isUploading && !photo.uploadError && (
+                    <button
+                      onClick={() => setAsCover(index)}
+                      className="absolute bottom-2 left-2 right-2 bg-black/60 backdrop-blur-md text-white text-[9px] font-black tracking-widest px-2 py-1.5 rounded-lg uppercase opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#EC5B13]"
+                    >
+                      Set as Cover
+                    </button>
                   )}
 
                   {/* Remove Button */}

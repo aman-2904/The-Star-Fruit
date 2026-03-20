@@ -35,10 +35,10 @@ export default function HostOnboardingPage() {
 
   // Step 3 State
   const [step3Data, setStep3Data] = useState({
-    guests: 4,
-    bedrooms: 2,
-    beds: 3,
-    bathrooms: 2
+    guests: 1,
+    bedrooms: 1,
+    beds: 1,
+    bathrooms: 1
   });
 
   // Step 4 State: array of PhotoItem objects
@@ -95,10 +95,10 @@ export default function HostOnboardingPage() {
           }));
 
           setStep3Data({
-            guests: data.max_guests ?? 4,
-            bedrooms: data.bedrooms ?? 2,
-            beds: data.beds ?? 3,
-            bathrooms: data.bathrooms ?? 2
+            guests: data.max_guests ?? 1,
+            bedrooms: data.bedrooms ?? 1,
+            beds: data.beds ?? 1,
+            bathrooms: data.bathrooms ?? 1
           });
 
           // Hydrate Step 4 photos from saved URLs
