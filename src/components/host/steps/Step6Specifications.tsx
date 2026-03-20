@@ -27,9 +27,9 @@ export interface Step6SpecificationsProps {
 }
 
 const DEFAULT_RULES: HouseRule[] = [
-  { id: 'no_smoking', label: 'No Smoking', icon: <Bell size={18} strokeWidth={1.8} className="text-[#6B7280]" />, enabled: true },
-  { id: 'no_pets',    label: 'No Pets',    icon: <PawPrint size={18} strokeWidth={1.8} className="text-[#6B7280]" />, enabled: false },
-  { id: 'no_parties', label: 'No Parties', icon: <Music2 size={18} strokeWidth={1.8} className="text-[#6B7280]" />, enabled: true },
+  { id: 'smoking', label: 'Smoking', icon: <Bell size={18} strokeWidth={1.8} className="text-[#6B7280]" />, enabled: false },
+  { id: 'pets',    label: 'Pets',    icon: <PawPrint size={18} strokeWidth={1.8} className="text-[#6B7280]" />, enabled: false },
+  { id: 'parties', label: 'Parties', icon: <Music2 size={18} strokeWidth={1.8} className="text-[#6B7280]" />, enabled: false },
 ];
 
 export default function Step6Specifications({
