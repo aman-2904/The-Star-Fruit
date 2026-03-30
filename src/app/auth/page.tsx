@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -102,8 +102,8 @@ export default function AuthPage() {
         setConfirmPassword("");
         setOtp("");
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: Error | any) {
+      setError(err.message || "An unexpected error occurred");
     } finally {
       setLoading(false);
     }
