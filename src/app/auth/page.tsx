@@ -5,12 +5,21 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { Eye, EyeOff } from "lucide-react";
+
+type AuthView = 'login' | 'signup' | 'forgot_password' | 'verify_otp' | 'reset_password';
 
 export default function AuthPage() {
+  const [view, setView] = useState<AuthView>('login');
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
+  const [otp, setOtp] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -41,22 +50,48 @@ export default function AuthPage() {
         throw new Error("Supabase is not configured. Please add your URL and Key to .env.local");
       }
 
-      if (isLogin) {
+      if (view === 'login') {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         router.push("/host");
-      } else {
+      } else if (view === 'signup') {
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            data: {
-              full_name: fullName
-            }
+            data: { full_name: fullName }
           }
         });
         if (error) throw error;
         alert("Check your email for the confirmation link!");
+        setView('login');
+      } else if (view === 'forgot_password') {
+        // Sends password reset email. The user must configure their Supabase email
+        // templates to include the {{ .Token }} for the 6-digit OTP.
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
+        if (error) throw error;
+        alert("A 6-digit OTP has been sent to your email!");
+        setView('verify_otp');
+      } else if (view === 'verify_otp') {
+        const { error } = await supabase.auth.verifyOtp({
+          email,
+          token: otp,
+          type: 'recovery'
+        });
+        if (error) throw error;
+        setView('reset_password');
+        setPassword(""); // Clear it just in case, for the new password
+      } else if (view === 'reset_password') {
+        if (password !== confirmPassword) {
+            throw new Error("Passwords do not match");
+        }
+        const { error } = await supabase.auth.updateUser({ password });
+        if (error) throw error;
+        alert("Password updated successfully!");
+        setView('login');
+        setPassword("");
+        setConfirmPassword("");
+        setOtp("");
       }
     } catch (err: any) {
       setError(err.message);
@@ -81,15 +116,23 @@ export default function AuthPage() {
             <Image src="/images/black.png" alt="Logo" width={180} height={45} className="h-10 w-auto" />
           </Link>
           <h2 className="text-3xl font-serif font-bold text-gray-900">
-            {isLogin ? "Welcome Back" : "Start Hosting"}
+            {view === 'forgot_password' ? "Reset Password" 
+             : view === 'verify_otp' ? "Enter OTP"
+             : view === 'reset_password' ? "Set New Password"
+             : view === 'login' ? "Welcome Back" 
+             : "Start Hosting"}
           </h2>
           <p className="text-gray-500 mt-2">
-            {isLogin ? "Login to manage your listings" : "Create an account to list your property"}
+            {view === 'forgot_password' ? "Enter your email to receive a 6-digit OTP" 
+             : view === 'verify_otp' ? "Enter the 6-digit OTP sent to your email"
+             : view === 'reset_password' ? "Create a new strong password"
+             : view === 'login' ? "Login to manage your listings" 
+             : "Create an account to list your property"}
           </p>
         </div>
 
         <form onSubmit={handleAuth} className="space-y-6">
-          {!isLogin && (
+          {view === 'signup' && (
             <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">Full Name</label>
               <input
@@ -98,34 +141,101 @@ export default function AuthPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all"
-                required={!isLogin}
+                required
               />
             </div>
           )}
 
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-700 ml-1">Email Address</label>
-            <input
-              type="email"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all"
-              required
-            />
-          </div>
+          {(view === 'login' || view === 'signup' || view === 'forgot_password') && (
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-700 ml-1">Email Address</label>
+              <input
+                type="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all"
+                required
+              />
+            </div>
+          )}
 
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-700 ml-1">Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all"
-              required
-            />
-          </div>
+          {view === 'verify_otp' && (
+             <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-700 ml-1">6-Digit OTP</label>
+              <input
+                type="text"
+                placeholder="000000"
+                maxLength={6}
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-center tracking-widest text-lg font-bold"
+                required
+              />
+            </div>
+          )}
+
+          {(view === 'login' || view === 'signup' || view === 'reset_password') && (
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-700 ml-1">
+                {view === 'reset_password' ? "New Password" : "Password"}
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all pr-12"
+                  required
+                  minLength={6}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {view === 'reset_password' && (
+             <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-700 ml-1">Confirm New Password</label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all pr-12"
+                  required
+                  minLength={6}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {view === 'login' && (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setView('forgot_password')}
+                className="text-sm text-[#FF5A5F] font-bold hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
+          )}
 
           {error && (
             <p className="text-red-500 text-sm font-medium text-center bg-red-50 py-2 rounded-lg">
@@ -138,17 +248,38 @@ export default function AuthPage() {
             disabled={loading}
             className="w-full py-4 bg-[#FF5A5F] text-white rounded-2xl font-bold text-lg shadow-lg shadow-[#FF5A5F]/20 hover:bg-[#FF4147] active:scale-[0.98] transition-all disabled:opacity-70"
           >
-            {loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
+            {loading ? "Processing..." 
+             : view === 'forgot_password' ? "Send OTP" 
+             : view === 'verify_otp' ? "Verify OTP"
+             : view === 'reset_password' ? "Update Password"
+             : view === 'login' ? "Login" 
+             : "Sign Up"}
           </button>
         </form>
 
         <div className="mt-8 text-center">
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-[#FF5A5F] font-bold hover:underline"
-          >
-            {isLogin ? "Need an account? Sign Up" : "Already have an account? Login"}
-          </button>
+          {(view === 'forgot_password' || view === 'verify_otp' || view === 'reset_password') ? (
+            <button
+              onClick={() => {
+                setView('login');
+                setError(null);
+                setOtp("");
+              }}
+              className="text-[#FF5A5F] font-bold hover:underline"
+            >
+              Back to Login
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setView(view === 'login' ? 'signup' : 'login');
+                setError(null);
+              }}
+              className="text-[#FF5A5F] font-bold hover:underline"
+            >
+              {view === 'login' ? "Need an account? Sign Up" : "Already have an account? Login"}
+            </button>
+          )}
         </div>
       </div>
     </div>
