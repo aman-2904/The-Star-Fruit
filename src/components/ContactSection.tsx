@@ -75,16 +75,24 @@ export default function ContactSection() {
                       className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
                     />
                   </div>
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-bold text-gray-900 ml-1">Phone Number</label>
+                    <input
+                      type="tel"
+                      placeholder="+91 98765 43210"
+                      className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-bold text-gray-900 ml-1">Subject</label>
+                    <input
+                      type="text"
+                      placeholder="Inquiry about Villa Sol"
+                      className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
+                    />
+                  </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-[13px] font-bold text-gray-900 ml-1">Subject</label>
-                  <input
-                    type="text"
-                    placeholder="Inquiry about Villa Sol"
-                    className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
-                  />
-                </div>
 
                 <div className="space-y-2">
                   <label className="text-[13px] font-bold text-gray-900 ml-1">Message</label>
