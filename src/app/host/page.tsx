@@ -115,6 +115,10 @@ export default function HostDashboard() {
         router.push("/auth");
       } else {
         const user = session.user;
+        if (user.user_metadata?.role === 'user') {
+          router.push("/");
+          return;
+        }
         const name = user.user_metadata?.full_name || user.email?.split('@')[0] || "Host";
         setHostName(name);
         setLoading(false);

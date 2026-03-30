@@ -67,6 +67,16 @@ export default function HostOnboardingPage() {
         return;
       }
 
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/auth");
+        return;
+      }
+      if (session.user.user_metadata?.role === 'user') {
+        router.push("/");
+        return;
+      }
+
       try {
         // Query the most recently updated draft property for this user (assuming Row Level Security or a single user testing environment)
         const { data, error } = await supabase

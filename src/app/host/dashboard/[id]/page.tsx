@@ -80,6 +80,17 @@ export default function PropertyDetailPage() {
   useEffect(() => {
     async function load() {
       if (!supabase || !id) { setLoading(false); return; }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/auth");
+        return;
+      }
+      if (session.user.user_metadata?.role === 'user') {
+        router.push("/");
+        return;
+      }
+
       const { data, error } = await supabase
         .from('properties')
         .select('*')

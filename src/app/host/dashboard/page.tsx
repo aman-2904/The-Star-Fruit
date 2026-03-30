@@ -156,6 +156,10 @@ export default function HostDashboardPage() {
       if (!session) { router.push('/auth'); return; }
 
       const user = session.user;
+      if (user.user_metadata?.role === 'user') {
+        router.push("/");
+        return;
+      }
       setHostName(user.user_metadata?.full_name || user.email?.split('@')[0] || 'Host');
 
       const { data, error } = await supabase
