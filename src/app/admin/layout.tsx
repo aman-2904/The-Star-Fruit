@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { LayoutDashboard, Users, Clock, CheckCircle, LogOut, Menu, X, Home } from "lucide-react";
+import { LayoutDashboard, Users, Clock, CheckCircle, LogOut, Menu, X, Home, MessageSquare } from "lucide-react";
 
 export default function AdminLayout({
   children,
@@ -108,6 +108,13 @@ export default function AdminLayout({
           >
             <Users size={20} />
             {isSidebarOpen && <span>Manage Users</span>}
+          </Link>
+          <Link 
+            href="/admin/enquiries" 
+            className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/enquiries' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+          >
+            <MessageSquare size={20} />
+            {isSidebarOpen && <span>Enquiries</span>}
           </Link>
           <Link 
             href="#" 
