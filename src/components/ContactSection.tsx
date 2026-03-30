@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Mail, Phone, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Mail, Phone, Send, CheckCircle, AlertCircle, Loader2, Lock } from "lucide-react";
+import Link from "next/link";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -14,8 +15,36 @@ export default function ContactSection() {
     message: ""
   });
   const [loading, setLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function checkAuth() {
+      if (!supabase) {
+        setAuthLoading(false);
+        return;
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setIsAuthenticated(true);
+        const role = session.user?.user_metadata?.role;
+        setUserRole(role);
+        
+        // Pre-fill user data
+        setFormData(prev => ({
+          ...prev,
+          name: session.user?.user_metadata?.full_name || "",
+          email: session.user?.email || ""
+        }));
+      }
+      setAuthLoading(false);
+    }
+    checkAuth();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +52,12 @@ export default function ContactSection() {
       setErrorMessage("Supabase is not configured.");
       setStatus('error');
       return;
+    }
+
+    if (!isAuthenticated) {
+       setErrorMessage("Please login to submit an inquiry.");
+       setStatus('error');
+       return;
     }
 
     setLoading(true);
@@ -43,7 +78,7 @@ export default function ContactSection() {
       if (error) throw error;
 
       setStatus('success');
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      setFormData(prev => ({ ...prev, phone: "", subject: "", message: "" }));
     } catch (err: any) {
       console.error("Submission error:", err);
       setErrorMessage(err.message || "Failed to send message. Please try again.");
@@ -52,6 +87,8 @@ export default function ContactSection() {
       setLoading(false);
     }
   };
+
+  const isRoleAllowed = userRole === 'admin' || userRole === 'host' || userRole === 'user';
 
   return (
     <section className="py-4 px-4 md:px-10 bg-white">
@@ -105,99 +142,124 @@ export default function ContactSection() {
 
           {/* Right Side: Inquiry Form */}
           <div className="w-full md:w-[500px] lg:w-[550px]">
-            <div className="bg-white/95 backdrop-blur-xl rounded-[32px] p-8 md:p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] border border-white/20">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[13px] font-bold text-gray-900 ml-1">Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="John Doe"
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[13px] font-bold text-gray-900 ml-1">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="john@example.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[13px] font-bold text-gray-900 ml-1">Phone Number</label>
-                    <input
-                      type="tel"
-                      placeholder="+91 98765 43210"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[13px] font-bold text-gray-900 ml-1">Subject</label>
-                    <input
-                      type="text"
-                      placeholder="Inquiry about Villa Sol"
-                      value={formData.subject}
-                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                      className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
-                    />
-                  </div>
+            <div className="bg-white/95 backdrop-blur-xl rounded-[32px] p-8 md:p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] border border-white/20 min-h-[400px] flex flex-col">
+              {authLoading ? (
+                <div className="flex-1 flex items-center justify-center">
+                   <Loader2 size={32} className="animate-spin text-[#FF5A5F]" />
                 </div>
-
-
-                <div className="space-y-2">
-                  <label className="text-[13px] font-bold text-gray-900 ml-1">Message</label>
-                  <textarea
-                    required
-                    placeholder="Tell us more about your requirements..."
-                    rows={4}
-                    value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px] resize-none"
-                  ></textarea>
-                </div>
-
-                {status === 'success' && (
-                  <div className="flex items-center gap-2 text-green-600 bg-green-50 p-4 rounded-xl">
-                    <CheckCircle size={20} />
-                    <p className="text-sm font-bold">Message sent successfully! We'll get back to you soon.</p>
+              ) : isAuthenticated && isRoleAllowed ? (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[13px] font-bold text-gray-900 ml-1">Full Name</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="John Doe"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[13px] font-bold text-gray-900 ml-1">Email Address</label>
+                      <input
+                        type="email"
+                        required
+                        readOnly
+                        placeholder="john@example.com"
+                        value={formData.email}
+                        className="w-full px-5 py-4 bg-gray-100 border border-gray-100 rounded-2xl focus:outline-none transition-all text-[15px] text-gray-500 cursor-not-allowed"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[13px] font-bold text-gray-900 ml-1">Phone Number</label>
+                      <input
+                        type="tel"
+                        placeholder="+91 98765 43210"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[13px] font-bold text-gray-900 ml-1">Subject</label>
+                      <input
+                        type="text"
+                        placeholder="Inquiry about Villa Sol"
+                        value={formData.subject}
+                        onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
+                      />
+                    </div>
                   </div>
-                )}
 
-                {status === 'error' && (
-                  <div className="flex items-center gap-2 text-red-600 bg-red-50 p-4 rounded-xl">
-                    <AlertCircle size={20} />
-                    <p className="text-sm font-bold">{errorMessage}</p>
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-bold text-gray-900 ml-1">Message</label>
+                    <textarea
+                      required
+                      placeholder="Tell us more about your requirements..."
+                      rows={4}
+                      value={formData.message}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px] resize-none"
+                    ></textarea>
                   </div>
-                )}
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="group w-full py-5 bg-[#FF5A5F] text-white rounded-2xl font-bold text-[16px] flex items-center justify-center gap-3 shadow-lg shadow-[#FF5A5F]/20 transition-all hover:bg-[#FF4147] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 size={18} className="animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <Send size={18} className="transition-transform group-hover:translate-x-1" />
-                    </>
+                  {status === 'success' && (
+                    <div className="flex items-center gap-2 text-green-600 bg-green-50 p-4 rounded-xl">
+                      <CheckCircle size={20} />
+                      <p className="text-sm font-bold">Message sent successfully! We'll get back to you soon.</p>
+                    </div>
                   )}
-                </button>
 
-              </form>
+                  {status === 'error' && (
+                    <div className="flex items-center gap-2 text-red-600 bg-red-50 p-4 rounded-xl">
+                      <AlertCircle size={20} />
+                      <p className="text-sm font-bold">{errorMessage}</p>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="group w-full py-5 bg-[#FF5A5F] text-white rounded-2xl font-bold text-[16px] flex items-center justify-center gap-3 shadow-lg shadow-[#FF5A5F]/20 transition-all hover:bg-[#FF4147] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send size={18} className="transition-transform group-hover:translate-x-1" />
+                      </>
+                    )}
+                  </button>
+                </form>
+              ) : (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-6">
+                   <div className="w-16 h-16 bg-[#FF5A5F]/10 rounded-full flex items-center justify-center text-[#FF5A5F]">
+                      <Lock size={32} />
+                   </div>
+                   <div>
+                      <h4 className="text-xl font-black text-gray-900">Sign in to Contact Us</h4>
+                      <p className="text-sm text-gray-500 mt-2 max-w-[250px] mx-auto">
+                        To maintain a premium experience, we require our users to be logged in before submitting enquiries.
+                      </p>
+                   </div>
+                   <Link 
+                     href="/login" 
+                     className="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold text-sm shadow-xl transition-all hover:bg-black active:scale-[0.98]"
+                   >
+                     Login to your account
+                   </Link>
+                   <p className="text-xs text-gray-400">
+                     Don't have an account? <Link href="/login" className="text-[#FF5A5F] font-bold hover:underline">Sign up here</Link>
+                   </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -205,3 +267,4 @@ export default function ContactSection() {
     </section>
   );
 }
+
