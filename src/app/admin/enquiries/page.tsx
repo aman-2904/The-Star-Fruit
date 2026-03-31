@@ -20,6 +20,10 @@ export default function AdminEnquiries() {
   const [error, setError] = useState<string | null>(null);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateFilter, setDateFilter] = useState("all");
+  const [customStartDate, setCustomStartDate] = useState("");
+  const [customEndDate, setCustomEndDate] = useState("");
 
   const fetchEnquiries = async () => {
     setLoading(true);
@@ -72,29 +76,118 @@ export default function AdminEnquiries() {
     }
   };
 
+  const filteredEnquiries = enquiries.filter(enq => {
+    const searchString = `${enq.name} ${enq.email} ${enq.subject || ""} ${enq.message || ""}`.toLowerCase();
+    const matchesSearch = searchString.includes(searchQuery.toLowerCase());
+    
+    let matchesDate = true;
+    if (dateFilter !== "all") {
+      const d = new Date(enq.created_at);
+      const enqDate = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+      const dayInMs = 24 * 60 * 60 * 1000;
+
+      if (dateFilter === "today") {
+        matchesDate = enqDate === today;
+      } else if (dateFilter === "yesterday") {
+        matchesDate = enqDate === today - dayInMs;
+      } else if (dateFilter === "7days") {
+        matchesDate = enqDate >= today - 7 * dayInMs;
+      } else if (dateFilter === "30days") {
+        matchesDate = enqDate >= today - 30 * dayInMs;
+      } else if (dateFilter === "custom") {
+        const parseDate = (dateStr: string) => {
+          if (!dateStr) return 0;
+          const [year, month, day] = dateStr.split('-').map(Number);
+          return new Date(year, month - 1, day).getTime();
+        };
+
+        const start = parseDate(customStartDate);
+        const end = parseDate(customEndDate);
+
+        if (start && end) {
+          matchesDate = enqDate >= start && enqDate <= end;
+        } else if (start) {
+          matchesDate = enqDate >= start;
+        } else if (end) {
+          matchesDate = enqDate <= end;
+        }
+      }
+    }
+
+    return matchesSearch && matchesDate;
+  });
+
   return (
     <div className="max-w-[1400px] mx-auto">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+      <div className="flex flex-col 2xl:flex-row 2xl:items-start justify-between gap-6 mb-12">
         <div>
           <h2 className="text-3xl font-black text-gray-900 tracking-tight">Enquiries & Messages</h2>
           <p className="text-gray-500 font-medium mt-1">View and manage all contact form submissions.</p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1 md:w-64">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search enquiries..." 
-              className="w-full pl-11 pr-4 py-3 bg-white border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
-            />
+        <div className="flex flex-col lg:items-end gap-3 w-full 2xl:w-auto">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 w-full">
+            <div className="flex items-center bg-white border border-gray-100 rounded-2xl p-1 w-full sm:w-auto overflow-x-auto hide-scrollbar">
+              {[
+                { id: 'all', label: 'All' },
+                { id: 'today', label: 'Today' },
+                { id: 'yesterday', label: 'Yesterday' },
+                { id: '7days', label: '7d' },
+                { id: '30days', label: '30d' },
+                { id: 'custom', label: 'Custom' }
+              ].map(option => (
+                <button
+                  key={option.id}
+                  onClick={() => setDateFilter(option.id)}
+                  className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
+                    dateFilter === option.id 
+                      ? "bg-[#EC5B13] text-white shadow-sm" 
+                      : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-3 w-full lg:w-auto">
+              <div className="relative flex-1 lg:w-64">
+                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input 
+                  type="text" 
+                  placeholder="Search enquiries..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3 bg-white border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
+                />
+              </div>
+              <button 
+                onClick={fetchEnquiries}
+                className="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-[#EC5B13] hover:border-[#EC5B13]/30 transition-all shadow-sm flex items-center justify-center shrink-0"
+              >
+                <RefreshCcw size={20} className={loading ? "animate-spin" : ""} />
+              </button>
+            </div>
           </div>
-          <button 
-            onClick={fetchEnquiries}
-            className="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-[#EC5B13] hover:border-[#EC5B13]/30 transition-all shadow-sm"
-          >
-            <RefreshCcw size={20} className={loading ? "animate-spin" : ""} />
-          </button>
+
+          {dateFilter === 'custom' && (
+            <div className="flex flex-col sm:flex-row items-center gap-3 p-2 bg-white rounded-2xl border border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200 w-full sm:w-auto shadow-sm">
+              <input 
+                type="date" 
+                value={customStartDate} 
+                onChange={e => setCustomStartDate(e.target.value)} 
+                className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] text-gray-600 w-full sm:w-auto relative z-10" 
+              />
+              <span className="text-gray-400 font-bold text-[10px] uppercase tracking-wider shrink-0">to</span>
+              <input 
+                type="date" 
+                value={customEndDate} 
+                onChange={e => setCustomEndDate(e.target.value)} 
+                className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] text-gray-600 w-full sm:w-auto relative z-10" 
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -118,18 +211,18 @@ export default function AdminEnquiries() {
                     <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-10" /></td>
                  </tr>
               ))
-            ) : enquiries.length === 0 ? (
+            ) : filteredEnquiries.length === 0 ? (
               <tr>
                 <td colSpan={4} className="px-8 py-20 text-center">
                   <div className="flex flex-col items-center">
                      <MessageSquare size={48} className="text-gray-200 mb-4" />
-                     <p className="font-bold text-gray-900">No enquiries yet</p>
-                     <p className="text-sm text-gray-400 mt-1">When someone fills the contact form, it will appear here.</p>
+                     <p className="font-bold text-gray-900">No enquiries found</p>
+                     <p className="text-sm text-gray-400 mt-1">Try adjusting your search or date filter.</p>
                   </div>
                 </td>
               </tr>
             ) : (
-              enquiries.map((enquiry) => (
+              filteredEnquiries.map((enquiry) => (
                 <tr key={enquiry.id} className="hover:bg-gray-50/50 transition-all group cursor-pointer" onClick={() => openEnquiry(enquiry)}>
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
