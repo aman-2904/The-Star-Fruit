@@ -54,11 +54,6 @@ export default function ContactSection() {
       return;
     }
 
-    if (!isAuthenticated) {
-       setErrorMessage("Please login to submit an inquiry.");
-       setStatus('error');
-       return;
-    }
 
     setLoading(true);
     setStatus('idle');
@@ -147,7 +142,7 @@ export default function ContactSection() {
                 <div className="flex-1 flex items-center justify-center">
                    <Loader2 size={32} className="animate-spin text-[#FF5A5F]" />
                 </div>
-              ) : isAuthenticated && isRoleAllowed ? (
+              ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -165,17 +160,17 @@ export default function ContactSection() {
                       <label className="text-[13px] font-bold text-gray-900 ml-1">Email Address</label>
                       <input
                         type="email"
-                        required
-                        readOnly
                         placeholder="john@example.com"
                         value={formData.email}
-                        className="w-full px-5 py-4 bg-gray-100 border border-gray-100 rounded-2xl focus:outline-none transition-all text-[15px] text-gray-500 cursor-not-allowed"
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-[13px] font-bold text-gray-900 ml-1">Phone Number</label>
                       <input
                         type="tel"
+                        required
                         placeholder="+91 98765 43210"
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
@@ -197,7 +192,6 @@ export default function ContactSection() {
                   <div className="space-y-2">
                     <label className="text-[13px] font-bold text-gray-900 ml-1">Message</label>
                     <textarea
-                      required
                       placeholder="Tell us more about your requirements..."
                       rows={4}
                       value={formData.message}
@@ -238,27 +232,6 @@ export default function ContactSection() {
                     )}
                   </button>
                 </form>
-              ) : (
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-6">
-                   <div className="w-16 h-16 bg-[#FF5A5F]/10 rounded-full flex items-center justify-center text-[#FF5A5F]">
-                      <Lock size={32} />
-                   </div>
-                   <div>
-                      <h4 className="text-xl font-black text-gray-900">Sign in to Contact Us</h4>
-                      <p className="text-sm text-gray-500 mt-2 max-w-[250px] mx-auto">
-                        To maintain a premium experience, we require our users to be logged in before submitting enquiries.
-                      </p>
-                   </div>
-                   <Link 
-                     href="/login" 
-                     className="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold text-sm shadow-xl transition-all hover:bg-black active:scale-[0.98]"
-                   >
-                     Login to your account
-                   </Link>
-                   <p className="text-xs text-gray-400">
-                     Don't have an account? <Link href="/login" className="text-[#FF5A5F] font-bold hover:underline">Sign up here</Link>
-                   </p>
-                </div>
               )}
             </div>
           </div>
