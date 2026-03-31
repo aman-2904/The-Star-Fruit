@@ -10,25 +10,90 @@ import {
   Umbrella, ChefHat, Dumbbell, HeartPulse, Flame,
   BellElectric, BellRing, Clock, CheckCircle, FileText,
   ImageOff, Home, LayoutDashboard, Trash2, X, Eye, EyeOff, AlertTriangle,
-  Phone, Mail
+  Phone, Mail, WashingMachine, Refrigerator, Microwave, Coffee,
+  Car, Trees, Music, Zap, Baby, Ghost, Layout, Gamepad2,
+  Wine, Shirt, Lock, Shield, Thermometer, Briefcase,
+  CalendarDays, ShowerHead, CupSoda, Book
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { logActivity } from '@/lib/logger';
 
 const AMENITY_MAP: Record<string, { label: string; icon: React.ReactNode }> = {
-  wifi:          { label: 'WiFi',          icon: <Wifi size={15} /> },
-  kitchen:       { label: 'Kitchen',       icon: <UtensilsCrossed size={15} /> },
-  ac:            { label: 'AC',            icon: <Wind size={15} /> },
-  workspace:     { label: 'Workspace',     icon: <Monitor size={15} /> },
-  tv:            { label: 'TV',            icon: <Tv2 size={15} /> },
-  private_pool:  { label: 'Private Pool',  icon: <Waves size={15} /> },
-  hot_tub:       { label: 'Hot Tub',       icon: <BathIcon size={15} /> },
-  beachfront:    { label: 'Beachfront',    icon: <Umbrella size={15} /> },
-  private_chef:  { label: 'Private Chef',  icon: <ChefHat size={15} /> },
-  private_gym:   { label: 'Private Gym',   icon: <Dumbbell size={15} /> },
-  first_aid:     { label: 'First Aid Kit', icon: <HeartPulse size={15} /> },
-  extinguisher:  { label: 'Extinguisher',  icon: <Flame size={15} /> },
-  smoke_alarm:   { label: 'Smoke Alarm',   icon: <BellElectric size={15} /> },
+  // Essentials
+  wifi:          { label: 'WiFi',            icon: <Wifi size={15} /> },
+  ac:            { label: 'AC',              icon: <Wind size={15} /> },
+  tv:            { label: 'TV/Netflix',      icon: <Tv2 size={15} /> },
+  workspace:     { label: 'Workspace',       icon: <Monitor size={15} /> },
+  washer:        { label: 'Washer',          icon: <WashingMachine size={15} /> },
+  dryer:         { label: 'Dryer',           icon: <Wind size={15} /> },
+  ethernet:      { label: 'Ethernet',        icon: <Zap size={15} /> },
+  housekeeping:  { label: 'Housekeeping',    icon: <CheckCircle size={15} /> },
+
+  // Luxury
+  private_pool:  { label: 'Private Pool',    icon: <Waves size={15} /> },
+  hot_tub:       { label: 'Hot Tub',         icon: <BathIcon size={15} /> },
+  beachfront:    { label: 'Beachfront',      icon: <Umbrella size={15} /> },
+  private_chef:  { label: 'Private Chef',    icon: <ChefHat size={15} /> },
+  private_gym:   { label: 'Private Gym',     icon: <Dumbbell size={15} /> },
+  bbq_grill:     { label: 'BBQ Grill',       icon: <Flame size={15} /> },
+  sound_system:  { label: 'Sound System',    icon: <Music size={15} /> },
+  game_console:  { label: 'Game Console',    icon: <Gamepad2 size={15} /> },
+  barbecue:      { label: 'Fire Pit',        icon: <Flame size={15} /> },
+
+  // Bathroom & Bedroom
+  hair_dryer:    { label: 'Hair Dryer',      icon: <Wind size={15} /> },
+  shampoo:       { label: 'Toiletries',      icon: <CupSoda size={15} /> },
+  hot_water:     { label: 'Hot Water',       icon: <Thermometer size={15} /> },
+  hangers:       { label: 'Hangers',         icon: <Shirt size={15} /> },
+  iron:          { label: 'Iron',            icon: <Shirt size={15} /> },
+  safe:          { label: 'Room Safe',       icon: <Lock size={15} /> },
+  bed_linens:    { label: 'Bed Linens',      icon: <Home size={15} /> },
+  mosquito_net:  { label: 'Mosquito Net',    icon: <Shield size={15} /> },
+  shower_head:   { label: 'Shower head',     icon: <ShowerHead size={15} /> },
+  towels:        { label: 'Towels',          icon: <Home size={15} /> },
+
+  // Kitchen & Dining
+  kitchen:       { label: 'Full Kitchen',    icon: <UtensilsCrossed size={15} /> },
+  refrigerator:  { label: 'Fridge',          icon: <Refrigerator size={15} /> },
+  microwave:     { label: 'Microwave',       icon: <Microwave size={15} /> },
+  coffee_maker:  { label: 'Coffee Maker',    icon: <Coffee size={15} /> },
+  kettle:        { label: 'Electric Kettle', icon: <Coffee size={15} /> },
+  cooking_basics: { label: 'Cooking Basics', icon: <UtensilsCrossed size={15} /> },
+  dishwasher:    { label: 'Dishwasher',      icon: <WashingMachine size={15} /> },
+  stove:         { label: 'Stove/Cooktop',   icon: <Layout size={15} /> },
+  wine_glasses:  { label: 'Wine Glasses',    icon: <Wine size={15} /> },
+  dining_table:  { label: 'Dining Table',    icon: <Layout size={15} /> },
+
+  // Family & Fun
+  crib:          { label: 'Crib/Cot',        icon: <Baby size={15} /> },
+  high_chair:    { label: 'High Chair',      icon: <Baby size={15} /> },
+  board_games:   { label: 'Board Games',     icon: <Ghost size={15} /> },
+  books:         { label: 'Books',           icon: <Book size={15} /> },
+  pool_table:    { label: 'Pool Table',      icon: <Monitor size={15} /> },
+
+  // Facilities
+  free_parking:  { label: 'Free Parking',    icon: <Car size={15} /> },
+  ev_charger:    { label: 'EV Charger',      icon: <Zap size={15} /> },
+  gym:           { label: 'Gym access',      icon: <Dumbbell size={15} /> },
+  garden:        { label: 'Garden/Lawn',     icon: <Trees size={15} /> },
+  elevator:      { label: 'Elevator',        icon: <Home size={15} /> },
+  single_level:  { label: 'Single Level',    icon: <Home size={15} /> },
+
+  // Outdoor
+  patio:         { label: 'Patio/Balcony',   icon: <Layout size={15} /> },
+  backyard:      { label: 'Backyard',        icon: <Trees size={15} /> },
+  entrance:      { label: 'Private Entry',   icon: <Home size={15} /> },
+  outdoor_dining: { label: 'Outdoor Dining', icon: <UtensilsCrossed size={15} /> },
+  hammock:       { label: 'Hammock',         icon: <Umbrella size={15} /> },
+
+  // Safety
+  first_aid:     { label: 'First Aid Kit',   icon: <HeartPulse size={15} /> },
+  extinguisher:  { label: 'Extinguisher',    icon: <Flame size={15} /> },
+  smoke_alarm:   { label: 'Smoke Alarm',     icon: <BellElectric size={15} /> },
+  carbon_alarm:  { label: 'CO Alarm',        icon: <BellElectric size={15} /> },
+  security_cam:  { label: 'CCTV/Security',   icon: <Shield size={15} /> },
+  luggage_drop:  { label: 'Luggage Drop',    icon: <Briefcase size={15} /> },
+  long_term:     { label: 'Long-term Stay',  icon: <CalendarDays size={15} /> },
 };
 
 const HOUSE_RULE_LABELS: Record<string, { allowed: string; denied: string }> = {
