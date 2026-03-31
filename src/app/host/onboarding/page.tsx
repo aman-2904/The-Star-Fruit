@@ -12,6 +12,7 @@ import Step4PropertyPhotos, { PhotoItem } from '@/components/host/steps/Step4Pro
 import Step5AmenitiesFeatures from '@/components/host/steps/Step5AmenitiesFeatures';
 import Step6Specifications, { Step6SpecificationsData } from '@/components/host/steps/Step6Specifications';
 import Step7ReviewPublish from '@/components/host/steps/Step7ReviewPublish';
+import { logActivity } from '@/lib/logger';
 
 export default function HostOnboardingPage() {
   const router = useRouter();
@@ -289,6 +290,11 @@ export default function HostOnboardingPage() {
         status: 'pending_review'
       })
       .eq('id', propertyId);
+
+    await logActivity("Submitted property for review", { 
+      property_id: propertyId, 
+      title: step6Data.title 
+    });
   };
 
   const getStepTitle = () => {

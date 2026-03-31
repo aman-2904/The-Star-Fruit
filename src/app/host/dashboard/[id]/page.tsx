@@ -13,6 +13,7 @@ import {
   Phone, Mail
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { logActivity } from '@/lib/logger';
 
 const AMENITY_MAP: Record<string, { label: string; icon: React.ReactNode }> = {
   wifi:          { label: 'WiFi',          icon: <Wifi size={15} /> },
@@ -169,6 +170,11 @@ export default function PropertyDetailPage() {
         setIsDeleting(false);
         return;
       }
+
+      await logActivity("Deleted a property listing", {
+        property_id: id,
+        title: property?.listing_title || property?.category || "Untitled Property"
+      });
 
       // 4. Redirect to dashboard on success
       router.push('/host/dashboard');

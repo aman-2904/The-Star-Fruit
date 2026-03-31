@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Mail, Phone, Clock, Search, RefreshCcw, MoreHorizontal, User, MessageSquare, X, Calendar, Trash2 } from "lucide-react";
+import { logActivity } from "@/lib/logger";
 
 interface Enquiry {
   id: string;
@@ -67,6 +68,14 @@ export default function AdminEnquiries() {
         .eq('id', id);
 
       if (error) throw error;
+
+      const deletedEnquiry = enquiries.find(e => e.id === id);
+      if (deletedEnquiry) {
+        await logActivity("Deleted enquiry", { 
+          subject: deletedEnquiry.subject || "No subject", 
+          sender: deletedEnquiry.name 
+        });
+      }
 
       // Update local state
       setEnquiries(enquiries.filter(enq => enq.id !== id));

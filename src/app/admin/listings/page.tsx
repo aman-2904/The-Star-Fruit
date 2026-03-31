@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import PropertyApproveCard from "@/components/admin/PropertyApproveCard";
 import PropertyDetailsModal from "@/components/admin/PropertyDetailsModal";
 import { ListFilter, RefreshCcw, Search, AlertCircle, CheckCircle, LayoutGrid, List } from "lucide-react";
+import { logActivity } from "@/lib/logger";
 
 export default function AdminListings() {
   const [properties, setProperties] = useState<any[]>([]);
@@ -54,6 +55,11 @@ export default function AdminListings() {
 
       if (updateError) throw updateError;
       setProperties(prev => prev.map(p => p.id === id ? { ...p, status: 'published' } : p));
+
+      const prop = properties.find(p => p.id === id);
+      if (prop) {
+        await logActivity("Approved a property listing", { property_id: id, title: prop.listing_title, host: prop.host_name });
+      }
     } catch (err: any) {
       alert("Error approving property: " + err.message);
     }
@@ -70,6 +76,11 @@ export default function AdminListings() {
 
       if (updateError) throw updateError;
       setProperties(prev => prev.map(p => p.id === id ? { ...p, status: 'rejected' } : p));
+
+      const prop = properties.find(p => p.id === id);
+      if (prop) {
+        await logActivity("Rejected a property listing", { property_id: id, title: prop.listing_title, host: prop.host_name });
+      }
     } catch (err: any) {
       alert("Error rejecting property: " + err.message);
     }
@@ -86,6 +97,11 @@ export default function AdminListings() {
 
       if (updateError) throw updateError;
       setProperties(prev => prev.map(p => p.id === id ? { ...p, status: 'pending_review' } : p));
+
+      const prop = properties.find(p => p.id === id);
+      if (prop) {
+        await logActivity("Revoked a property listing", { property_id: id, title: prop.listing_title, host: prop.host_name });
+      }
     } catch (err: any) {
       alert("Error revoking property: " + err.message);
     }

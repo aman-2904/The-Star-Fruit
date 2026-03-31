@@ -117,8 +117,8 @@ export default function AdminLayout({
             {isSidebarOpen && <span>Enquiries</span>}
           </Link>
           <Link 
-            href="#" 
-            className="flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm text-gray-400 cursor-not-allowed"
+            href="/admin/activity-logs" 
+            className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/activity-logs' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <Clock size={20} />
             {isSidebarOpen && <span>Activity Logs</span>}
