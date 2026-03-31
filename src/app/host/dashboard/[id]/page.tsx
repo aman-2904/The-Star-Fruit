@@ -13,7 +13,8 @@ import {
   Phone, Mail, WashingMachine, Refrigerator, Microwave, Coffee,
   Car, Trees, Music, Zap, Baby, Ghost, Layout, Gamepad2,
   Wine, Shirt, Lock, Shield, Thermometer, Briefcase,
-  CalendarDays, ShowerHead, CupSoda, Book
+  CalendarDays, ShowerHead, CupSoda, Book,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { logActivity } from '@/lib/logger';
@@ -142,6 +143,36 @@ export default function PropertyDetailPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [deleteError, setDeleteError] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+
+  const nextPhoto = () => {
+    const photos = property?.images || [];
+    if (photos.length === 0) return;
+    setCurrentPhotoIndex((prev) => (prev + 1) % photos.length);
+  };
+
+  const prevPhoto = () => {
+    const photos = property?.images || [];
+    if (photos.length === 0) return;
+    setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
+  };
+
+  const openGallery = (index: number) => {
+    setCurrentPhotoIndex(index);
+    setShowGallery(true);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!showGallery) return;
+      if (e.key === 'Escape') setShowGallery(false);
+      if (e.key === 'ArrowRight') nextPhoto();
+      if (e.key === 'ArrowLeft') prevPhoto();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showGallery, currentPhotoIndex, property]);
 
   useEffect(() => {
     async function load() {
@@ -345,20 +376,31 @@ export default function PropertyDetailPage() {
         {photos.length > 0 && (
           <div className="grid grid-cols-3 gap-3">
             {/* Large cover photo */}
-            <div className="col-span-2 relative aspect-video rounded-3xl overflow-hidden bg-gray-100">
-              <Image src={photos[0]} alt="Cover Photo" fill className="object-cover" unoptimized />
+            <div 
+              onClick={() => openGallery(0)}
+              className="col-span-2 relative aspect-video rounded-3xl overflow-hidden bg-gray-100 cursor-pointer group"
+            >
+              <Image src={photos[0]} alt="Cover Photo" fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
               <div className="absolute top-3 left-3 bg-[#EC5B13] text-white text-[9px] font-black tracking-widest px-2 py-1 rounded-md uppercase">Cover Photo</div>
             </div>
             {/* Side photos */}
             <div className="flex flex-col gap-3">
               {photos.slice(1, 3).map((url, i) => {
                 const isLast = i === 1 && photos.length > 3;
+                const photoIndex = i + 1;
                 return (
-                  <div key={i} className="relative flex-1 rounded-2xl overflow-hidden bg-gray-100">
-                    <Image src={url} alt={`Photo ${i + 2}`} fill className="object-cover" unoptimized />
+                  <div 
+                    key={i} 
+                    onClick={() => openGallery(photoIndex)}
+                    className="relative flex-1 rounded-2xl overflow-hidden bg-gray-100 cursor-pointer group"
+                  >
+                    <Image src={url} alt={`Photo ${photoIndex + 1}`} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                     {isLast && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">+{photos.length - 3} More</span>
+                      <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center group-hover:bg-black/60 transition-colors">
+                        <span className="text-white font-bold text-lg">+{photos.length - 3}</span>
+                        <span className="text-white/80 text-[10px] font-bold uppercase tracking-widest mt-1">View All</span>
                       </div>
                     )}
                   </div>
@@ -542,6 +584,97 @@ export default function PropertyDetailPage() {
           </div>
         </div>
       )}
+      {/* Photo Gallery Modal */}
+      <PhotoGalleryModal
+        open={showGallery}
+        onClose={() => setShowGallery(false)}
+        photos={photos}
+        currentIndex={currentPhotoIndex}
+        onNext={nextPhoto}
+        onPrev={prevPhoto}
+        onSelect={(index) => setCurrentPhotoIndex(index)}
+      />
+    </div>
+  );
+}
+
+/* ──────────────── Photo Gallery Modal ──────────────── */
+interface PhotoGalleryModalProps {
+  open: boolean;
+  onClose: () => void;
+  photos: string[];
+  currentIndex: number;
+  onNext: () => void;
+  onPrev: () => void;
+  onSelect: (index: number) => void;
+}
+
+function PhotoGalleryModal({ open, onClose, photos, currentIndex, onNext, onPrev, onSelect }: PhotoGalleryModalProps) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex flex-col bg-black/95 backdrop-blur-md animate-fade-in">
+      {/* Header Bar */}
+      <div className="flex items-center justify-between px-6 py-4 z-10 bg-gradient-to-b from-black/60 to-transparent">
+        <div className="text-white/90 font-bold text-sm tracking-tight flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#EC5B13] animate-pulse" />
+          Photo {currentIndex + 1} of {photos.length}
+        </div>
+        <button
+          onClick={onClose}
+          className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all border border-white/10 hover:scale-110 active:scale-95"
+        >
+          <X size={20} />
+        </button>
+      </div>
+
+      {/* Main Image View */}
+      <div className="flex-1 flex items-center justify-center relative p-4 sm:p-12 group">
+        {/* Navigation Arrows */}
+        <button
+          onClick={(e) => { e.stopPropagation(); onPrev(); }}
+          className="absolute left-4 sm:left-8 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white border border-white/10 transition-all opacity-0 group-hover:opacity-100 z-10 hover:scale-110 active:scale-95 shadow-2xl"
+        >
+          <ChevronLeft size={28} />
+        </button>
+
+        {/* The Image */}
+        <div className="relative w-full h-full max-w-7xl flex items-center justify-center translate-y-[-20px] sm:translate-y-0">
+          <Image
+            src={photos[currentIndex]}
+            alt={`Property photo ${currentIndex + 1}`}
+            fill
+            className="object-contain animate-scale-in"
+            unoptimized
+          />
+        </div>
+
+        <button
+          onClick={(e) => { e.stopPropagation(); onNext(); }}
+          className="absolute right-4 sm:right-8 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white border border-white/10 transition-all opacity-0 group-hover:opacity-100 z-10 hover:scale-110 active:scale-95 shadow-2xl"
+        >
+          <ChevronRight size={28} />
+        </button>
+      </div>
+
+      {/* Footer / Thumbnail strip */}
+      <div className="px-6 pb-8 pt-4 overflow-x-auto bg-gradient-to-t from-black/60 to-transparent">
+        <div className="flex justify-center gap-3 min-w-max mx-auto px-4">
+          {photos.map((url, i) => (
+            <button
+              key={i}
+              onClick={() => onSelect(i)}
+              className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 hover:scale-105 active:scale-95 ${
+                i === currentIndex 
+                  ? 'border-[#EC5B13] scale-110 shadow-[0_0_15px_rgba(236,91,19,0.5)]' 
+                  : 'border-white/10 opacity-40 hover:opacity-100'
+              }`}
+            >
+              <Image src={url} alt={`Thumbnail ${i}`} fill className="object-cover" unoptimized />
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
