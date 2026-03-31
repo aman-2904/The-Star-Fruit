@@ -18,6 +18,20 @@ export default function ActivityLogs() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const getActionStyle = (action: string) => {
+    const act = action.toLowerCase();
+    if (act.includes('deleted') || act.includes('rejected')) {
+      return 'text-red-700 bg-red-50 border-red-100';
+    }
+    if (act.includes('submitted') || act.includes('approved')) {
+      return 'text-emerald-700 bg-emerald-50 border-emerald-100';
+    }
+    if (act.includes('revoked')) {
+      return 'text-amber-700 bg-amber-50 border-amber-100';
+    }
+    return 'text-gray-700 bg-gray-50 border-gray-100';
+  };
+
   const fetchLogs = async () => {
     setLoading(true);
     setErrorMsg(null);
@@ -120,24 +134,31 @@ export default function ActivityLogs() {
                       </div>
                       <div>
                         <p className="font-bold text-gray-900 capitalize">{log.user_role}</p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5 max-w-[150px] truncate" title={log.details?.email || log.user_id}>
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5 break-all" title={log.details?.email || log.user_id}>
                           {log.details?.email || log.user_id.slice(0, 8) + '...'}
                         </p>
+                        {log.details?.phone && (
+                          <p className="text-[10px] text-gray-400 font-bold tracking-wider mt-0.5 break-all">
+                            {log.details.phone}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </td>
                   <td className="px-8 py-6">
-                    <p className="text-sm font-bold text-gray-700">{log.action}</p>
+                    <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold border ${getActionStyle(log.action)}`}>
+                      {log.action}
+                    </span>
                   </td>
                   <td className="px-8 py-6">
                     <div className="flex flex-col gap-1">
-                      {log.details && Object.entries(log.details).filter(([k]) => k !== 'email').map(([key, value]) => (
+                      {log.details && Object.entries(log.details).filter(([k]) => k !== 'email' && k !== 'phone').map(([key, value]) => (
                         <div key={key} className="flex items-center gap-2 text-xs">
                           <span className="text-gray-400 font-bold uppercase tracking-wider">{key}:</span>
                           <span className="text-gray-600 font-medium truncate max-w-[200px]" title={String(value)}>{String(value)}</span>
                         </div>
                       ))}
-                      {(!log.details || Object.keys(log.details).filter(k => k !== 'email').length === 0) && (
+                      {(!log.details || Object.keys(log.details).filter(k => k !== 'email' && k !== 'phone').length === 0) && (
                         <span className="text-xs text-gray-400 italic">No extra details</span>
                       )}
                     </div>

@@ -11,11 +11,13 @@ export async function logActivity(action: string, details: Record<string, any> =
     const user = session.user;
     const role = user?.user_metadata?.role || 'user';
     const email = user?.email || 'Unknown User';
+    const phone = user?.phone || user?.user_metadata?.phone || '';
 
     // We enhance details with the user's email so it's easy to read in the logs
     const enhancedDetails = {
       ...details,
-      email: email
+      email: email,
+      ...(phone ? { phone } : {})
     };
 
     // Insert into activity_logs
