@@ -241,11 +241,11 @@ export default function AdminEnquiries() {
                       <div>
                         <p className="font-bold text-gray-900">{enquiry.name}</p>
                         <div className="flex items-center gap-3 mt-1">
-                          <span className="text-[10px] flex items-center gap-1 text-gray-400 font-bold uppercase tracking-wider">
+                          <span className="text-[10px] flex items-center gap-1 text-[#EC5B13]/80 font-bold uppercase tracking-wider">
                             <Mail size={10} /> {enquiry.email}
                           </span>
                           {enquiry.phone && (
-                            <span className="text-[10px] flex items-center gap-1 text-gray-400 font-bold uppercase tracking-wider">
+                            <span className="text-[10px] flex items-center gap-1 text-blue-500/80 font-bold uppercase tracking-wider">
                               <Phone size={10} /> {enquiry.phone}
                             </span>
                           )}
@@ -301,8 +301,17 @@ export default function AdminEnquiries() {
                 <div>
                   <h3 className="text-xl font-black text-gray-900">{selectedEnquiry.name}</h3>
                   <div className="flex items-center gap-3 mt-1">
-                    <span className="text-xs font-bold text-[#EC5B13]">{selectedEnquiry.email}</span>
-                    {selectedEnquiry.phone && <span className="text-xs font-bold text-gray-400">• {selectedEnquiry.phone}</span>}
+                    <span className="text-xs font-bold text-[#EC5B13] flex items-center gap-1.5">
+                      <Mail size={12} />
+                      {selectedEnquiry.email}
+                    </span>
+                    {selectedEnquiry.phone && (
+                      <span className="text-xs font-bold text-blue-500 flex items-center gap-1.5">
+                        <span className="text-gray-300 mr-1">•</span>
+                        <Phone size={12} />
+                        {selectedEnquiry.phone}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
