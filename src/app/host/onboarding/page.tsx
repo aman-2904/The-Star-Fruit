@@ -54,7 +54,7 @@ export default function HostOnboardingPage() {
   const [step6Data, setStep6Data] = useState<Step6SpecificationsData>({
     title: '',
     description: '',
-    houseRules: { no_smoking: true, no_pets: false, no_parties: true },
+    houseRules: { smoking: false, pets: false, parties: false },
     customRules: []
   });
 
@@ -132,7 +132,7 @@ export default function HostOnboardingPage() {
               ...prev,
               title: data.listing_title || '',
               description: data.listing_description || '',
-              houseRules: data.house_rules || { no_smoking: true, no_pets: false, no_parties: true },
+              houseRules: data.house_rules || { smoking: false, pets: false, parties: false },
               customRules: data.custom_rules || []
             }));
           }

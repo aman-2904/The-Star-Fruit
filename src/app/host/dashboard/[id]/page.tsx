@@ -31,10 +31,10 @@ const AMENITY_MAP: Record<string, { label: string; icon: React.ReactNode }> = {
   smoke_alarm:   { label: 'Smoke Alarm',   icon: <BellElectric size={15} /> },
 };
 
-const HOUSE_RULE_LABELS: Record<string, string> = {
-  no_smoking: 'No Smoking',
-  no_pets:    'No Pets',
-  no_parties: 'No Parties',
+const HOUSE_RULE_LABELS: Record<string, { allowed: string; denied: string }> = {
+  smoking: { allowed: 'Smoking Allowed', denied: 'No Smoking' },
+  pets:    { allowed: 'Pets Allowed',    denied: 'No Pets' },
+  parties: { allowed: 'Parties Allowed', denied: 'No Parties' },
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -204,7 +204,28 @@ export default function PropertyDetailPage() {
   const customRules: string[] = property.custom_rules || [];
   const location = [property.street_address, property.city, property.state, property.pincode].filter(Boolean).join(', ');
 
-  const activeRules = Object.entries(houseRules).filter(([, v]) => v).map(([k]) => HOUSE_RULE_LABELS[k] || k);
+  // Normalize house rules to handle both old "no_" prefixed keys and new standard keys
+  const normalizedRules: Record<string, boolean> = {};
+  
+  // Standard keys list
+  const standardKeys = ['smoking', 'pets', 'parties'];
+  
+  standardKeys.forEach(key => {
+    const noKey = `no_${key}`;
+    if (houseRules[key] !== undefined) {
+      normalizedRules[key] = houseRules[key];
+    } else if (houseRules[noKey] !== undefined) {
+      normalizedRules[key] = !houseRules[noKey];
+    } else {
+      // Default fallback if neither exists (though onboarding now sets them)
+      normalizedRules[key] = false;
+    }
+  });
+
+  const activeRules = Object.entries(normalizedRules).map(([k, v]) => {
+    const labels = HOUSE_RULE_LABELS[k];
+    return v ? labels.allowed : labels.denied;
+  });
 
   return (
     <div className="min-h-screen bg-[#F7F7F8] font-sans">

@@ -380,6 +380,41 @@ export default function Step7ReviewPublish({
               </div>
             </div>
           )}
+
+          {/* ── House Rules ── */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="font-bold text-[#1A1A24] text-[17px]">House Rules</h3>
+                <p className="text-gray-400 text-sm mt-0.5">Guidelines for guest behavior.</p>
+              </div>
+              <EditButton step={6} />
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Standard Rules */}
+              {['smoking', 'pets', 'parties'].map(key => {
+                const isAllowed = step6Data.houseRules[key];
+                const label = key.charAt(0).toUpperCase() + key.slice(1);
+                return (
+                  <div key={key} className="flex items-center gap-2.5 bg-gray-50 rounded-xl px-4 py-3">
+                    <div className={`w-2 h-2 rounded-full ${isAllowed ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                    <span className="text-sm font-semibold text-[#1A1A24]">
+                      {isAllowed ? `${label} Allowed` : `No ${label}`}
+                    </span>
+                  </div>
+                );
+              })}
+              
+              {/* Custom Rules */}
+              {step6Data.customRules.map((rule, i) => (
+                <div key={i} className="flex items-center gap-2.5 bg-gray-50 rounded-xl px-4 py-3">
+                  <div className="w-2 h-2 rounded-full bg-gray-400" />
+                  <span className="text-sm font-semibold text-[#1A1A24]">{rule}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* ── Ready to go live footer bar ── */}

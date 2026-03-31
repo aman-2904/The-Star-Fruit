@@ -169,14 +169,34 @@ export default function PropertyDetailsModal({ property, isOpen, onClose }: Prop
                 <h3>House Rules</h3>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                {Object.entries(property.house_rules || {}).map(([rule, allowed], i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-2xl border border-gray-50">
-                    <div className={`w-2 h-2 rounded-full ${allowed ? 'bg-emerald-500' : 'bg-red-500'}`} />
-                    <span className="text-xs font-bold text-gray-700 capitalize">
-                      {rule.replace(/_/g, ' ')}: {allowed ? 'Allowed' : 'Not Allowed'}
-                    </span>
-                  </div>
-                ))}
+                {
+                  /* Standard House Rules */
+                  ['smoking', 'pets', 'parties'].map((key) => {
+                    const houseRules = property.house_rules || {};
+                    const noKey = `no_${key}`;
+                    let allowed = false;
+
+                    // Support both old and new keys
+                    if (houseRules[key] !== undefined) {
+                      allowed = houseRules[key];
+                    } else if (houseRules[noKey] !== undefined) {
+                      allowed = !houseRules[noKey];
+                    } else {
+                      // Fallback default
+                      return null;
+                    }
+
+                    const label = key.charAt(0).toUpperCase() + key.slice(1);
+                    return (
+                      <div key={key} className="flex items-center gap-3 p-3 rounded-2xl border border-gray-50">
+                        <div className={`w-2 h-2 rounded-full ${allowed ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                        <span className="text-xs font-bold text-gray-700">
+                          {allowed ? `${label} Allowed` : `No ${label}`}
+                        </span>
+                      </div>
+                    );
+                  })
+                }
                 {property.custom_rules && property.custom_rules.map((rule, i) => (
                    <div key={`custom-${i}`} className="col-span-2 flex items-center gap-3 p-3 rounded-2xl border border-gray-50">
                       <div className="w-2 h-2 rounded-full bg-gray-400" />
