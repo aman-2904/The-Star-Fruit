@@ -14,10 +14,9 @@ export default function SearchWidget() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("1");
-  const [purpose, setPurpose] = useState("");
   
   const handleSearch = () => {
-    console.log({ activeTab, location, checkIn, checkOut, guests, purpose });
+    console.log({ activeTab, location, checkIn, checkOut, guests });
     // Implement actual search routing/logic here
   };
 
@@ -42,7 +41,7 @@ export default function SearchWidget() {
         </div>
 
         {/* Search Fields Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-3.5 mb-6 md:mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3.5 mb-6 md:mb-8">
           {/* Location */}
           <div className="col-span-2 lg:col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group">
             <div className="flex items-center gap-2 text-gray-400 mb-0.5 ml-2 md:ml-3">
@@ -97,7 +96,7 @@ export default function SearchWidget() {
           </div>
 
           {/* Guests */}
-          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group overflow-hidden relative">
+          <div className="col-span-2 lg:col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group overflow-hidden relative">
             <div className="flex items-center gap-2 text-gray-400 mb-0.5 ml-2 md:ml-3">
               <Users size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
               <label htmlFor="guests" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer pointer-events-none">Guests</label>
@@ -114,29 +113,6 @@ export default function SearchWidget() {
               <option value="4">4 Guests</option>
               <option value="5">5 Guests</option>
               <option value="6">6+ Guests</option>
-            </select>
-            <div className="pointer-events-none absolute right-4 md:right-5 top-1/2 -translate-y-1/2 mt-2 md:mt-3 text-gray-400 group-hover:text-black transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 md:w-4 md:h-4"><path d="m6 9 6 6 6-6"/></svg>
-            </div>
-          </div>
-
-          {/* Purpose */}
-          <div className="col-span-1 bg-white/80 p-3.5 md:p-4 rounded-full border border-gray-100/50 shadow-sm focus-within:shadow-md focus-within:border-gray-300 transition-all group overflow-hidden relative">
-            <div className="flex items-center gap-2 text-gray-400 mb-0.5 ml-2 md:ml-3">
-              <Calendar size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
-              <label htmlFor="purpose" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer pointer-events-none">Purpose</label>
-            </div>
-            <select 
-              id="purpose"
-              value={purpose}
-              onChange={(e) => setPurpose(e.target.value)}
-              className={`w-full appearance-none bg-transparent text-[12.5px] md:text-[14.5px] font-bold pl-8 md:pl-[42px] pr-8 outline-none border-none p-0 focus:ring-0 cursor-pointer -ml-2 select-none ${purpose ? 'text-gray-900' : 'text-gray-400'}`}
-            >
-              <option value="" disabled hidden>Why go?</option>
-              <option value="leisure" className="text-gray-900">Leisure</option>
-              <option value="business" className="text-gray-900">Business</option>
-              <option value="family" className="text-gray-900">Family Trip</option>
-              <option value="couples" className="text-gray-900">Couples Retreat</option>
             </select>
             <div className="pointer-events-none absolute right-4 md:right-5 top-1/2 -translate-y-1/2 mt-2 md:mt-3 text-gray-400 group-hover:text-black transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 md:w-4 md:h-4"><path d="m6 9 6 6 6-6"/></svg>
