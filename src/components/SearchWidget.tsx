@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Search, MapPin, Calendar, Users, Hotel, Ship, Home } from "lucide-react";
 
-export default function SearchWidget() {
+export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
   const tabs = [
     { label: "Villas", icon: <Home size={18} /> },
     { label: "Cruise", icon: <Ship size={18} /> },
@@ -21,7 +21,7 @@ export default function SearchWidget() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 md:px-6 -mt-[380px] md:-mt-80 relative z-10 transition-all">
+    <div className={`w-full max-w-7xl mx-auto px-4 md:px-6 relative z-10 transition-all ${isHero ? '-mt-[380px] md:-mt-80' : 'pt-10'}`}>
       <div className="bg-white/70 backdrop-blur-2xl rounded-[32px] md:rounded-[48px] px-4 py-4 md:px-10 md:py-8 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.25)] border border-white/40">
         {/* Tabs */}
         <div className="flex justify-center overflow-x-auto no-scrollbar space-x-6 md:space-x-10 mb-6 md:mb-8 border-b border-gray-100/30 w-full">
@@ -121,7 +121,7 @@ export default function SearchWidget() {
         </div>
 
         {/* Search Button */}
-        <div className="flex justify-center -mb-12 md:-mb-16 px-4">
+        <div className={`flex justify-center px-4 ${isHero ? '-mb-12 md:-mb-16' : 'mt-4 mb-2'}`}>
           <button 
             onClick={handleSearch}
             className="w-full sm:w-auto bg-[#1C2024] text-white px-8 md:px-20 py-3.5 md:py-4 rounded-[30px] md:rounded-[48px] flex items-center justify-center gap-3 md:gap-4 hover:bg-[#1C2024] transition-all hover:scale-[1.02] active:scale-[0.98] font-black text-sm md:text-base shadow-2xl border-4 border-[#1C2024] uppercase tracking-widest"
