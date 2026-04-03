@@ -65,6 +65,9 @@ export default function PropertyDetailsPage() {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
 
   const fetchReviews = async () => {
     try {
@@ -120,6 +123,14 @@ export default function PropertyDetailsPage() {
       });
     }
   }, [activePhotoIndex, showAllPhotos]);
+
+  // Check for "Show more" description
+  useEffect(() => {
+    if (property && descriptionRef.current) {
+      const isClamped = descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight;
+      setHasMore(isClamped);
+    }
+  }, [property]);
 
   // Handle Keyboard Navigation
   useEffect(() => {
@@ -414,12 +425,24 @@ export default function PropertyDetailsPage() {
 
             {/* Description Section */}
             <div className="py-8 border-b border-gray-100">
-              <p className="text-gray-700 leading-[1.6] whitespace-pre-line mb-6 font-medium">
-                {property.listing_description || property.description || "Welcome to our stunning property. This luxury space offers an unparalleled blend of modern architecture and tropical charm..."}
-              </p>
-              <button className="flex items-center gap-1 font-bold underline text-gray-900">
-                Show more <ChevronRight size={18} />
-              </button>
+              <div className="relative">
+                <p 
+                  ref={descriptionRef}
+                  className={`text-gray-700 leading-[1.6] whitespace-pre-line font-medium transition-all duration-300 ${isExpanded ? "" : "line-clamp-4"}`}
+                >
+                  {property.listing_description || property.description || "Welcome to our stunning property. This luxury space offers an unparalleled blend of modern architecture and tropical charm..."}
+                </p>
+                
+                {hasMore && (
+                  <button 
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="flex items-center gap-1 font-bold underline text-gray-900 mt-4 hover:text-[#EC5B13] transition-colors"
+                  >
+                    {isExpanded ? "Show less" : "Show more"} 
+                    <ChevronRight size={18} className={`transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} />
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Amenities Section */}
