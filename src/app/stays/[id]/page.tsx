@@ -28,8 +28,10 @@ interface Property {
   id: string;
   listing_title: string;
   listing_description?: string;
+  street_address?: string;
   city: string;
   state: string;
+  pincode?: string;
   category: string;
   bedrooms: number;
   bathrooms: number;
@@ -444,7 +446,14 @@ export default function PropertyDetailsPage() {
             </div>
             <div className="flex items-center gap-1 underline cursor-pointer border-l border-gray-300 pl-4 h-4 my-auto">
               <MapPin size={14} />
-              <span>{property.city}, {property.state}, India</span>
+              <span>
+                {[
+                  property.street_address,
+                  property.city,
+                  `${property.state} ${property.pincode || ""}`.trim(),
+                  "India"
+                ].filter(Boolean).join(", ")}
+              </span>
             </div>
           </div>
         </div>
