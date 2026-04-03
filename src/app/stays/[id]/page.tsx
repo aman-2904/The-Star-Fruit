@@ -19,6 +19,7 @@ import ReviewForm from "@/components/ReviewForm";
 interface Property {
   id: string;
   listing_title: string;
+  listing_description?: string;
   city: string;
   state: string;
   category: string;
@@ -414,7 +415,7 @@ export default function PropertyDetailsPage() {
             {/* Description Section */}
             <div className="py-8 border-b border-gray-100">
               <p className="text-gray-700 leading-[1.6] whitespace-pre-line mb-6 font-medium">
-                {property.description || "Welcome to our stunning property. This luxury space offers an unparalleled blend of modern architecture and tropical charm..."}
+                {property.listing_description || property.description || "Welcome to our stunning property. This luxury space offers an unparalleled blend of modern architecture and tropical charm..."}
               </p>
               <button className="flex items-center gap-1 font-bold underline text-gray-900">
                 Show more <ChevronRight size={18} />
