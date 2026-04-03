@@ -35,7 +35,7 @@ interface Property {
   category: string;
   bedrooms: number;
   bathrooms: number;
-  guests: number;
+  max_guests: number;
   beds: number;
   images: string[];
   description: string;
@@ -535,7 +535,7 @@ export default function PropertyDetailsPage() {
                   Entire {property.category} hosted by {property.host_name || "Maria"}
                 </h2>
                 <p className="text-gray-600 font-medium tracking-tight">
-                  {property.guests} guests • {property.bedrooms} bedrooms • {property.beds} beds • {property.bathrooms} bathrooms
+                  {property.max_guests} {property.max_guests === 1 ? 'guest' : 'guests'} • {property.bedrooms} {property.bedrooms === 1 ? 'bedroom' : 'bedrooms'} • {property.beds} {property.beds === 1 ? 'bed' : 'beds'} • {property.bathrooms} {property.bathrooms === 1 ? 'bathroom' : 'bathrooms'}
                 </p>
               </div>
               <div className="relative w-14 h-14 rounded-full overflow-hidden border border-gray-100 shadow-sm bg-gray-50 flex items-center justify-center">
