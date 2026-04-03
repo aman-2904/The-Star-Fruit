@@ -9,7 +9,15 @@ import {
   ChevronRight, CheckCircle2, ShieldCheck, Calendar, 
   Wifi, UtensilsCrossed, Wind, Tv2, Waves, Umbrella, 
   ChefHat, Dumbbell, Flame, Loader2, ArrowLeft, User,
-  X, ChevronLeft
+  X, ChevronLeft, Monitor, Sparkles, Coffee, Car, 
+  Shield, Thermometer, Laptop, Briefcase, Zap, 
+  Sun, Moon, Accessibility, ParkingCircle,
+  HeartPulse, BellElectric, Trophy, WashingMachine,
+  Refrigerator, Microwave, Shovel, Trees, Home, Music,
+  UserCheck, Baby, Ghost, Layout, Smartphone, Book,
+  Gamepad2, GraduationCap, Beer, Wine, CupSoda, Shirt,
+  DoorOpen, Lock, Fan, Speaker, CalendarDays, Boxes, 
+  ShowerHead, Soup
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
@@ -44,15 +52,88 @@ interface Review {
 }
 
 const AMENITY_ICONS: Record<string, any> = {
+  // Essentials
   wifi: <Wifi size={18} />,
-  kitchen: <UtensilsCrossed size={18} />,
   ac: <Wind size={18} />,
   tv: <Tv2 size={18} />,
+  workspace: <Monitor size={18} />,
+  washer: <WashingMachine size={18} />,
+  dryer: <Wind size={18} />,
+  ethernet: <Zap size={18} />,
+  housekeeping: <UserCheck size={18} />,
+
+  // Luxury
   private_pool: <Waves size={18} />,
+  hot_tub: <Bath size={18} />,
   beachfront: <Umbrella size={18} />,
   private_chef: <ChefHat size={18} />,
+  private_gym: <Dumbbell size={18} />,
   gym: <Dumbbell size={18} />,
   bbq_grill: <Flame size={18} />,
+  sound_system: <Music size={18} />,
+  game_console: <Gamepad2 size={18} />,
+  barbecue: <Flame size={18} />,
+
+  // Bathroom & Bedroom
+  hair_dryer: <Wind size={18} />,
+  shampoo: <CupSoda size={18} />,
+  hot_water: <Thermometer size={18} />,
+  hangers: <Shirt size={18} />,
+  iron: <Shirt size={18} />,
+  safe: <Lock size={18} />,
+  bed_linens: <Home size={18} />,
+  mosquito_net: <Shield size={18} />,
+  shower_head: <ShowerHead size={18} />,
+  towels: <Home size={18} />,
+
+  // Kitchen & Dining
+  kitchen: <UtensilsCrossed size={18} />,
+  refrigerator: <Refrigerator size={18} />,
+  microwave: <Microwave size={18} />,
+  coffee_maker: <Coffee size={18} />,
+  kettle: <Coffee size={18} />,
+  cooking_basics: <UtensilsCrossed size={18} />,
+  dishwasher: <WashingMachine size={18} />,
+  stove: <Layout size={18} />,
+  wine_glasses: <Wine size={18} />,
+  dining_table: <Layout size={18} />,
+
+  // Family & Fun
+  crib: <Baby size={18} />,
+  high_chair: <Baby size={18} />,
+  board_games: <Ghost size={18} />,
+  books: <Book size={18} />,
+  pool_table: <Monitor size={18} />,
+
+  // Parking & Facilities
+  free_parking: <Car size={18} />,
+  parking: <Car size={18} />,
+  ev_charger: <Zap size={18} />,
+  garden: <Trees size={18} />,
+  elevator: <Home size={18} />,
+  single_level: <Home size={18} />,
+
+  // Outdoor
+  patio: <Layout size={18} />,
+  backyard: <Trees size={18} />,
+  entrance: <Home size={18} />,
+  outdoor_dining: <UtensilsCrossed size={18} />,
+  hammock: <Umbrella size={18} />,
+
+  // Safety & Services
+  first_aid: <HeartPulse size={18} />,
+  extinguisher: <Flame size={18} />,
+  smoke_alarm: <BellElectric size={18} />,
+  carbon_alarm: <BellElectric size={18} />,
+  security_cam: <Shield size={18} />,
+  luggage_drop: <Briefcase size={18} />,
+  long_term: <CalendarDays size={18} />,
+
+  // Fallbacks/Extras
+  breakfast: <Coffee size={18} />,
+  laptop_friendly: <Laptop size={18} />,
+  office: <Briefcase size={18} />,
+  essentials: <CheckCircle2 size={18} />,
 };
 
 export default function PropertyDetailsPage() {
@@ -449,12 +530,15 @@ export default function PropertyDetailsPage() {
             <div className="py-8 border-b border-gray-100">
               <h3 className="text-[22px] font-bold text-gray-900 mb-6">What this place offers</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                {property.amenities?.slice(0, 8).map((id) => (
-                  <div key={id} className="flex items-center gap-4 text-gray-700">
-                    <span className="text-gray-500">{AMENITY_ICONS[id] || <CheckCircle2 size={18} />}</span>
-                    <span className="font-medium capitalize">{id.replace(/_/g, ' ')}</span>
-                  </div>
-                )) || (
+                {property.amenities?.slice(0, 8).map((id) => {
+                  const normalizedId = id.toLowerCase().replace(/\s+/g, '_');
+                  return (
+                    <div key={id} className="flex items-center gap-4 text-gray-700">
+                      <span className="text-gray-500">{AMENITY_ICONS[normalizedId] || <CheckCircle2 size={18} />}</span>
+                      <span className="font-medium capitalize">{id.replace(/_/g, ' ')}</span>
+                    </div>
+                  );
+                }) || (
                   ["Private infinity pool", "Chef on call", "Gourmet kitchen", "Fast wifi - 500 Mbps", "Central air conditioning", "Free parking on premises"].map(item => (
                     <div key={item} className="flex items-center gap-4 text-gray-700">
                       <span className="text-gray-500"><CheckCircle2 size={18} /></span>
@@ -588,28 +672,5 @@ export default function PropertyDetailsPage() {
       
       <Footer />
     </main>
-  );
-}
-
-// Helper for "Show Photo" icon (used in button)
-function Layout({ size, className }: { size: number; className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <rect width="7" height="7" x="3" y="3" rx="1" />
-      <rect width="7" height="7" x="14" y="3" rx="1" />
-      <rect width="7" height="7" x="14" y="14" rx="1" />
-      <rect width="7" height="7" x="3" y="14" rx="1" />
-    </svg>
   );
 }
