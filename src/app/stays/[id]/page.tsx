@@ -210,10 +210,26 @@ export default function PropertyDetailsPage() {
 
   // Check for "Show more" description
   useEffect(() => {
-    if (property && descriptionRef.current) {
-      const isClamped = descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight;
-      setHasMore(isClamped);
-    }
+    const checkClamp = () => {
+      if (descriptionRef.current) {
+        // Tolerant height check for clamping
+        const isClamped = descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight + 2;
+        const textContent = property?.listing_description || property?.description || "";
+        // Fallback: If text is quite long, show the button anyway to ensure users can expand it
+        setHasMore(isClamped || textContent.length > 250);
+      }
+    };
+
+    checkClamp(); // Initial check
+    
+    // Check again after a delay in case custom fonts change layout dimensions
+    const timeoutId = setTimeout(checkClamp, 300);
+    window.addEventListener('resize', checkClamp);
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', checkClamp);
+    };
   }, [property]);
 
   // Handle Keyboard Navigation
