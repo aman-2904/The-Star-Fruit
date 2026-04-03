@@ -148,6 +148,7 @@ export default function PropertyDetailsPage() {
   const [session, setSession] = useState<any>(null);
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -262,6 +263,32 @@ export default function PropertyDetailsPage() {
   const openGallery = (index: number) => {
     setActivePhotoIndex(index);
     setShowAllPhotos(true);
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const shareData = {
+      title: property?.listing_title || "Premium Stay",
+      url: url,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          console.error("Error sharing:", err);
+        }
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
+    }
   };
 
   const nextPhoto = () => {
@@ -432,8 +459,12 @@ export default function PropertyDetailsPage() {
             Back
           </button>
           <div className="flex items-center gap-4">
-            <button className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline">
-              <Share size={16} /> Share
+            <button 
+              onClick={handleShare}
+              className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline"
+            >
+              {isCopied ? <CheckCircle2 size={16} className="text-emerald-600" /> : <Share size={16} />} 
+              {isCopied ? "Copied!" : "Share"}
             </button>
             <button className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline">
               <Heart size={16} /> Save
