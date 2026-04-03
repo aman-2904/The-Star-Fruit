@@ -8,11 +8,12 @@ import {
   Star, MapPin, Share, Heart, Users, BedDouble, Bath, 
   ChevronRight, CheckCircle2, ShieldCheck, Calendar, 
   Wifi, UtensilsCrossed, Wind, Tv2, Waves, Umbrella, 
-  ChefHat, Dumbbell, Flame, Loader2, ArrowLeft 
+  ChefHat, Dumbbell, Flame, Loader2, ArrowLeft, User
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ReviewForm from "@/components/ReviewForm";
 
 interface Property {
   id: string;
@@ -32,6 +33,14 @@ interface Property {
   house_rules?: any;
 }
 
+interface Review {
+  id: string;
+  user_name: string;
+  rating: number;
+  comment: string;
+  created_at: string;
+}
+
 const AMENITY_ICONS: Record<string, any> = {
   wifi: <Wifi size={18} />,
   kitchen: <UtensilsCrossed size={18} />,
@@ -48,28 +57,55 @@ export default function PropertyDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
   const [property, setProperty] = useState<Property | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<any>(null);
+
+  const fetchReviews = async () => {
+    try {
+      if (!supabase) return;
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('property_id', id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setReviews(data || []);
+    } catch (err) {
+      console.error("Error fetching reviews:", err);
+    }
+  };
 
   useEffect(() => {
-    async function fetchProperty() {
+    async function fetchData() {
       try {
         if (!supabase) return;
-        const { data, error } = await supabase
+        
+        // Fetch Session
+        const { data: { session: curSession } } = await supabase.auth.getSession();
+        setSession(curSession);
+
+        // Fetch Property
+        const { data: propertyData, error: propError } = await supabase
           .from('properties')
           .select('*')
           .eq('id', id)
           .single();
 
-        if (error) throw error;
-        setProperty(data);
+        if (propError) throw propError;
+        setProperty(propertyData);
+
+        // Fetch Reviews
+        await fetchReviews();
       } catch (err) {
-        console.error("Error fetching property:", err);
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
     }
 
-    if (id) fetchProperty();
+    if (id) fetchData();
   }, [id]);
 
   if (loading) {
@@ -94,8 +130,13 @@ export default function PropertyDetailsPage() {
     );
   }
 
+  const avgRating = reviews.length > 0 
+    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(2)
+    : "New";
+
   const mainImage = property.images?.[0] || "/images/stays/pool_villa.png";
-  const galleryImages = property.images?.slice(1, 5) || [];
+  const galleryImages = property.images?.slice(1, 4) || []; // Adjusted for layout
+  const lastImage = property.images?.[4];
 
   return (
     <main className="min-h-screen bg-white">
@@ -129,15 +170,19 @@ export default function PropertyDetailsPage() {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[14px] font-medium text-gray-700">
             <div className="flex items-center gap-1">
               <Star size={14} className="fill-black" />
-              <span>4.92</span>
-              <span className="text-gray-400">•</span>
-              <span className="underline cursor-pointer">128 reviews</span>
+              <span>{avgRating}</span>
+              {reviews.length > 0 && (
+                <>
+                  <span className="text-gray-400">•</span>
+                  <span className="underline cursor-pointer">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</span>
+                </>
+              )}
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 border-l border-gray-300 pl-4 h-4 my-auto">
               <ShieldCheck size={14} className="text-[#EC5B13]" />
               <span>Superhost</span>
             </div>
-            <div className="flex items-center gap-1 underline cursor-pointer">
+            <div className="flex items-center gap-1 underline cursor-pointer border-l border-gray-300 pl-4 h-4 my-auto">
               <MapPin size={14} />
               <span>{property.city}, {property.state}, India</span>
             </div>
@@ -154,6 +199,7 @@ export default function PropertyDetailsPage() {
               fill 
               className="object-cover hover:brightness-90 transition-all cursor-pointer"
               priority
+              unoptimized
             />
           </div>
           {/* Smaller Images */}
@@ -164,9 +210,21 @@ export default function PropertyDetailsPage() {
                 alt={`${property.listing_title} ${i + 2}`} 
                 fill 
                 className="object-cover hover:brightness-90 transition-all cursor-pointer"
+                unoptimized
               />
             </div>
           ))}
+          {lastImage && (
+            <div className="hidden md:block relative h-full">
+              <Image 
+                src={lastImage} 
+                alt={`${property.listing_title} last`} 
+                fill 
+                className="object-cover hover:brightness-90 transition-all cursor-pointer"
+                unoptimized
+              />
+            </div>
+          )}
           {/* Show all photos button */}
           <button className="absolute bottom-6 right-6 bg-white border border-black rounded-lg px-4 py-2 text-sm font-bold shadow-md hover:bg-gray-50 flex items-center gap-2 z-10 transition-transform active:scale-95">
             <Layout size={16} className="rotate-90" />
@@ -188,13 +246,8 @@ export default function PropertyDetailsPage() {
                   {property.guests} guests • {property.bedrooms} bedrooms • {property.beds} beds • {property.bathrooms} bathrooms
                 </p>
               </div>
-              <div className="relative w-14 h-14 rounded-full overflow-hidden border border-gray-100 shadow-sm">
-                <Image 
-                  src="/images/host_placeholder.png" 
-                  alt="Host Profile" 
-                  fill 
-                  className="object-cover"
-                />
+              <div className="relative w-14 h-14 rounded-full overflow-hidden border border-gray-100 shadow-sm bg-gray-50 flex items-center justify-center">
+                <User size={30} className="text-gray-300" />
               </div>
             </div>
 
@@ -240,7 +293,7 @@ export default function PropertyDetailsPage() {
                 {property.amenities?.slice(0, 8).map((id) => (
                   <div key={id} className="flex items-center gap-4 text-gray-700">
                     <span className="text-gray-500">{AMENITY_ICONS[id] || <CheckCircle2 size={18} />}</span>
-                    <span className="font-medium">{id.replace(/_/g, ' ')}</span>
+                    <span className="font-medium capitalize">{id.replace(/_/g, ' ')}</span>
                   </div>
                 )) || (
                   ["Private infinity pool", "Chef on call", "Gourmet kitchen", "Fast wifi - 500 Mbps", "Central air conditioning", "Free parking on premises"].map(item => (
@@ -262,7 +315,7 @@ export default function PropertyDetailsPage() {
             <div className="sticky top-28 p-6 bg-white rounded-[24px] shadow-[0_12px_45px_-10px_rgba(0,0,0,0.15)] border border-gray-100">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <span className="text-2xl font-bold text-gray-900">Details</span>
+                  <span className="text-2xl font-bold text-gray-900">Inquiry</span>
                 </div>
               </div>
               
@@ -311,33 +364,65 @@ export default function PropertyDetailsPage() {
           </div>
         </div>
 
-        {/* Reviews Snapshot (Placeholder for design match) */}
+        {/* Real Reviews Section */}
         <div className="mt-20 pt-16 border-t border-gray-100">
-           <div className="flex items-center gap-3 mb-8">
+           <div className="flex items-center gap-3 mb-12">
               <Star size={24} className="fill-black" />
-              <h2 className="text-3xl font-serif text-gray-900">4.92 • 128 reviews</h2>
+              <h2 className="text-3xl font-serif text-gray-900">
+                {avgRating} {reviews.length > 0 && `• ${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`}
+              </h2>
            </div>
            
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12">
-              {/* Review metrics would go here */}
-              {[
-                { label: "Cleanliness", score: "5.0" },
-                { label: "Accuracy", score: "4.9" },
-                { label: "Check-in", score: "5.0" },
-                { label: "Communication", score: "4.9" },
-                { label: "Location", score: "5.0" },
-                { label: "Value", score: "4.8" },
-              ].map(metric => (
-                <div key={metric.label} className="flex items-center justify-between">
-                  <span className="text-gray-900 font-medium">{metric.label}</span>
-                  <div className="flex items-center gap-4 flex-1 max-w-[140px] md:max-w-[200px] ml-auto">
-                    <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-black rounded-full" style={{ width: `${parseFloat(metric.score) * 20}%` }}></div>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16 mb-20">
+              {reviews.length > 0 ? (
+                reviews.map(review => (
+                  <div key={review.id} className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
+                        <User size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-900 capitalize">{review.user_name}</h4>
+                        <div className="flex items-center gap-2">
+                           <div className="flex items-center gap-0.5">
+                             {[...Array(5)].map((_, i) => (
+                               <Star key={i} size={10} className={i < review.rating ? "fill-black" : "text-gray-200"} />
+                             ))}
+                           </div>
+                           <span className="text-xs text-gray-400 font-medium">
+                              {new Date(review.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                           </span>
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-[13px] font-bold text-gray-900 w-6">{metric.score}</span>
+                    <p className="text-gray-700 leading-relaxed font-medium">
+                      {review.comment}
+                    </p>
                   </div>
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center bg-gray-50 rounded-[32px] border border-dashed border-gray-200">
+                  <p className="text-gray-500 font-medium italic">No reviews yet. Be the first to share your experience!</p>
                 </div>
-              ))}
+              )}
+           </div>
+
+           {/* Review Submission Form */}
+           <div className="max-w-2xl">
+              {session ? (
+                <ReviewForm propertyId={property.id} onReviewSubmitted={fetchReviews} />
+              ) : (
+                <div className="bg-gray-50 rounded-[32px] p-8 text-center border border-gray-100">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Want to share your experience?</h3>
+                  <p className="text-gray-500 font-medium mb-6">Log in to leave a star rating and comment on this property.</p>
+                  <Link 
+                    href="/login" 
+                    className="inline-block px-8 py-3 bg-[#1A1A24] text-white font-bold rounded-xl hover:bg-black transition-all shadow-md"
+                  >
+                    Log In to Review
+                  </Link>
+                </div>
+              )}
            </div>
         </div>
       </div>
@@ -348,18 +433,18 @@ export default function PropertyDetailsPage() {
 }
 
 // Helper for "Show Photo" icon (used in button)
-function Layout({ size, className }: { size: number, className?: string }) {
+function Layout({ size, className }: { size: number; className?: string }) {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2.5" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={className}
     >
       <rect width="7" height="7" x="3" y="3" rx="1" />
