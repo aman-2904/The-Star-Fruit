@@ -42,7 +42,8 @@ interface Property {
   host_name?: string;
   host_description?: string;
   amenities?: string[];
-  house_rules?: any;
+  house_rules?: Record<string, boolean>;
+  custom_rules?: string[];
 }
 
 interface Review {
@@ -617,6 +618,36 @@ export default function PropertyDetailsPage() {
                 Show all {property.amenities?.length || 45} amenities
               </button>
             </div>
+
+            {/* House Rules Section */}
+            {(property.house_rules || (property.custom_rules && property.custom_rules.length > 0)) && (
+              <div className="py-8 border-b border-gray-100">
+                <h3 className="text-[22px] font-bold text-gray-900 mb-6">House rules</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+                  {/* Standard Rules */}
+                  {property.house_rules && Object.keys(property.house_rules).map(key => {
+                    const isAllowed = property.house_rules![key];
+                    const label = key.charAt(0).toUpperCase() + key.slice(1);
+                    return (
+                      <div key={key} className="flex items-center gap-3 text-gray-700">
+                        <div className={`w-2 h-2 rounded-full shrink-0 ${isAllowed ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                        <span className="font-medium text-[15.5px]">
+                          {isAllowed ? `${label} Allowed` : `No ${label}`}
+                        </span>
+                      </div>
+                    );
+                  })}
+                  
+                  {/* Custom Rules */}
+                  {property.custom_rules?.map((rule, i) => (
+                    <div key={i} className="flex items-start gap-3 text-gray-700">
+                      <div className="w-2 h-2 rounded-full bg-gray-400 mt-2 shrink-0" />
+                      <span className="font-medium text-[15.5px] leading-snug">{rule}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column: Sticky Inquiry Card */}
