@@ -144,6 +144,7 @@ export default function PropertyDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<any>(null);
   const [showAllPhotos, setShowAllPhotos] = useState(false);
+  const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -227,9 +228,9 @@ export default function PropertyDetailsPage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [showAllPhotos, activePhotoIndex, property?.images]);
 
-  // Prevent background scroll when gallery is open
+  // Prevent background scroll when any modal is open
   useEffect(() => {
-    if (showAllPhotos) {
+    if (showAllPhotos || showAmenitiesModal) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -237,7 +238,7 @@ export default function PropertyDetailsPage() {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [showAllPhotos]);
+  }, [showAllPhotos, showAmenitiesModal]);
 
   const openGallery = (index: number) => {
     setActivePhotoIndex(index);
@@ -360,6 +361,43 @@ export default function PropertyDetailsPage() {
                   </button>
                 ))}
              </div>
+          </div>
+        </div>
+      )}
+
+      {/* Amenities Modal */}
+      {showAmenitiesModal && (
+        <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-2xl max-h-[90vh] rounded-2xl flex flex-col shadow-2xl animate-in zoom-in-95 duration-300">
+            {/* Header */}
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10 rounded-t-2xl">
+              <h2 className="text-xl font-bold text-gray-900">What this place offers</h2>
+              <button 
+                onClick={() => setShowAmenitiesModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <X size={20} className="text-gray-900" />
+              </button>
+            </div>
+            
+            {/* Content */}
+            <div className="p-6 overflow-y-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
+                {property.amenities?.map((id) => {
+                  const normalizedId = id.toLowerCase().replace(/\s+/g, '_');
+                  return (
+                    <div key={id} className="flex items-center gap-4 text-gray-700 pb-6 border-b border-gray-50 last:border-0 sm:[&:nth-last-child(-n+2)]:border-0">
+                      <span className="text-gray-500">
+                        {AMENITY_ICONS[normalizedId] || <CheckCircle2 size={24} strokeWidth={1.5} />}
+                      </span>
+                      <span className="font-medium text-[15px] capitalize">
+                        {id.replace(/_/g, ' ')}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -530,7 +568,7 @@ export default function PropertyDetailsPage() {
             <div className="py-8 border-b border-gray-100">
               <h3 className="text-[22px] font-bold text-gray-900 mb-6">What this place offers</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                {property.amenities?.slice(0, 8).map((id) => {
+                {property.amenities?.slice(0, 6).map((id) => {
                   const normalizedId = id.toLowerCase().replace(/\s+/g, '_');
                   return (
                     <div key={id} className="flex items-center gap-4 text-gray-700">
@@ -547,7 +585,10 @@ export default function PropertyDetailsPage() {
                   ))
                 )}
               </div>
-              <button className="px-6 py-3 border border-black rounded-xl font-bold hover:bg-gray-50 transition-colors">
+              <button 
+                onClick={() => setShowAmenitiesModal(true)}
+                className="px-6 py-3 border border-black rounded-xl font-bold hover:bg-gray-50 transition-colors"
+              >
                 Show all {property.amenities?.length || 45} amenities
               </button>
             </div>
