@@ -29,17 +29,11 @@ export default function StaysListingPage() {
         </div>
       </div>
 
-      {/* Page Title & Description (Solid Background) */}
-      <div className="max-w-[1440px] mx-auto px-4 md:px-10 py-12 md:py-16 bg-white">
-        <h1 className="text-[32px] md:text-[64px] font-serif text-gray-900 tracking-tight leading-tight text-center md:text-left">
-          All Luxury Stays in Goa
-        </h1>
-        <p className="text-gray-500 mt-4 text-lg md:text-2xl max-w-2xl font-medium text-center md:text-left">
-          Discover our curated collection of premium villas and apartments, vetted for excellence.
-        </p>
-      </div>
-
-      <StaysSection viewMode="grid" />
+      <StaysSection 
+        viewMode="grid" 
+        listingTitle="All Luxury Stays in Goa"
+        listingDescription="Discover our curated collection of premium villas and apartments, vetted for excellence."
+      />
       <Footer />
     </main>
   );

@@ -99,9 +99,16 @@ import Link from "next/link";
 interface StaysSectionProps {
   viewMode?: "carousel" | "grid";
   title?: string;
+  listingTitle?: string;
+  listingDescription?: string;
 }
 
-export default function StaysSection({ viewMode = "carousel", title }: StaysSectionProps) {
+export default function StaysSection({ 
+  viewMode = "carousel", 
+  title,
+  listingTitle,
+  listingDescription
+}: StaysSectionProps) {
   const [activeCategories, setActiveCategories] = useState<string[]>(["pool"]);
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -190,6 +197,20 @@ export default function StaysSection({ viewMode = "carousel", title }: StaysSect
             Filters
           </button>
         </div>
+
+        {/* Swapped Content: Title & Description now come AFTER filters */}
+        {listingTitle && (
+          <div className="mb-12 md:mb-16">
+            <h1 className="text-[32px] md:text-[64px] font-serif text-gray-900 tracking-tight leading-tight text-center md:text-left">
+              {listingTitle}
+            </h1>
+            {listingDescription && (
+              <p className="text-gray-500 mt-4 text-lg md:text-2xl max-w-2xl md:max-w-none font-medium text-center md:text-left">
+                {listingDescription}
+              </p>
+            )}
+          </div>
+        )}
 
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
