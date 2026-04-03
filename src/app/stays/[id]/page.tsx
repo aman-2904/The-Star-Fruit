@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +8,8 @@ import {
   Star, MapPin, Share, Heart, Users, BedDouble, Bath, 
   ChevronRight, CheckCircle2, ShieldCheck, Calendar, 
   Wifi, UtensilsCrossed, Wind, Tv2, Waves, Umbrella, 
-  ChefHat, Dumbbell, Flame, Loader2, ArrowLeft, User
+  ChefHat, Dumbbell, Flame, Loader2, ArrowLeft, User,
+  X, ChevronLeft
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
@@ -60,6 +61,9 @@ export default function PropertyDetailsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<any>(null);
+  const [showAllPhotos, setShowAllPhotos] = useState(false);
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const fetchReviews = async () => {
     try {
@@ -82,11 +86,9 @@ export default function PropertyDetailsPage() {
       try {
         if (!supabase) return;
         
-        // Fetch Session
         const { data: { session: curSession } } = await supabase.auth.getSession();
         setSession(curSession);
 
-        // Fetch Property
         const { data: propertyData, error: propError } = await supabase
           .from('properties')
           .select('*')
@@ -96,7 +98,6 @@ export default function PropertyDetailsPage() {
         if (propError) throw propError;
         setProperty(propertyData);
 
-        // Fetch Reviews
         await fetchReviews();
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -107,6 +108,58 @@ export default function PropertyDetailsPage() {
 
     if (id) fetchData();
   }, [id]);
+
+  // Thumbnail Auto-Scroll Sync
+  useEffect(() => {
+    if (showAllPhotos && thumbnailRefs.current[activePhotoIndex]) {
+      thumbnailRefs.current[activePhotoIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    }
+  }, [activePhotoIndex, showAllPhotos]);
+
+  // Handle Keyboard Navigation
+  useEffect(() => {
+    if (!showAllPhotos) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowAllPhotos(false);
+      if (e.key === "ArrowRight") nextPhoto();
+      if (e.key === "ArrowLeft") prevPhoto();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showAllPhotos, activePhotoIndex, property?.images]);
+
+  // Prevent background scroll when gallery is open
+  useEffect(() => {
+    if (showAllPhotos) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showAllPhotos]);
+
+  const openGallery = (index: number) => {
+    setActivePhotoIndex(index);
+    setShowAllPhotos(true);
+  };
+
+  const nextPhoto = () => {
+    if (!property?.images) return;
+    setActivePhotoIndex((prev) => (prev + 1) % property.images.length);
+  };
+
+  const prevPhoto = () => {
+    if (!property?.images) return;
+    setActivePhotoIndex((prev) => (prev - 1 + property.images.length) % property.images.length);
+  };
 
   if (loading) {
     return (
@@ -135,12 +188,88 @@ export default function PropertyDetailsPage() {
     : "New";
 
   const mainImage = property.images?.[0] || "/images/stays/pool_villa.png";
-  const galleryImages = property.images?.slice(1, 4) || []; // Adjusted for layout
+  const galleryImages = property.images?.slice(1, 4) || []; 
   const lastImage = property.images?.[4];
 
   return (
     <main className="min-h-screen bg-white">
       <Navbar />
+
+      {/* Premium Full Screen Photo Gallery Modal */}
+      {showAllPhotos && property?.images && (
+        <div className="fixed inset-0 z-[100] bg-black flex flex-col animate-in fade-in zoom-in duration-300">
+          
+          {/* Top Bar: Counter and Close */}
+          <div className="p-6 flex justify-between items-center text-white z-10">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-bold tracking-widest uppercase opacity-80">
+                Photo {activePhotoIndex + 1} of {property.images.length}
+              </span>
+            </div>
+            <button 
+              onClick={() => setShowAllPhotos(false)}
+              className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all group active:scale-90"
+            >
+              <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
+            </button>
+          </div>
+
+          {/* Main Stage (Image Area) */}
+          <div className="relative flex-1 w-full max-w-7xl mx-auto flex items-center justify-center px-4 md:px-10 group overflow-hidden">
+             {/* Navigation Arrows */}
+             <button 
+                onClick={prevPhoto}
+                className="absolute left-6 md:left-10 p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 z-10 border border-white/20 active:scale-95"
+             >
+                <ChevronLeft size={32} />
+             </button>
+
+             <div 
+                className="relative w-full h-full max-h-[80vh] flex items-center justify-center cursor-pointer group/image"
+                onClick={nextPhoto}
+                title="Next photo"
+             >
+                <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] group-hover/image:brightness-95 transition-all">
+                   <Image 
+                     src={property.images[activePhotoIndex]} 
+                     alt={`Slide ${activePhotoIndex + 1}`} 
+                     fill 
+                     className="object-contain"
+                     unoptimized
+                     priority
+                   />
+                </div>
+             </div>
+
+             <button 
+                onClick={nextPhoto}
+                className="absolute right-6 md:right-10 p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 z-10 border border-white/20 active:scale-95"
+             >
+                <ChevronRight size={32} />
+             </button>
+          </div>
+
+          {/* Thumbnail Strip */}
+          <div className="p-10 pb-16 flex flex-col items-center gap-4 w-full">
+             <div className="flex items-center gap-4 overflow-x-auto py-6 scrollbar-hide max-w-full px-10 no-scrollbar">
+                {property.images.map((img, i) => (
+                  <button 
+                    key={i} 
+                    ref={(el) => { thumbnailRefs.current[i] = el; }}
+                    onClick={() => setActivePhotoIndex(i)}
+                    className={`relative w-16 h-16 md:w-20 md:h-16 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${
+                      activePhotoIndex === i 
+                        ? "scale-110 ring-4 ring-orange-500 shadow-2xl z-10" 
+                        : "opacity-40 hover:opacity-100"
+                    }`}
+                  >
+                    <Image src={img} alt={`Thumb ${i+1}`} fill className="object-cover" unoptimized />
+                  </button>
+                ))}
+             </div>
+          </div>
+        </div>
+      )}
       
       <div className="max-w-[1280px] mx-auto px-4 md:px-10 pt-24 pb-20">
         {/* Header Navigation */}
@@ -192,42 +321,48 @@ export default function PropertyDetailsPage() {
         {/* Dynamic Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-2 rounded-[20px] overflow-hidden aspect-[4/3] md:aspect-[2/1] relative group mb-10">
           {/* Main Large Image */}
-          <div className="md:col-span-2 md:row-span-2 relative h-full">
+          <div className="md:col-span-2 md:row-span-2 relative h-full overflow-hidden">
             <Image 
               src={mainImage} 
               alt={property.listing_title} 
               fill 
-              className="object-cover hover:brightness-90 transition-all cursor-pointer"
+              className="object-cover hover:brightness-90 hover:scale-[1.03] transition-all duration-700 cursor-pointer"
               priority
               unoptimized
+              onClick={() => openGallery(0)}
             />
           </div>
-          {/* Smaller Images */}
+          {/* Smaller Images Integration */}
           {galleryImages.map((img, i) => (
-            <div key={i} className="hidden md:block relative h-full">
+            <div key={i} className="hidden md:block relative h-full overflow-hidden">
               <Image 
                 src={img} 
                 alt={`${property.listing_title} ${i + 2}`} 
                 fill 
-                className="object-cover hover:brightness-90 transition-all cursor-pointer"
+                className="object-cover hover:brightness-90 hover:scale-[1.05] transition-all duration-700 cursor-pointer"
                 unoptimized
+                onClick={() => openGallery(i + 1)}
               />
             </div>
           ))}
           {lastImage && (
-            <div className="hidden md:block relative h-full">
+            <div className="hidden md:block relative h-full overflow-hidden">
               <Image 
                 src={lastImage} 
                 alt={`${property.listing_title} last`} 
                 fill 
-                className="object-cover hover:brightness-90 transition-all cursor-pointer"
+                className="object-cover hover:brightness-90 hover:scale-[1.05] transition-all duration-700 cursor-pointer"
                 unoptimized
+                onClick={() => openGallery(4)}
               />
             </div>
           )}
           {/* Show all photos button */}
-          <button className="absolute bottom-6 right-6 bg-white border border-black rounded-lg px-4 py-2 text-sm font-bold shadow-md hover:bg-gray-50 flex items-center gap-2 z-10 transition-transform active:scale-95">
-            <Layout size={16} className="rotate-90" />
+          <button 
+            onClick={() => openGallery(0)}
+            className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md border border-gray-900/10 rounded-xl px-5 py-2.5 text-[13px] font-bold shadow-[0_4px_24px_-1px_rgba(0,0,0,0.2)] hover:bg-white hover:border-[#EC5B13] hover:text-[#EC5B13] flex items-center gap-2.5 z-10 transition-all duration-300 active:scale-95 group/btn"
+          >
+            <Layout size={16} className="rotate-0 group-hover/btn:scale-110 transition-transform" />
             Show all photos
           </button>
         </div>
