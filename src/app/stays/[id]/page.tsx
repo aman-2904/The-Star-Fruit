@@ -151,6 +151,7 @@ export default function PropertyDetailsPage() {
   const [isCopied, setIsCopied] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [hasMore, setHasMore] = useState(false);
@@ -258,6 +259,15 @@ export default function PropertyDetailsPage() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showAllPhotos, activePhotoIndex, property]);
+
+  // Hero Image Infinite Slideshow
+  useEffect(() => {
+    if (!property?.images || property.images.length <= 1 || showAllPhotos) return;
+    const interval = setInterval(() => {
+      setHeroImageIndex((prev) => (prev + 1) % property.images!.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [property?.images, showAllPhotos]);
 
   const handleToggleSave = async () => {
     if (!supabase) return;
@@ -550,17 +560,35 @@ export default function PropertyDetailsPage() {
         </div>
 
         {/* Dynamic Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-2 rounded-[20px] overflow-hidden aspect-[4/3] md:aspect-[2/1] relative group mb-10">
-          {/* Main Large Image */}
+        <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-2 rounded-[20px] overflow-hidden aspect-[4/3] md:aspect-[2/1] relative group mb-10 bg-gray-100">
+          {/* Main Large Image Slider */}
           <div className="md:col-span-2 md:row-span-2 relative h-full overflow-hidden">
-            <Image
-              src={mainImage}
-              alt={property.listing_title}
-              fill
-              className="object-cover hover:brightness-90 hover:scale-[1.03] transition-all duration-700 cursor-pointer"
-              priority
-              unoptimized
-              onClick={() => openGallery(0)}
+            {property.images && property.images.length > 0 ? (
+              property.images.map((img, i) => (
+                <Image
+                  key={i}
+                  src={img}
+                  alt={`${property.listing_title} - Photo ${i + 1}`}
+                  fill
+                  className={`object-cover transition-opacity duration-1000 absolute inset-0 ${i === heroImageIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                  priority={i === 0}
+                  unoptimized
+                />
+              ))
+            ) : (
+                <Image
+                  src="/images/stays/pool_villa.png"
+                  alt={property.listing_title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+            )}
+            
+            {/* Interactive Overlay Layer */}
+            <div 
+              className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-300 z-20 cursor-pointer"
+              onClick={() => openGallery(heroImageIndex)}
             />
           </div>
           {/* Smaller Images Integration */}
