@@ -149,6 +149,7 @@ export default function PropertyDetailsPage() {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -187,6 +188,17 @@ export default function PropertyDetailsPage() {
 
         if (propError) throw propError;
         setProperty(propertyData);
+
+        if (curSession) {
+          const { data: savedData } = await supabase
+            .from('saved_properties')
+            .select('id')
+            .eq('user_id', curSession.user.id)
+            .eq('property_id', id)
+            .maybeSingle(); // Use maybeSingle to prevent error if 0 rows
+            
+          if (savedData) setIsSaved(true);
+        }
 
         await fetchReviews();
       } catch (err) {
@@ -236,17 +248,45 @@ export default function PropertyDetailsPage() {
 
   // Handle Keyboard Navigation
   useEffect(() => {
-    if (!showAllPhotos) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setShowAllPhotos(false);
-      if (e.key === "ArrowRight") nextPhoto();
-      if (e.key === "ArrowLeft") prevPhoto();
+      if (!showAllPhotos || !property?.images) return;
+      if (e.key === 'ArrowRight') nextPhoto();
+      if (e.key === 'ArrowLeft') prevPhoto();
+      if (e.key === 'Escape') setShowAllPhotos(false);
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [showAllPhotos, activePhotoIndex, property?.images]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showAllPhotos, activePhotoIndex, property]);
+
+  const handleToggleSave = async () => {
+    if (!supabase) return;
+    if (!session) {
+      router.push("/login?redirect=/stays/" + id);
+      return;
+    }
+    
+    // Optimistic UI Update
+    const newSaveState = !isSaved;
+    setIsSaved(newSaveState);
+    
+    try {
+      if (!newSaveState) {
+        await supabase
+          .from('saved_properties')
+          .delete()
+          .eq('user_id', session.user.id)
+          .eq('property_id', id);
+      } else {
+        await supabase
+          .from('saved_properties')
+          .insert({ user_id: session.user.id, property_id: id });
+      }
+    } catch (err) {
+      console.error("Error toggling save:", err);
+      setIsSaved(!newSaveState); // Revert on failure
+    }
+  };
 
   // Prevent background scroll when any modal is open
   useEffect(() => {
@@ -465,8 +505,12 @@ export default function PropertyDetailsPage() {
               {isCopied ? <CheckCircle2 size={16} className="text-emerald-600" /> : <Share size={16} />}
               {isCopied ? "Copied!" : "Share"}
             </button>
-            <button className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline">
-              <Heart size={16} /> Save
+            <button 
+              onClick={handleToggleSave}
+              className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline"
+            >
+              <Heart size={16} className={isSaved ? "fill-[#EC5B13] text-[#EC5B13]" : ""} /> 
+              {isSaved ? "Saved" : "Save"}
             </button>
           </div>
         </div>

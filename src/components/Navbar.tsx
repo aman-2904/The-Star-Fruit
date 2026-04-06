@@ -119,9 +119,13 @@ export default function Navbar() {
                     <p className="text-[10px] uppercase tracking-widest text-gray-400 font-black">Account</p>
                     <p className="text-sm font-bold text-gray-900 truncate capitalize">{userFullName}</p>
                   </div>
-                  <button className="w-full text-left px-5 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors">
+                  <Link 
+                    href="/profile" 
+                    onClick={() => setShowUserMenu(false)}
+                    className="block w-full text-left px-5 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
                     My Profile
-                  </button>
+                  </Link>
                   <button className="w-full text-left px-5 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors">
                     My Bookings
                   </button>

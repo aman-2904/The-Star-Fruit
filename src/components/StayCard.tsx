@@ -1,6 +1,10 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Star, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 interface StayCardProps {
   id: string;
@@ -23,6 +27,60 @@ export default function StayCard({
   image, 
   trending 
 }: StayCardProps) {
+  const router = useRouter();
+  const [isSaved, setIsSaved] = useState(false);
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    async function checkSavedStatus() {
+      if (!supabase) return;
+      const { data: { session: curSession } } = await supabase.auth.getSession();
+      if (!curSession) return;
+      setSession(curSession);
+
+      const { data } = await supabase
+        .from('saved_properties')
+        .select('id')
+        .eq('user_id', curSession.user.id)
+        .eq('property_id', id)
+        .maybeSingle();
+
+      if (data) setIsSaved(true);
+    }
+    checkSavedStatus();
+  }, [id]);
+
+  const handleToggleSave = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!session) {
+      router.push("/login");
+      return;
+    }
+
+    const newSaveState = !isSaved;
+    setIsSaved(newSaveState);
+
+    try {
+      if (!supabase) return;
+      if (!newSaveState) {
+        await supabase
+          .from('saved_properties')
+          .delete()
+          .eq('user_id', session.user.id)
+          .eq('property_id', id);
+      } else {
+        await supabase
+          .from('saved_properties')
+          .insert({ user_id: session.user.id, property_id: id });
+      }
+    } catch (err) {
+      console.error("Error toggling save:", err);
+      setIsSaved(!newSaveState);
+    }
+  };
+
   return (
     <div className="w-full group cursor-pointer">
       <Link href={`/stays/${id}`}>
@@ -34,9 +92,16 @@ export default function StayCard({
             className="object-cover group-hover:scale-110 transition-transform duration-1000"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
           />
-          <div className="absolute top-4 right-4 p-2.5 bg-white/20 backdrop-blur-xl rounded-full text-white hover:bg-white hover:text-black transition-all shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-500">
-            <Heart size={18} className="hover:fill-current" />
-          </div>
+          <button 
+            onClick={handleToggleSave}
+            className={`absolute top-4 right-4 p-2.5 backdrop-blur-xl rounded-full transition-all shadow-lg duration-300 ${
+              isSaved 
+                ? "bg-white text-[#EC5B13] opacity-100" 
+                : "bg-white/20 text-white hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
+            }`}
+          >
+            <Heart size={18} className={isSaved ? "fill-[#EC5B13]" : "hover:fill-current"} />
+          </button>
           {trending && (
             <div className="absolute bottom-4 left-4 px-3 py-1 bg-[#FF5A5F] text-white text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg">
               Trending
