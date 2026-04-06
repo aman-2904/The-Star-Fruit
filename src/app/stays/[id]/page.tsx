@@ -509,7 +509,7 @@ export default function PropertyDetailsPage() {
               onClick={handleToggleSave}
               className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline"
             >
-              <Heart size={16} className={isSaved ? "fill-[#EC5B13] text-[#EC5B13]" : ""} /> 
+              <Heart size={16} className={isSaved ? "fill-red-500 text-red-500" : ""} /> 
               {isSaved ? "Saved" : "Save"}
             </button>
           </div>

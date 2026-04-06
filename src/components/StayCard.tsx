@@ -96,11 +96,11 @@ export default function StayCard({
             onClick={handleToggleSave}
             className={`absolute top-4 right-4 p-2.5 backdrop-blur-xl rounded-full transition-all shadow-lg duration-300 ${
               isSaved 
-                ? "bg-white text-[#EC5B13] opacity-100" 
+                ? "bg-white text-red-500 opacity-100" 
                 : "bg-white/20 text-white hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
             }`}
           >
-            <Heart size={18} className={isSaved ? "fill-[#EC5B13]" : "hover:fill-current"} />
+            <Heart size={18} className={isSaved ? "fill-red-500" : "hover:fill-current"} />
           </button>
           {trending && (
             <div className="absolute bottom-4 left-4 px-3 py-1 bg-[#FF5A5F] text-white text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg">
