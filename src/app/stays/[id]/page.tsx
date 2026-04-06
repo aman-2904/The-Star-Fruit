@@ -4,19 +4,19 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { 
-  Star, MapPin, Share, Heart, Users, BedDouble, Bath, 
-  ChevronRight, CheckCircle2, ShieldCheck, Calendar, 
-  Wifi, UtensilsCrossed, Wind, Tv2, Waves, Umbrella, 
+import {
+  Star, MapPin, Share, Heart, Users, BedDouble, Bath,
+  ChevronRight, CheckCircle2, ShieldCheck, Calendar,
+  Wifi, UtensilsCrossed, Wind, Tv2, Waves, Umbrella,
   ChefHat, Dumbbell, Flame, Loader2, ArrowLeft, User,
-  X, ChevronLeft, Monitor, Sparkles, Coffee, Car, 
-  Shield, Thermometer, Laptop, Briefcase, Zap, 
+  X, ChevronLeft, Monitor, Sparkles, Coffee, Car,
+  Shield, Thermometer, Laptop, Briefcase, Zap,
   Sun, Moon, Accessibility, ParkingCircle,
   HeartPulse, BellElectric, Trophy, WashingMachine,
   Refrigerator, Microwave, Shovel, Trees, Home, Music,
   UserCheck, Baby, Ghost, Layout, Smartphone, Book,
   Gamepad2, GraduationCap, Beer, Wine, CupSoda, Shirt,
-  DoorOpen, Lock, Fan, Speaker, CalendarDays, Boxes, 
+  DoorOpen, Lock, Fan, Speaker, CalendarDays, Boxes,
   ShowerHead, Soup
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
@@ -175,7 +175,7 @@ export default function PropertyDetailsPage() {
     async function fetchData() {
       try {
         if (!supabase) return;
-        
+
         const { data: { session: curSession } } = await supabase.auth.getSession();
         setSession(curSession);
 
@@ -223,11 +223,11 @@ export default function PropertyDetailsPage() {
     };
 
     checkClamp(); // Initial check
-    
+
     // Check again after a delay in case custom fonts change layout dimensions
     const timeoutId = setTimeout(checkClamp, 300);
     window.addEventListener('resize', checkClamp);
-    
+
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener('resize', checkClamp);
@@ -323,12 +323,12 @@ export default function PropertyDetailsPage() {
     );
   }
 
-  const avgRating = reviews.length > 0 
+  const avgRating = reviews.length > 0
     ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(2)
     : "New";
 
   const mainImage = property.images?.[0] || "/images/stays/pool_villa.png";
-  const galleryImages = property.images?.slice(1, 4) || []; 
+  const galleryImages = property.images?.slice(1, 4) || [];
   const lastImage = property.images?.[4];
 
   return (
@@ -338,7 +338,7 @@ export default function PropertyDetailsPage() {
       {/* Premium Full Screen Photo Gallery Modal */}
       {showAllPhotos && property?.images && (
         <div className="fixed inset-0 z-[100] bg-black flex flex-col animate-in fade-in zoom-in duration-300">
-          
+
           {/* Top Bar: Counter and Close */}
           <div className="p-6 flex justify-between items-center text-white z-10">
             <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ export default function PropertyDetailsPage() {
                 Photo {activePhotoIndex + 1} of {property.images.length}
               </span>
             </div>
-            <button 
+            <button
               onClick={() => setShowAllPhotos(false)}
               className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all group active:scale-90"
             >
@@ -356,57 +356,56 @@ export default function PropertyDetailsPage() {
 
           {/* Main Stage (Image Area) */}
           <div className="relative flex-1 w-full max-w-7xl mx-auto flex items-center justify-center px-4 md:px-10 group overflow-hidden">
-             {/* Navigation Arrows */}
-             <button 
-                onClick={prevPhoto}
-                className="absolute left-6 md:left-10 p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 z-10 border border-white/20 active:scale-95"
-             >
-                <ChevronLeft size={32} />
-             </button>
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevPhoto}
+              className="absolute left-6 md:left-10 p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 z-10 border border-white/20 active:scale-95"
+            >
+              <ChevronLeft size={32} />
+            </button>
 
-             <div 
-                className="relative w-full h-full max-h-[80vh] flex items-center justify-center cursor-pointer group/image"
-                onClick={nextPhoto}
-                title="Next photo"
-             >
-                <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] group-hover/image:brightness-95 transition-all">
-                   <Image 
-                     src={property.images[activePhotoIndex]} 
-                     alt={`Slide ${activePhotoIndex + 1}`} 
-                     fill 
-                     className="object-contain"
-                     unoptimized
-                     priority
-                   />
-                </div>
-             </div>
+            <div
+              className="relative w-full h-full max-h-[80vh] flex items-center justify-center cursor-pointer group/image"
+              onClick={nextPhoto}
+              title="Next photo"
+            >
+              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] group-hover/image:brightness-95 transition-all">
+                <Image
+                  src={property.images[activePhotoIndex]}
+                  alt={`Slide ${activePhotoIndex + 1}`}
+                  fill
+                  className="object-contain"
+                  unoptimized
+                  priority
+                />
+              </div>
+            </div>
 
-             <button 
-                onClick={nextPhoto}
-                className="absolute right-6 md:right-10 p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 z-10 border border-white/20 active:scale-95"
-             >
-                <ChevronRight size={32} />
-             </button>
+            <button
+              onClick={nextPhoto}
+              className="absolute right-6 md:right-10 p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 z-10 border border-white/20 active:scale-95"
+            >
+              <ChevronRight size={32} />
+            </button>
           </div>
 
           {/* Thumbnail Strip */}
           <div className="p-10 pb-16 flex flex-col items-center gap-4 w-full">
-             <div className="flex items-center gap-4 overflow-x-auto py-6 scrollbar-hide max-w-full px-10 no-scrollbar">
-                {property.images.map((img, i) => (
-                  <button 
-                    key={i} 
-                    ref={(el) => { thumbnailRefs.current[i] = el; }}
-                    onClick={() => setActivePhotoIndex(i)}
-                    className={`relative w-16 h-16 md:w-20 md:h-16 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${
-                      activePhotoIndex === i 
-                        ? "scale-110 ring-4 ring-orange-500 shadow-2xl z-10" 
-                        : "opacity-40 hover:opacity-100"
+            <div className="flex items-center gap-4 overflow-x-auto py-6 scrollbar-hide max-w-full px-10 no-scrollbar">
+              {property.images.map((img, i) => (
+                <button
+                  key={i}
+                  ref={(el) => { thumbnailRefs.current[i] = el; }}
+                  onClick={() => setActivePhotoIndex(i)}
+                  className={`relative w-16 h-16 md:w-20 md:h-16 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${activePhotoIndex === i
+                      ? "scale-110 ring-4 ring-orange-500 shadow-2xl z-10"
+                      : "opacity-40 hover:opacity-100"
                     }`}
-                  >
-                    <Image src={img} alt={`Thumb ${i+1}`} fill className="object-cover" unoptimized />
-                  </button>
-                ))}
-             </div>
+                >
+                  <Image src={img} alt={`Thumb ${i + 1}`} fill className="object-cover" unoptimized />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -418,14 +417,14 @@ export default function PropertyDetailsPage() {
             {/* Header */}
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10 rounded-t-2xl">
               <h2 className="text-xl font-bold text-gray-900">What this place offers</h2>
-              <button 
+              <button
                 onClick={() => setShowAmenitiesModal(false)}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <X size={20} className="text-gray-900" />
               </button>
             </div>
-            
+
             {/* Content */}
             <div className="p-6 overflow-y-auto">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
@@ -447,11 +446,11 @@ export default function PropertyDetailsPage() {
           </div>
         </div>
       )}
-      
-      <div className="max-w-[1280px] mx-auto px-4 md:px-10 pt-24 pb-20">
+
+      <div className="max-w-[1280px] mx-auto px-4 md:px-10 pt-6 pb-20">
         {/* Header Navigation */}
         <div className="flex items-center justify-between mb-6">
-          <button 
+          <button
             onClick={() => router.back()}
             className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors font-medium text-sm"
           >
@@ -459,11 +458,11 @@ export default function PropertyDetailsPage() {
             Back
           </button>
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={handleShare}
               className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline"
             >
-              {isCopied ? <CheckCircle2 size={16} className="text-emerald-600" /> : <Share size={16} />} 
+              {isCopied ? <CheckCircle2 size={16} className="text-emerald-600" /> : <Share size={16} />}
               {isCopied ? "Copied!" : "Share"}
             </button>
             <button className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline">
@@ -510,10 +509,10 @@ export default function PropertyDetailsPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-2 rounded-[20px] overflow-hidden aspect-[4/3] md:aspect-[2/1] relative group mb-10">
           {/* Main Large Image */}
           <div className="md:col-span-2 md:row-span-2 relative h-full overflow-hidden">
-            <Image 
-              src={mainImage} 
-              alt={property.listing_title} 
-              fill 
+            <Image
+              src={mainImage}
+              alt={property.listing_title}
+              fill
               className="object-cover hover:brightness-90 hover:scale-[1.03] transition-all duration-700 cursor-pointer"
               priority
               unoptimized
@@ -523,10 +522,10 @@ export default function PropertyDetailsPage() {
           {/* Smaller Images Integration */}
           {galleryImages.map((img, i) => (
             <div key={i} className="hidden md:block relative h-full overflow-hidden">
-              <Image 
-                src={img} 
-                alt={`${property.listing_title} ${i + 2}`} 
-                fill 
+              <Image
+                src={img}
+                alt={`${property.listing_title} ${i + 2}`}
+                fill
                 className="object-cover hover:brightness-90 hover:scale-[1.05] transition-all duration-700 cursor-pointer"
                 unoptimized
                 onClick={() => openGallery(i + 1)}
@@ -535,10 +534,10 @@ export default function PropertyDetailsPage() {
           ))}
           {lastImage && (
             <div className="hidden md:block relative h-full overflow-hidden">
-              <Image 
-                src={lastImage} 
-                alt={`${property.listing_title} last`} 
-                fill 
+              <Image
+                src={lastImage}
+                alt={`${property.listing_title} last`}
+                fill
                 className="object-cover hover:brightness-90 hover:scale-[1.05] transition-all duration-700 cursor-pointer"
                 unoptimized
                 onClick={() => openGallery(4)}
@@ -546,7 +545,7 @@ export default function PropertyDetailsPage() {
             </div>
           )}
           {/* Show all photos button */}
-          <button 
+          <button
             onClick={() => openGallery(0)}
             className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md border border-gray-900/10 rounded-xl px-5 py-2.5 text-[13px] font-bold shadow-[0_4px_24px_-1px_rgba(0,0,0,0.2)] hover:bg-white hover:border-[#EC5B13] hover:text-[#EC5B13] flex items-center gap-2.5 z-10 transition-all duration-300 active:scale-95 group/btn"
           >
@@ -557,7 +556,7 @@ export default function PropertyDetailsPage() {
 
         {/* Content Layout: Main Info | Sticky Sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 relative">
-          
+
           {/* Left Column: Details */}
           <div className="lg:col-span-2">
             <div className="flex justify-between items-start pb-8 border-b border-gray-100">
@@ -602,19 +601,19 @@ export default function PropertyDetailsPage() {
             {/* Description Section */}
             <div className="py-8 border-b border-gray-100">
               <div className="relative">
-                <p 
+                <p
                   ref={descriptionRef}
                   className={`text-gray-700 leading-[1.6] whitespace-pre-line font-medium transition-all duration-300 ${isExpanded ? "" : "line-clamp-4"}`}
                 >
                   {property.listing_description || property.description || "Welcome to our stunning property. This luxury space offers an unparalleled blend of modern architecture and tropical charm..."}
                 </p>
-                
+
                 {hasMore && (
-                  <button 
+                  <button
                     onClick={() => setIsExpanded(!isExpanded)}
                     className="flex items-center gap-1 font-bold underline text-gray-900 mt-4 hover:text-[#EC5B13] transition-colors"
                   >
-                    {isExpanded ? "Show less" : "Show more"} 
+                    {isExpanded ? "Show less" : "Show more"}
                     <ChevronRight size={18} className={`transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} />
                   </button>
                 )}
@@ -634,15 +633,15 @@ export default function PropertyDetailsPage() {
                     </div>
                   );
                 }) || (
-                  ["Private infinity pool", "Chef on call", "Gourmet kitchen", "Fast wifi - 500 Mbps", "Central air conditioning", "Free parking on premises"].map(item => (
-                    <div key={item} className="flex items-center gap-4 text-gray-700">
-                      <span className="text-gray-500"><CheckCircle2 size={18} /></span>
-                      <span className="font-medium">{item}</span>
-                    </div>
-                  ))
-                )}
+                    ["Private infinity pool", "Chef on call", "Gourmet kitchen", "Fast wifi - 500 Mbps", "Central air conditioning", "Free parking on premises"].map(item => (
+                      <div key={item} className="flex items-center gap-4 text-gray-700">
+                        <span className="text-gray-500"><CheckCircle2 size={18} /></span>
+                        <span className="font-medium">{item}</span>
+                      </div>
+                    ))
+                  )}
               </div>
-              <button 
+              <button
                 onClick={() => setShowAmenitiesModal(true)}
                 className="px-6 py-3 border border-black rounded-xl font-bold hover:bg-gray-50 transition-colors"
               >
@@ -668,7 +667,7 @@ export default function PropertyDetailsPage() {
                       </div>
                     );
                   })}
-                  
+
                   {/* Custom Rules */}
                   {property.custom_rules?.map((rule, i) => (
                     <div key={i} className="flex items-start gap-3 text-gray-700">
@@ -689,7 +688,7 @@ export default function PropertyDetailsPage() {
                   <span className="text-2xl font-bold text-gray-900">Inquiry</span>
                 </div>
               </div>
-              
+
               <div className="border border-gray-300 rounded-[14px] overflow-hidden mb-6">
                 <div className="grid grid-cols-2 border-b border-gray-300">
                   <div className="p-3 border-r border-gray-300 cursor-pointer hover:bg-gray-50 transition-colors">
@@ -724,9 +723,9 @@ export default function PropertyDetailsPage() {
               <button className="w-full py-4 bg-[#EC5B13] hover:bg-[#d44f0f] text-white rounded-xl font-bold text-lg transition-all shadow-lg active:scale-[0.98] mb-4">
                 Inquire Now
               </button>
-              
+
               <p className="text-center text-gray-500 text-xs font-semibold mb-6">You won't be charged yet</p>
-              
+
               <div className="pt-6 border-t border-gray-100 flex items-center justify-center gap-2 text-gray-500 hover:text-black transition-colors cursor-pointer text-xs font-bold underline uppercase tracking-widest">
                 <MapPin size={14} />
                 Report this listing
@@ -737,67 +736,67 @@ export default function PropertyDetailsPage() {
 
         {/* Real Reviews Section */}
         <div className="mt-20 pt-16 border-t border-gray-100">
-           <div className="flex items-center gap-3 mb-12">
-              <Star size={24} className="fill-black" />
-              <h2 className="text-3xl font-serif text-gray-900">
-                {avgRating} {reviews.length > 0 && `• ${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`}
-              </h2>
-           </div>
-           
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16 mb-20">
-              {reviews.length > 0 ? (
-                reviews.map(review => (
-                  <div key={review.id} className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
-                        <User size={24} />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-gray-900 capitalize">{review.user_name}</h4>
-                        <div className="flex items-center gap-2">
-                           <div className="flex items-center gap-0.5">
-                             {[...Array(5)].map((_, i) => (
-                               <Star key={i} size={10} className={i < review.rating ? "fill-black" : "text-gray-200"} />
-                             ))}
-                           </div>
-                           <span className="text-xs text-gray-400 font-medium">
-                              {new Date(review.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                           </span>
+          <div className="flex items-center gap-3 mb-12">
+            <Star size={24} className="fill-black" />
+            <h2 className="text-3xl font-serif text-gray-900">
+              {avgRating} {reviews.length > 0 && `• ${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16 mb-20">
+            {reviews.length > 0 ? (
+              reviews.map(review => (
+                <div key={review.id} className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
+                      <User size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 capitalize">{review.user_name}</h4>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={10} className={i < review.rating ? "fill-black" : "text-gray-200"} />
+                          ))}
                         </div>
+                        <span className="text-xs text-gray-400 font-medium">
+                          {new Date(review.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                        </span>
                       </div>
                     </div>
-                    <p className="text-gray-700 leading-relaxed font-medium">
-                      {review.comment}
-                    </p>
                   </div>
-                ))
-              ) : (
-                <div className="col-span-full py-12 text-center bg-gray-50 rounded-[32px] border border-dashed border-gray-200">
-                  <p className="text-gray-500 font-medium italic">No reviews yet. Be the first to share your experience!</p>
+                  <p className="text-gray-700 leading-relaxed font-medium">
+                    {review.comment}
+                  </p>
                 </div>
-              )}
-           </div>
+              ))
+            ) : (
+              <div className="col-span-full py-12 text-center bg-gray-50 rounded-[32px] border border-dashed border-gray-200">
+                <p className="text-gray-500 font-medium italic">No reviews yet. Be the first to share your experience!</p>
+              </div>
+            )}
+          </div>
 
-           {/* Review Submission Form */}
-           <div className="max-w-2xl">
-              {session ? (
-                <ReviewForm propertyId={property.id} onReviewSubmitted={fetchReviews} />
-              ) : (
-                <div className="bg-gray-50 rounded-[32px] p-8 text-center border border-gray-100">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Want to share your experience?</h3>
-                  <p className="text-gray-500 font-medium mb-6">Log in to leave a star rating and comment on this property.</p>
-                  <Link 
-                    href="/login" 
-                    className="inline-block px-8 py-3 bg-[#1A1A24] text-white font-bold rounded-xl hover:bg-black transition-all shadow-md"
-                  >
-                    Log In to Review
-                  </Link>
-                </div>
-              )}
-           </div>
+          {/* Review Submission Form */}
+          <div className="max-w-2xl">
+            {session ? (
+              <ReviewForm propertyId={property.id} onReviewSubmitted={fetchReviews} />
+            ) : (
+              <div className="bg-gray-50 rounded-[32px] p-8 text-center border border-gray-100">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Want to share your experience?</h3>
+                <p className="text-gray-500 font-medium mb-6">Log in to leave a star rating and comment on this property.</p>
+                <Link
+                  href="/login"
+                  className="inline-block px-8 py-3 bg-[#1A1A24] text-white font-bold rounded-xl hover:bg-black transition-all shadow-md"
+                >
+                  Log In to Review
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      
+
       <Footer />
     </main>
   );
