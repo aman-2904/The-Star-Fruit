@@ -267,12 +267,21 @@ export default function StaysSection({
     return acc;
   }, {});
 
+  const activeFiltersCount = [
+    advancedFilters.propertyType ? 1 : 0,
+    advancedFilters.amenities.length,
+    advancedFilters.bookingOptions.selfCheckIn ? 1 : 0,
+    advancedFilters.bookingOptions.allowsPets ? 1 : 0,
+    advancedFilters.standoutStays ? 1 : 0,
+  ].reduce((acc, current) => acc + current, 0);
+
   return (
     <section className={`pb-24 bg-white overflow-hidden ${viewMode === 'carousel' ? 'pt-20 md:pt-32' : 'pt-10'}`}>
       <div className="max-w-[1440px] mx-auto px-4 md:px-10">
         {/* Category Icons & Filters Button */}
         <CategoryFilters
           activeCategories={activeCategories}
+          activeFiltersCount={activeFiltersCount}
           onCategoryChange={(id) => {
             const newCategories = activeCategories.includes(id)
               ? activeCategories.filter(c => c !== id)

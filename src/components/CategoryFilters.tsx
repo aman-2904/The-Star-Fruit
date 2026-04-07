@@ -14,9 +14,10 @@ interface CategoryFiltersProps {
   activeCategories: string[];
   onCategoryChange: (id: string) => void;
   onFiltersClick: () => void;
+  activeFiltersCount: number;
 }
 
-export default function CategoryFilters({ activeCategories, onCategoryChange, onFiltersClick }: CategoryFiltersProps) {
+export default function CategoryFilters({ activeCategories, onCategoryChange, onFiltersClick, activeFiltersCount }: CategoryFiltersProps) {
 
   return (
     <div className="flex items-center gap-6 mb-10 w-full overflow-hidden border-b border-gray-100 pb-1">
@@ -24,10 +25,16 @@ export default function CategoryFilters({ activeCategories, onCategoryChange, on
       <div className="flex-shrink-0 flex items-center h-full pr-4 md:pr-6 border-r border-gray-200 py-2">
         <button 
           onClick={onFiltersClick}
-          className="flex items-center gap-2.5 px-6 py-3 bg-[#FFF7F4] border border-[#FFD0B9] rounded-[14px] text-[13px] md:text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all shadow-sm"
+          className="relative flex items-center gap-2.5 px-6 py-3 bg-[#FFF7F4] border border-[#FFD0B9] rounded-[14px] text-[13px] md:text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all shadow-sm"
         >
           <SlidersHorizontal size={16} strokeWidth={2.5} />
           Filters
+          
+          {activeFiltersCount > 0 && (
+            <div className="absolute -top-2 -right-2 w-6 h-6 bg-gray-900 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-lg animate-in fade-in zoom-in duration-300">
+              {activeFiltersCount}
+            </div>
+          )}
         </button>
       </div>
 
