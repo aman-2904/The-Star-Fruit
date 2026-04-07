@@ -20,6 +20,7 @@ interface Property {
   house_rules?: any;
   // Mocking rating for now as it's not in DB
   rating?: number;
+  description?: string;
 }
 
 const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) => {
@@ -81,6 +82,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
   );
 };
 
+import FilterModal, { AdvancedFilters } from "./FilterModal";
 import Link from "next/link";
 
 interface StaysSectionProps {
@@ -97,6 +99,19 @@ export default function StaysSection({
   listingDescription
 }: StaysSectionProps) {
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilters>({
+    propertyType: "",
+    amenities: [],
+    bookingOptions: { selfCheckIn: false, allowsPets: false },
+    standoutStays: "",
+  });
+  const [draftFilters, setDraftFilters] = useState<AdvancedFilters>({
+    propertyType: "",
+    amenities: [],
+    bookingOptions: { selfCheckIn: false, allowsPets: false },
+    standoutStays: "",
+  });
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -122,8 +137,56 @@ export default function StaysSection({
     fetchProperties();
   }, []);
 
-  const filteredProperties = properties.filter((prop) => {
-    // Category Icons Filter (OR logic between selected categories)
+  const getFilteredProperties = (advFilters: AdvancedFilters) => properties.filter((prop) => {
+    // 1. Advanced Filters from FilterModal
+    if (advFilters.propertyType) {
+      if (prop.category?.toLowerCase() !== advFilters.propertyType.toLowerCase() && 
+          !prop.listing_title?.toLowerCase().includes(advFilters.propertyType.toLowerCase())) {
+        return false;
+      }
+    }
+
+
+
+    if (advFilters.amenities.length > 0) {
+      const hasAllAmenities = advFilters.amenities.every(amenity => {
+        const search = amenity.toLowerCase().replace(/_/g, ' ');
+        return prop.amenities?.some((a: string) => {
+          const stored = a.toLowerCase().replace(/_/g, ' ');
+          return stored === search || stored.includes(search);
+        });
+      });
+      if (!hasAllAmenities) return false;
+    }
+
+    if (advFilters.bookingOptions.selfCheckIn) {
+      // Mock search or look for self check-in in rules/amenities if boolean doesn't exist
+      const hasSelfCheckin = prop.amenities?.some((a: string) => a.toLowerCase().includes("self check-in") || a.toLowerCase().includes("lockbox"));
+      if (!hasSelfCheckin) return false;
+    }
+
+    if (advFilters.bookingOptions.allowsPets) {
+      const houseRules = prop.house_rules || {};
+      const isAllowed = 
+        houseRules.pets === true || 
+        houseRules.pets_allowed === true || 
+        houseRules.no_pets === false ||
+        prop.amenities?.some((a: string) => a.toLowerCase().includes("pet"));
+      if (!isAllowed) return false;
+    }
+
+    if (advFilters.standoutStays === "Guest favourite") {
+      // Mock logic: e.g. rating > 4.8 or something similar if metadata allows, otherwise hardcode true for now
+      if (prop.rating && prop.rating < 4.8) return false;
+    } else if (advFilters.standoutStays === "Luxe") {
+      const isLuxe = 
+        prop.category?.toLowerCase().includes("luxe") || 
+        prop.listing_title?.toLowerCase().includes("luxe") ||
+        prop.amenities?.some((a: string) => a.toLowerCase().includes("luxe"));
+      if (!isLuxe) return false;
+    }
+
+    // 2. Category Icons Filter (OR logic between selected categories)
     if (activeCategories.length > 0) {
       const matchesCategory = activeCategories.some(cat => {
         if (cat === "pool") return prop.amenities?.some((a: string) => a.toLowerCase().includes("pool"));
@@ -141,6 +204,8 @@ export default function StaysSection({
     return true;
   });
 
+  const filteredProperties = getFilteredProperties(advancedFilters);
+
   // For Home page carousel: combine all stays into "Top Rated Stays in Goa"
   // For Listing page: show all stays grouped or in a single grid
   const groupedProperties = properties.reduce((acc: Record<string, Property[]>, prop) => {
@@ -153,7 +218,7 @@ export default function StaysSection({
   return (
     <section className={`pb-24 bg-white overflow-hidden ${viewMode === 'carousel' ? 'pt-20 md:pt-32' : 'pt-10'}`}>
       <div className="max-w-[1440px] mx-auto px-4 md:px-10">
-        {/* Category Icons */}
+        {/* Category Icons & Filters Button */}
         <CategoryFilters
           activeCategories={activeCategories}
           onCategoryChange={(id) => {
@@ -163,6 +228,20 @@ export default function StaysSection({
                 : [...prev, id]
             );
           }}
+          onFiltersClick={() => setIsFilterModalOpen(true)}
+        />
+        
+        <FilterModal 
+          isOpen={isFilterModalOpen}
+          onClose={() => setIsFilterModalOpen(false)}
+          initialFilters={advancedFilters}
+          draftFilters={draftFilters}
+          onDraftFiltersChange={setDraftFilters}
+          onApply={(filters) => {
+            setAdvancedFilters(filters);
+            setIsFilterModalOpen(false);
+          }}
+          resultCount={getFilteredProperties(draftFilters).length}
         />
 
 
