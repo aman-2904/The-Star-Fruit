@@ -50,8 +50,8 @@ export default function Navbar() {
         {/* Left: Menu Items (Desktop) */}
         <div className="hidden lg:flex items-center space-x-12">
           <Link href="#" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Villas</Link>
-          <Link href="#" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Cruise</Link>
           <Link href="#" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Stays</Link>
+          <Link href="#" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Cruise</Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -152,8 +152,8 @@ export default function Navbar() {
         <div className="lg:hidden fixed left-0 right-0 top-[60px] md:top-[68px] bg-white border-b border-gray-100 px-6 py-4 shadow-sm z-40 animate-in slide-in-from-top-2">
           <div className="flex flex-col space-y-4">
             <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Villas</Link>
-            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Cruise</Link>
             <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Stays</Link>
+            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Cruise</Link>
             <div className="border-t border-gray-100 pt-4 mt-2">
               {(!session || session.user.user_metadata?.role !== 'user') && (
                 <Link 
