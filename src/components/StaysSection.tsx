@@ -112,7 +112,7 @@ export default function StaysSection({
   listingTitle,
   listingDescription
 }: StaysSectionProps) {
-  const [activeCategories, setActiveCategories] = useState<string[]>(["pool"]);
+  const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
