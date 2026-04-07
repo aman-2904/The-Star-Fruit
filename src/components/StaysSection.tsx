@@ -21,7 +21,7 @@ interface Property {
 
 const FilterDropdown = ({ label, options, value, onChange }: { label: string, options: string[], value: string, onChange: (val: string) => void }) => (
   <div className="relative group">
-    <select 
+    <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className="appearance-none flex items-center gap-3 pl-6 pr-10 py-2.5 bg-[#FFF7F4] border border-[#FFD0B9] rounded-full text-[13px] md:text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all shadow-sm outline-none cursor-pointer"
@@ -77,7 +77,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
       >
         {stays.map((property: Property) => (
           <div key={property.id} className="flex-shrink-0 w-[80vw] sm:w-[280px] lg:w-[calc((100%-96px)/5)] snap-center">
-            <StayCard 
+            <StayCard
               id={property.id}
               title={property.listing_title}
               location={property.city}
@@ -103,8 +103,8 @@ interface StaysSectionProps {
   listingDescription?: string;
 }
 
-export default function StaysSection({ 
-  viewMode = "carousel", 
+export default function StaysSection({
+  viewMode = "carousel",
   title,
   listingTitle,
   listingDescription
@@ -154,42 +154,42 @@ export default function StaysSection({
     <section className={`pb-24 bg-white overflow-hidden ${viewMode === 'carousel' ? 'pt-20 md:pt-32' : 'pt-10'}`}>
       <div className="max-w-[1440px] mx-auto px-4 md:px-10">
         {/* Category Icons */}
-        <CategoryFilters 
-          activeCategories={activeCategories} 
+        <CategoryFilters
+          activeCategories={activeCategories}
           onCategoryChange={(id) => {
-            setActiveCategories(prev => 
-              prev.includes(id) 
-                ? prev.filter(c => c !== id) 
+            setActiveCategories(prev =>
+              prev.includes(id)
+                ? prev.filter(c => c !== id)
                 : [...prev, id]
             );
-          }} 
+          }}
         />
 
         {/* Property Filters Row */}
         <div className="flex flex-wrap items-center gap-4 mb-16 md:justify-center">
-          <FilterDropdown 
-            label="Review Score" 
-            options={["9+ Superb", "8+ Very Good", "7+ Good"]} 
+          <FilterDropdown
+            label="Review Score"
+            options={["9+ Superb", "8+ Very Good", "7+ Good"]}
             value={filters.reviewScore}
-            onChange={(val) => setFilters({...filters, reviewScore: val})}
+            onChange={(val) => setFilters({ ...filters, reviewScore: val })}
           />
-          <FilterDropdown 
-            label="Hotel Star" 
-            options={["5 Stars", "4 Stars", "3 Stars"]} 
+          <FilterDropdown
+            label="Hotel Star"
+            options={["5 Stars", "4 Stars", "3 Stars"]}
             value={filters.hotelStar}
-            onChange={(val) => setFilters({...filters, hotelStar: val})}
+            onChange={(val) => setFilters({ ...filters, hotelStar: val })}
           />
-          <FilterDropdown 
-            label="Facilities" 
-            options={["Pool", "Spa", "Gym", "Restaurant"]} 
+          <FilterDropdown
+            label="Facilities"
+            options={["Pool", "Spa", "Gym", "Restaurant"]}
             value={filters.facilities}
-            onChange={(val) => setFilters({...filters, facilities: val})}
+            onChange={(val) => setFilters({ ...filters, facilities: val })}
           />
-          <FilterDropdown 
-            label="Hotel Theme" 
-            options={["Luxury", "Boutique", "Resort", "Business"]} 
+          <FilterDropdown
+            label="Hotel Theme"
+            options={["Luxury", "Boutique", "Resort", "Business"]}
             value={filters.theme}
-            onChange={(val) => setFilters({...filters, theme: val})}
+            onChange={(val) => setFilters({ ...filters, theme: val })}
           />
 
           <button className="flex items-center gap-2.5 px-8 py-3 bg-[#FFF7F4] border border-[#FFD0B9] rounded-full text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all shadow-sm">
@@ -225,13 +225,13 @@ export default function StaysSection({
           </div>
         ) : viewMode === "carousel" ? (
           <div>
-            <StayCarousel 
-              title={title || "Top Rated Stays in Goa"} 
-              stays={properties} 
+            <StayCarousel
+              title={title || "Top Rated Stays in Goa"}
+              stays={properties}
             />
             <div className="flex justify-center mt-8">
-              <Link 
-                href="/stays" 
+              <Link
+                href="/stays"
                 className="px-12 py-4 bg-black text-white text-[13px] font-black uppercase tracking-[0.2em] rounded-full hover:bg-gray-900 transition-all shadow-xl hover:scale-105 active:scale-95"
               >
                 View More Stays
@@ -239,10 +239,10 @@ export default function StaysSection({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
             {properties.map((property: Property) => (
-              <StayCard 
-                key={property.id} 
+              <StayCard
+                key={property.id}
                 id={property.id}
                 title={property.listing_title}
                 location={property.city}
