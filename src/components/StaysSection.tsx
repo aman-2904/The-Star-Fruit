@@ -15,6 +15,9 @@ interface Property {
   bedrooms?: number;
   images: string[];
   status: string;
+  // Metadata for filtering
+  amenities?: string[];
+  house_rules?: any;
   // Mocking rating for now as it's not in DB
   rating?: number;
 }
@@ -141,6 +144,40 @@ export default function StaysSection({
     fetchProperties();
   }, []);
 
+  const filteredProperties = properties.filter((prop) => {
+    // 1. Dropdown Filters
+    if (filters.facilities) {
+      const fac = filters.facilities.toLowerCase();
+      const hasFac = prop.amenities?.some((a: string) => a.toLowerCase().includes(fac) || a.toLowerCase() === fac);
+      if (!hasFac) return false;
+    }
+    
+    if (filters.theme) {
+      const theme = filters.theme.toLowerCase();
+      if (!prop.category?.toLowerCase().includes(theme) && 
+          !prop.listing_title?.toLowerCase().includes(theme)) {
+        return false;
+      }
+    }
+
+    // 2. Category Icons Filter (OR logic between selected categories)
+    if (activeCategories.length > 0) {
+      const matchesCategory = activeCategories.some(cat => {
+        if (cat === "pool") return prop.amenities?.some((a: string) => a.toLowerCase().includes("pool"));
+        if (cat === "beach") return prop.amenities?.some((a: string) => a.toLowerCase().includes("beach"));
+        if (cat === "pet") return prop.house_rules?.pets_allowed === true;
+        if (cat === "party") return prop.house_rules?.events_allowed === true;
+        if (cat === "work") return prop.amenities?.some((a: string) => a.toLowerCase().includes("wifi") || a.toLowerCase().includes("workspace") || a.toLowerCase().includes("internet"));
+        if (cat === "heritage") return prop.category?.toLowerCase().includes("heritage") || prop.category?.toLowerCase().includes("castle") || prop.listing_title?.toLowerCase().includes("heritage");
+        if (cat === "nature") return prop.amenities?.some((a: string) => a.toLowerCase().includes("garden") || a.toLowerCase().includes("backyard") || a.toLowerCase().includes("nature") || a.toLowerCase().includes("farm"));
+        return false;
+      });
+      if (!matchesCategory) return false;
+    }
+    
+    return true;
+  });
+
   // For Home page carousel: combine all stays into "Top Rated Stays in Goa"
   // For Listing page: show all stays grouped or in a single grid
   const groupedProperties = properties.reduce((acc: Record<string, Property[]>, prop) => {
@@ -217,17 +254,17 @@ export default function StaysSection({
             <Loader2 size={40} className="animate-spin text-[#EC5B13] mb-4" />
             <p className="text-gray-500 font-medium">Discovering best stays for you...</p>
           </div>
-        ) : properties.length === 0 ? (
+        ) : filteredProperties.length === 0 ? (
           <div className="text-center py-20 bg-gray-50 rounded-[40px] border border-dashed border-gray-200">
             <MapPin size={48} className="mx-auto text-gray-300 mb-4" />
-            <h3 className="text-2xl font-serif text-gray-900 mb-2">No properties published yet</h3>
-            <p className="text-gray-500">Check back soon for curated luxury stays.</p>
+            <h3 className="text-2xl font-serif text-gray-900 mb-2">No properties match your filters</h3>
+            <p className="text-gray-500">Try adjusting your categories or facilities.</p>
           </div>
         ) : viewMode === "carousel" ? (
           <div>
             <StayCarousel
               title={title || "Top Rated Stays in Goa"}
-              stays={properties}
+              stays={filteredProperties}
             />
             <div className="flex justify-center mt-8">
               <Link
@@ -240,7 +277,7 @@ export default function StaysSection({
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-            {properties.map((property: Property) => (
+            {filteredProperties.map((property: Property) => (
               <StayCard
                 key={property.id}
                 id={property.id}
