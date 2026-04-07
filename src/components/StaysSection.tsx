@@ -22,22 +22,6 @@ interface Property {
   rating?: number;
 }
 
-const FilterDropdown = ({ label, options, value, onChange }: { label: string, options: string[], value: string, onChange: (val: string) => void }) => (
-  <div className="relative group">
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="appearance-none flex items-center gap-3 pl-6 pr-10 py-2.5 bg-[#FFF7F4] border border-[#FFD0B9] rounded-full text-[13px] md:text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all shadow-sm outline-none cursor-pointer"
-    >
-      <option value="">{label}</option>
-      {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-    </select>
-    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-gray-600 transition-colors">
-      <ChevronDown size={16} />
-    </div>
-  </div>
-);
-
 const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -115,12 +99,6 @@ export default function StaysSection({
   const [activeCategories, setActiveCategories] = useState<string[]>([]);
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({
-    reviewScore: "",
-    hotelStar: "",
-    facilities: "",
-    theme: ""
-  });
 
   useEffect(() => {
     async function fetchProperties() {
@@ -145,22 +123,7 @@ export default function StaysSection({
   }, []);
 
   const filteredProperties = properties.filter((prop) => {
-    // 1. Dropdown Filters
-    if (filters.facilities) {
-      const fac = filters.facilities.toLowerCase();
-      const hasFac = prop.amenities?.some((a: string) => a.toLowerCase().includes(fac) || a.toLowerCase() === fac);
-      if (!hasFac) return false;
-    }
-    
-    if (filters.theme) {
-      const theme = filters.theme.toLowerCase();
-      if (!prop.category?.toLowerCase().includes(theme) && 
-          !prop.listing_title?.toLowerCase().includes(theme)) {
-        return false;
-      }
-    }
-
-    // 2. Category Icons Filter (OR logic between selected categories)
+    // Category Icons Filter (OR logic between selected categories)
     if (activeCategories.length > 0) {
       const matchesCategory = activeCategories.some(cat => {
         if (cat === "pool") return prop.amenities?.some((a: string) => a.toLowerCase().includes("pool"));
@@ -202,38 +165,6 @@ export default function StaysSection({
           }}
         />
 
-        {/* Property Filters Row */}
-        <div className="flex flex-wrap items-center gap-4 mb-16 md:justify-center">
-          <FilterDropdown
-            label="Review Score"
-            options={["9+ Superb", "8+ Very Good", "7+ Good"]}
-            value={filters.reviewScore}
-            onChange={(val) => setFilters({ ...filters, reviewScore: val })}
-          />
-          <FilterDropdown
-            label="Hotel Star"
-            options={["5 Stars", "4 Stars", "3 Stars"]}
-            value={filters.hotelStar}
-            onChange={(val) => setFilters({ ...filters, hotelStar: val })}
-          />
-          <FilterDropdown
-            label="Facilities"
-            options={["Pool", "Spa", "Gym", "Restaurant"]}
-            value={filters.facilities}
-            onChange={(val) => setFilters({ ...filters, facilities: val })}
-          />
-          <FilterDropdown
-            label="Hotel Theme"
-            options={["Luxury", "Boutique", "Resort", "Business"]}
-            value={filters.theme}
-            onChange={(val) => setFilters({ ...filters, theme: val })}
-          />
-
-          <button className="flex items-center gap-2.5 px-8 py-3 bg-[#FFF7F4] border border-[#FFD0B9] rounded-full text-[14px] font-bold text-gray-800 hover:bg-[#FFF2ED] transition-all shadow-sm">
-            <SlidersHorizontal size={18} />
-            Filters
-          </button>
-        </div>
 
         {/* Swapped Content: Title & Description now come AFTER filters */}
         {listingTitle && (
