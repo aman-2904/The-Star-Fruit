@@ -3,6 +3,7 @@ import SearchWidget from "@/components/SearchWidget";
 import StaysSection from "@/components/StaysSection";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function StaysListingPage() {
   return (
@@ -29,11 +30,13 @@ export default function StaysListingPage() {
         </div>
       </div>
 
-      <StaysSection 
-        viewMode="grid" 
-        listingTitle="All Luxury Stays in Goa"
-        listingDescription="Discover our curated collection of premium villas and apartments, vetted for excellence."
-      />
+      <Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-gray-400">Loading stays...</div>}>
+        <StaysSection 
+          viewMode="grid" 
+          listingTitle="All Luxury Stays in Goa"
+          listingDescription="Discover our curated collection of premium villas and apartments, vetted for excellence."
+        />
+      </Suspense>
       <Footer />
     </main>
   );

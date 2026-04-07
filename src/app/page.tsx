@@ -8,6 +8,7 @@ import ContactSection from "@/components/ContactSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -15,7 +16,9 @@ export default function Home() {
       <Navbar />
       <Hero />
       <SearchWidget />
-      <StaysSection />
+      <Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-gray-400">Loading stays...</div>}>
+        <StaysSection />
+      </Suspense>
       <ContactSection />
       <StayTypesSection />
       <EnquirySection />
