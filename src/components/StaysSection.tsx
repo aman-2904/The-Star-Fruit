@@ -84,6 +84,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
 
 import FilterModal, { AdvancedFilters } from "./FilterModal";
 import Link from "next/link";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 interface StaysSectionProps {
   viewMode?: "carousel" | "grid";
@@ -114,7 +115,34 @@ export default function StaysSection({
   });
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
+  // 1. Initialize filters from URL on mount
+  useEffect(() => {
+    const type = searchParams.get('type');
+    const amenitiesArr = searchParams.get('amenities')?.split(',').filter(Boolean) || [];
+    const pets = searchParams.get('pets') === 'true';
+    const selfCheckin = searchParams.get('self') === 'true';
+    const standout = searchParams.get('standout');
+    const catsArr = searchParams.get('cats')?.split(',').filter(Boolean) || [];
+
+    if (type || amenitiesArr.length > 0 || pets || selfCheckin || standout || catsArr.length > 0) {
+      const filters: AdvancedFilters = {
+        propertyType: type || "",
+        amenities: amenitiesArr,
+        bookingOptions: { selfCheckIn: selfCheckin, allowsPets: pets },
+        standoutStays: standout || "",
+      };
+      setAdvancedFilters(filters);
+      setDraftFilters(filters);
+      if (catsArr.length > 0) setActiveCategories(catsArr);
+    }
+  }, [searchParams]);
+
+  // 2. Fetch properties
   useEffect(() => {
     async function fetchProperties() {
       try {
@@ -136,6 +164,30 @@ export default function StaysSection({
 
     fetchProperties();
   }, []);
+
+  const applyFiltersWithNav = (filters: AdvancedFilters) => {
+    setAdvancedFilters(filters);
+    setIsFilterModalOpen(false);
+
+    // Build URL query params
+    const params = new URLSearchParams();
+    if (filters.propertyType) params.set('type', filters.propertyType);
+    if (filters.amenities.length > 0) params.set('amenities', filters.amenities.join(','));
+    if (filters.bookingOptions.allowsPets) params.set('pets', 'true');
+    if (filters.bookingOptions.selfCheckIn) params.set('self', 'true');
+    if (filters.standoutStays) params.set('standout', filters.standoutStays);
+    if (activeCategories.length > 0) params.set('cats', activeCategories.join(','));
+
+    const queryString = params.toString();
+    const newUrl = `/stays${queryString ? `?${queryString}` : ''}`;
+
+    if (pathname !== '/stays') {
+      router.push(newUrl);
+    } else {
+      // If already on /stays, just update URL for shareability without refresh
+      router.replace(newUrl, { scroll: false });
+    }
+  };
 
   const getFilteredProperties = (advFilters: AdvancedFilters) => properties.filter((prop) => {
     // 1. Advanced Filters from FilterModal
@@ -222,11 +274,29 @@ export default function StaysSection({
         <CategoryFilters
           activeCategories={activeCategories}
           onCategoryChange={(id) => {
-            setActiveCategories(prev =>
-              prev.includes(id)
-                ? prev.filter(c => c !== id)
-                : [...prev, id]
-            );
+            const newCategories = activeCategories.includes(id)
+              ? activeCategories.filter(c => c !== id)
+              : [...activeCategories, id];
+            
+            setActiveCategories(newCategories);
+            
+            // Build current filters into query params
+            const params = new URLSearchParams();
+            if (advancedFilters.propertyType) params.set('type', advancedFilters.propertyType);
+            if (advancedFilters.amenities.length > 0) params.set('amenities', advancedFilters.amenities.join(','));
+            if (advancedFilters.bookingOptions.allowsPets) params.set('pets', 'true');
+            if (advancedFilters.bookingOptions.selfCheckIn) params.set('self', 'true');
+            if (advancedFilters.standoutStays) params.set('standout', advancedFilters.standoutStays);
+            if (newCategories.length > 0) params.set('cats', newCategories.join(','));
+
+            const queryString = params.toString();
+            const newUrl = `/stays${queryString ? `?${queryString}` : ''}`;
+            
+            if (pathname !== '/stays') {
+              router.push(newUrl);
+            } else {
+              router.replace(newUrl, { scroll: false });
+            }
           }}
           onFiltersClick={() => setIsFilterModalOpen(true)}
         />
@@ -237,10 +307,7 @@ export default function StaysSection({
           initialFilters={advancedFilters}
           draftFilters={draftFilters}
           onDraftFiltersChange={setDraftFilters}
-          onApply={(filters) => {
-            setAdvancedFilters(filters);
-            setIsFilterModalOpen(false);
-          }}
+          onApply={applyFiltersWithNav}
           resultCount={getFilteredProperties(draftFilters).length}
         />
 
