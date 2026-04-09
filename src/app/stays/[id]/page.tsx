@@ -17,7 +17,7 @@ import {
   UserCheck, Baby, Ghost, Layout, Smartphone, Book,
   Gamepad2, GraduationCap, Beer, Wine, CupSoda, Shirt,
   DoorOpen, Lock, Fan, Speaker, CalendarDays, Boxes,
-  ShowerHead, Soup
+  ShowerHead, Soup, AlertCircle
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
@@ -157,6 +157,75 @@ export default function PropertyDetailsPage() {
   const [hasMore, setHasMore] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
+  // Enquiry Form State
+  const [enquiryData, setEnquiryData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    checkIn: "",
+    checkOut: "",
+    guests: "1",
+    purpose: ""
+  });
+  const [enquiryLoading, setEnquiryLoading] = useState(false);
+  const [enquiryStatus, setEnquiryStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [enquiryError, setEnquiryError] = useState("");
+
+  const handleEnquiryChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setEnquiryData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const submitEnquiry = async () => {
+    if (!supabase) return;
+    
+    // Basic validation
+    if (!enquiryData.fullName || !enquiryData.email || !enquiryData.phone || !enquiryData.checkIn || !enquiryData.checkOut) {
+      setEnquiryError("Please fill in all required fields.");
+      setEnquiryStatus('error');
+      return;
+    }
+
+    setEnquiryLoading(true);
+    setEnquiryStatus('idle');
+    setEnquiryError("");
+
+    try {
+      const { error } = await supabase.from('property_enquiries').insert([
+        {
+          property_id: id,
+          user_id: session?.user?.id || null,
+          full_name: enquiryData.fullName,
+          email: enquiryData.email,
+          phone: enquiryData.phone,
+          check_in: enquiryData.checkIn,
+          check_out: enquiryData.checkOut,
+          guests: parseInt(enquiryData.guests),
+          purpose: enquiryData.purpose,
+          status: 'pending'
+        }
+      ]);
+
+      if (error) throw error;
+
+      setEnquiryStatus('success');
+      // Reset non-user fields
+      setEnquiryData(prev => ({
+        ...prev,
+        checkIn: "",
+        checkOut: "",
+        guests: "1",
+        purpose: ""
+      }));
+    } catch (err: any) {
+      console.error("Enquiry submission error:", err);
+      setEnquiryError(err.message || "Failed to submit enquiry. Please try again.");
+      setEnquiryStatus('error');
+    } finally {
+      setEnquiryLoading(false);
+    }
+  };
+
   const fetchReviews = async () => {
     try {
       if (!supabase) return;
@@ -196,9 +265,17 @@ export default function PropertyDetailsPage() {
             .select('id')
             .eq('user_id', curSession.user.id)
             .eq('property_id', id)
-            .maybeSingle(); // Use maybeSingle to prevent error if 0 rows
+            .maybeSingle(); 
             
           if (savedData) setIsSaved(true);
+
+          // Pre-fill enquiry form
+          setEnquiryData(prev => ({
+            ...prev,
+            fullName: curSession.user?.user_metadata?.full_name || "",
+            email: curSession.user?.email || "",
+            phone: curSession.user?.user_metadata?.phone || ""
+          }));
         }
 
         await fetchReviews();
@@ -761,47 +838,144 @@ export default function PropertyDetailsPage() {
                 </div>
               </div>
 
-              <div className="border border-gray-300 rounded-[14px] overflow-hidden mb-6">
-                <div className="grid grid-cols-2 border-b border-gray-300">
-                  <div className="p-3 border-r border-gray-300 cursor-pointer hover:bg-gray-50 transition-colors">
-                    <p className="text-[10px] font-black uppercase text-gray-900">Check-in</p>
-                    <p className="text-sm font-medium text-gray-400">Add date</p>
+              {enquiryStatus === 'success' ? (
+                <div className="bg-emerald-50 rounded-[24px] p-8 text-center border border-emerald-100 animate-in fade-in zoom-in duration-300">
+                  <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-200">
+                    <CheckCircle2 size={32} className="text-white" />
                   </div>
-                  <div className="p-3 cursor-pointer hover:bg-gray-50 transition-colors">
-                    <p className="text-[10px] font-black uppercase text-gray-900">Checkout</p>
-                    <p className="text-sm font-medium text-gray-400">Add date</p>
-                  </div>
+                  <h3 className="text-xl font-bold text-emerald-900 mb-2">Enquiry Sent!</h3>
+                  <p className="text-emerald-700 text-sm font-medium leading-relaxed">
+                    Our team will contact you shortly regarding your stay at {property.listing_title}.
+                  </p>
+                  <button 
+                    onClick={() => setEnquiryStatus('idle')}
+                    className="mt-6 text-emerald-600 font-bold text-sm underline hover:text-emerald-800 transition-colors"
+                  >
+                    Send another inquiry
+                  </button>
                 </div>
-                <div className="p-3 border-b border-gray-300 cursor-pointer hover:bg-gray-50 transition-colors">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-[10px] font-black uppercase text-gray-900">Guests</p>
-                      <p className="text-sm font-medium text-gray-900">1 guest</p>
+              ) : (
+                <>
+                  <div className="space-y-4 mb-6">
+                    {/* User Info Section (Only if not pre-filled/logged in or needs edit) */}
+                    <div className="space-y-3">
+                       <input 
+                        type="text"
+                        name="fullName"
+                        placeholder="Full Name"
+                        value={enquiryData.fullName}
+                        onChange={handleEnquiryChange}
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
+                       />
+                       <input 
+                        type="email"
+                        name="email"
+                        placeholder="Email Address"
+                        value={enquiryData.email}
+                        onChange={handleEnquiryChange}
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
+                       />
+                       <input 
+                        type="tel"
+                        name="phone"
+                        placeholder="Phone Number"
+                        value={enquiryData.phone}
+                        onChange={handleEnquiryChange}
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
+                       />
                     </div>
-                    <ChevronRight className="rotate-90 text-gray-500" size={18} />
-                  </div>
-                </div>
-                <div className="p-3 cursor-pointer hover:bg-gray-50 transition-colors">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-[10px] font-black uppercase text-gray-900">Purpose</p>
-                      <p className="text-sm font-medium text-gray-400">Select...</p>
+
+                    <div className="border border-gray-300 rounded-[14px] overflow-hidden">
+                      <div className="grid grid-cols-2 border-b border-gray-300">
+                        <div className="p-3 border-r border-gray-300 hover:bg-gray-50 transition-colors relative">
+                          <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Check-in</p>
+                          <input 
+                            type="date"
+                            name="checkIn"
+                            value={enquiryData.checkIn}
+                            onChange={handleEnquiryChange}
+                            className="w-full text-xs font-bold text-gray-900 bg-transparent focus:outline-none cursor-pointer"
+                          />
+                        </div>
+                        <div className="p-3 hover:bg-gray-50 transition-colors relative">
+                          <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Checkout</p>
+                          <input 
+                            type="date"
+                            name="checkOut"
+                            value={enquiryData.checkOut}
+                            onChange={handleEnquiryChange}
+                            className="w-full text-xs font-bold text-gray-900 bg-transparent focus:outline-none cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                      <div className="p-3 border-b border-gray-300 hover:bg-gray-50 transition-colors">
+                        <div className="flex justify-between items-center">
+                          <div className="w-full">
+                            <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Guests</p>
+                            <select 
+                              name="guests"
+                              value={enquiryData.guests}
+                              onChange={handleEnquiryChange}
+                              className="w-full text-sm font-medium text-gray-900 bg-transparent focus:outline-none cursor-pointer appearance-none"
+                            >
+                              {[...Array(property.max_guests || 10)].map((_, i) => (
+                                <option key={i+1} value={i+1}>{i+1} {i === 0 ? 'guest' : 'guests'}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <ChevronRight className="rotate-90 text-gray-400 pointer-events-none" size={16} />
+                        </div>
+                      </div>
+                      <div className="p-3 hover:bg-gray-50 transition-colors">
+                        <div className="flex justify-between items-center">
+                          <div className="w-full">
+                            <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Purpose</p>
+                            <select 
+                              name="purpose"
+                              value={enquiryData.purpose}
+                              onChange={handleEnquiryChange}
+                              className={`w-full text-sm font-medium bg-transparent focus:outline-none cursor-pointer appearance-none ${!enquiryData.purpose ? 'text-gray-400' : 'text-gray-900'}`}
+                            >
+                              <option value="" disabled>Select...</option>
+                              <option value="Vacation">Vacation</option>
+                              <option value="Business">Business</option>
+                              <option value="Event">Event / Celebration</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+                          <ChevronRight className="rotate-90 text-gray-400 pointer-events-none" size={16} />
+                        </div>
+                      </div>
                     </div>
-                    <ChevronRight className="rotate-90 text-gray-500" size={18} />
                   </div>
-                </div>
-              </div>
 
-              <button className="w-full py-4 bg-[#EC5B13] hover:bg-[#d44f0f] text-white rounded-xl font-bold text-lg transition-all shadow-lg active:scale-[0.98] mb-4">
-                Inquire Now
-              </button>
+                  {enquiryStatus === 'error' && (
+                    <p className="text-red-500 text-xs font-bold mb-4 flex items-center gap-1">
+                       <AlertCircle size={14} /> {enquiryError}
+                    </p>
+                  )}
 
-              <p className="text-center text-gray-500 text-xs font-semibold mb-6">You won't be charged yet</p>
+                  <button 
+                    onClick={submitEnquiry}
+                    disabled={enquiryLoading}
+                    className="w-full py-4 bg-[#EC5B13] hover:bg-[#d44f0f] text-white rounded-xl font-bold text-lg transition-all shadow-lg active:scale-[0.98] mb-4 flex items-center justify-center gap-2 disabled:opacity-70"
+                  >
+                    {enquiryLoading ? (
+                      <>
+                        <Loader2 size={20} className="animate-spin" />
+                        Processing...
+                      </>
+                    ) : "Inquire Now"}
+                  </button>
 
-              <div className="pt-6 border-t border-gray-100 flex items-center justify-center gap-2 text-gray-500 hover:text-black transition-colors cursor-pointer text-xs font-bold underline uppercase tracking-widest">
-                <MapPin size={14} />
-                Report this listing
-              </div>
+                  <p className="text-center text-gray-500 text-xs font-semibold mb-6">You won't be charged yet</p>
+
+                  <div className="pt-6 border-t border-gray-100 flex items-center justify-center gap-2 text-gray-500 hover:text-black transition-colors cursor-pointer text-xs font-bold underline uppercase tracking-widest">
+                    <MapPin size={14} />
+                    Report this listing
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
