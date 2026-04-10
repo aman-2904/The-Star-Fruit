@@ -33,7 +33,6 @@ export default function HostPropertyEnquiries() {
   const [selectedEnquiry, setSelectedEnquiry] = useState<PropertyEnquiry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [hostName, setHostName] = useState('Host');
 
   const fetchEnquiries = async () => {
     setLoading(true);
@@ -45,7 +44,6 @@ export default function HostPropertyEnquiries() {
       if (!session) { router.push('/auth'); return; }
       
       const user = session.user;
-      setHostName(user.user_metadata?.full_name || 'Host');
 
       // Fetch enquiries for properties owned by this host
       const { data, error: fetchError } = await supabase
@@ -82,117 +80,102 @@ export default function HostPropertyEnquiries() {
   });
 
   return (
-    <div className="min-h-screen bg-[#F7F7F8] font-sans">
-      {/* Navbar Link back */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-200/60 px-6 md:px-12 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/host/dashboard" className="text-sm font-bold text-gray-500 hover:text-black flex items-center gap-1.5 transition-colors">
-            <RefreshCcw size={15} /> Back to Dashboard
-          </Link>
-          <Image src="/images/logo.png" alt="The Star Fruit" width={140} height={35} className="h-8 w-auto" />
-          <div className="w-10 h-10 rounded-full bg-[#FFF0E8] border border-[#EC5B13]/20 flex items-center justify-center">
-            <User size={17} className="text-[#EC5B13]" />
-          </div>
-        </div>
-      </nav>
-
-      <main className="max-w-7xl mx-auto px-6 md:px-12 py-10">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
-          <div>
-            <h1 className="text-3xl font-black text-[#1A1A24] tracking-tight">Stay Enquiries</h1>
-            <p className="text-gray-500 font-medium mt-1">Manage all booking requests for your properties.</p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 lg:w-64">
-              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input 
-                type="text" 
-                placeholder="Search by name or property..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
-              />
-            </div>
-            <button 
-              onClick={fetchEnquiries}
-              className="p-3 bg-white border border-gray-200 rounded-2xl text-gray-400 hover:text-[#EC5B13] transition-all shadow-sm"
-            >
-              <RefreshCcw size={20} className={loading ? "animate-spin" : ""} />
-            </button>
-          </div>
+    <>
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
+        <div>
+          <h1 className="text-3xl font-black text-[#1A1A24] tracking-tight">Stay Enquiries</h1>
+          <p className="text-gray-500 font-medium mt-1">Manage all booking requests for your properties.</p>
         </div>
 
-        <div className="bg-white rounded-[32px] border border-gray-100 overflow-hidden shadow-sm">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-gray-50/50 border-b border-gray-100 font-bold text-[11px] text-gray-400 uppercase tracking-widest">
-                <th className="px-8 py-6">Guest Info</th>
-                <th className="px-8 py-6">Property</th>
-                <th className="px-8 py-6">Stay Duration</th>
-                <th className="px-8 py-6">Status</th>
+        <div className="flex items-center gap-3">
+          <div className="relative flex-1 lg:w-64">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="Search by name or property..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
+            />
+          </div>
+          <button 
+            onClick={fetchEnquiries}
+            className="p-3 bg-white border border-gray-200 rounded-2xl text-gray-400 hover:text-[#EC5B13] transition-all shadow-sm"
+          >
+            <RefreshCcw size={20} className={loading ? "animate-spin" : ""} />
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-[32px] border border-gray-100 overflow-hidden shadow-sm">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="bg-gray-50/50 border-b border-gray-100 font-bold text-[11px] text-gray-400 uppercase tracking-widest">
+              <th className="px-8 py-6">Guest Info</th>
+              <th className="px-8 py-6">Property</th>
+              <th className="px-8 py-6">Stay Duration</th>
+              <th className="px-8 py-6">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-50">
+            {loading ? (
+              [1, 2, 3].map(i => (
+                <tr key={i} className="animate-pulse">
+                  <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-lg w-40" /></td>
+                  <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-48" /></td>
+                  <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-32" /></td>
+                  <td className="px-8 py-6"><div className="h-8 bg-gray-100 rounded-xl w-24" /></td>
+                </tr>
+              ))
+            ) : filteredEnquiries.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-8 py-20 text-center text-gray-400 font-medium">
+                  No enquiries found for your properties yet.
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {loading ? (
-                [1, 2, 3].map(i => (
-                  <tr key={i} className="animate-pulse">
-                    <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-lg w-40" /></td>
-                    <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-48" /></td>
-                    <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-32" /></td>
-                    <td className="px-8 py-6"><div className="h-8 bg-gray-100 rounded-xl w-24" /></td>
-                  </tr>
-                ))
-              ) : filteredEnquiries.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="px-8 py-20 text-center text-gray-400 font-medium">
-                    No enquiries found for your properties yet.
+            ) : (
+              filteredEnquiries.map((enquiry) => (
+                <tr 
+                  key={enquiry.id} 
+                  className="hover:bg-gray-50/50 transition-all group cursor-pointer"
+                  onClick={() => { setSelectedEnquiry(enquiry); setIsModalOpen(true); }}
+                >
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-[#1A1A24] flex items-center justify-center text-white font-bold">
+                        {enquiry.full_name[0].toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-black text-[#1A1A24]">{enquiry.full_name}</p>
+                        <p className="text-xs text-gray-400 font-bold">{enquiry.is_paid ? enquiry.email : maskEmail(enquiry.email)}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-8 py-6 font-bold text-[#1A1A24]">
+                    {enquiry.properties?.listing_title}
+                  </td>
+                  <td className="px-8 py-6">
+                    <p className="text-sm font-bold text-gray-600">
+                      {new Date(enquiry.check_in).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - {new Date(enquiry.check_out).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                    </p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase mt-0.5">{enquiry.guests} Guests</p>
+                  </td>
+                  <td className="px-8 py-6">
+                    <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                      enquiry.is_paid 
+                        ? "bg-emerald-50 text-emerald-600" 
+                        : "bg-amber-50 text-amber-600"
+                    }`}>
+                      {enquiry.is_paid ? <Unlock size={10} /> : <Lock size={10} />}
+                      {enquiry.is_paid ? "Details Unlocked" : "Awaiting Paid"}
+                    </div>
                   </td>
                 </tr>
-              ) : (
-                filteredEnquiries.map((enquiry) => (
-                  <tr 
-                    key={enquiry.id} 
-                    className="hover:bg-gray-50/50 transition-all group cursor-pointer"
-                    onClick={() => { setSelectedEnquiry(enquiry); setIsModalOpen(true); }}
-                  >
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#1A1A24] flex items-center justify-center text-white font-bold">
-                          {enquiry.full_name[0].toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="font-black text-[#1A1A24]">{enquiry.full_name}</p>
-                          <p className="text-xs text-gray-400 font-bold">{enquiry.is_paid ? enquiry.email : maskEmail(enquiry.email)}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6 font-bold text-[#1A1A24]">
-                      {enquiry.properties?.listing_title}
-                    </td>
-                    <td className="px-8 py-6">
-                      <p className="text-sm font-bold text-gray-600">
-                        {new Date(enquiry.check_in).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - {new Date(enquiry.check_out).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
-                      </p>
-                      <p className="text-[10px] font-black text-gray-400 uppercase mt-0.5">{enquiry.guests} Guests</p>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                        enquiry.is_paid 
-                          ? "bg-emerald-50 text-emerald-600" 
-                          : "bg-amber-50 text-amber-600"
-                      }`}>
-                        {enquiry.is_paid ? <Unlock size={10} /> : <Lock size={10} />}
-                        {enquiry.is_paid ? "Details Unlocked" : "Awaiting Paid"}
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </main>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Detail Modal */}
       {isModalOpen && selectedEnquiry && (
@@ -294,6 +277,6 @@ export default function HostPropertyEnquiries() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
