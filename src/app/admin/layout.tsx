@@ -114,7 +114,14 @@ export default function AdminLayout({
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/enquiries' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <MessageSquare size={20} />
-            {isSidebarOpen && <span>Enquiries</span>}
+            {isSidebarOpen && <span>General Enquiries</span>}
+          </Link>
+          <Link 
+            href="/admin/property-enquiries" 
+            className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/property-enquiries' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+          >
+            <CheckCircle size={20} />
+            {isSidebarOpen && <span>Property Enquiries</span>}
           </Link>
           <Link 
             href="/admin/activity-logs" 

@@ -8,7 +8,7 @@ import {
   Plus, User, Globe, Users, BedDouble, Bath,
   Clock, CheckCircle, FileText,
   Home, LayoutDashboard, ListChecks, HelpCircle,
-  Menu, X, ImageOff
+  Menu, X, ImageOff, MessageSquare
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -214,6 +214,9 @@ export default function HostDashboardPage() {
           </Link>
           <Link href="/host/dashboard" className="text-sm font-bold text-[#EC5B13] flex items-center gap-1.5">
             <LayoutDashboard size={15} /> Dashboard
+          </Link>
+          <Link href="/host/enquiries" className="text-sm font-bold text-gray-500 hover:text-black transition-colors flex items-center gap-1.5">
+            <MessageSquare size={15} /> Enquiries
           </Link>
           <Link href="#" className="text-sm font-bold text-gray-500 hover:text-black transition-colors flex items-center gap-1.5">
             <ListChecks size={15} /> Listings
