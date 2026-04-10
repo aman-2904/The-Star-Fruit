@@ -172,6 +172,7 @@ export default function AdminPropertyEnquiries() {
           <thead>
             <tr className="bg-gray-50/50 border-b border-gray-100">
               <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Guest & Property</th>
+              <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Inquired On</th>
               <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Stay Dates</th>
               <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Payment Status</th>
               <th className="px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Actions</th>
@@ -182,6 +183,7 @@ export default function AdminPropertyEnquiries() {
               [1, 2, 3].map(i => (
                 <tr key={i} className="animate-pulse">
                   <td className="px-8 py-6"><div className="h-12 bg-gray-100 rounded-xl w-64" /></td>
+                  <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-32" /></td>
                   <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-40" /></td>
                   <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-32" /></td>
                   <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-20" /></td>
@@ -189,7 +191,7 @@ export default function AdminPropertyEnquiries() {
               ))
             ) : filteredEnquiries.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-8 py-20 text-center text-gray-400 font-medium">
+                <td colSpan={5} className="px-8 py-20 text-center text-gray-400 font-medium">
                   No property enquiries found.
                 </td>
               </tr>
@@ -218,6 +220,17 @@ export default function AdminPropertyEnquiries() {
                           </span>
                         </button>
                       </div>
+                    </div>
+                  </td>
+                  <td className="px-8 py-6 whitespace-nowrap">
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-1.5 text-sm font-bold text-gray-700">
+                        <Clock size={14} className="text-[#EC5B13]" />
+                        {new Date(enquiry.created_at).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}
+                      </div>
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-5 mt-0.5">
+                        {new Date(enquiry.created_at).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+                      </p>
                     </div>
                   </td>
                   <td className="px-8 py-6">
@@ -294,6 +307,19 @@ export default function AdminPropertyEnquiries() {
             </div>
 
             <div className="p-8 space-y-6">
+              <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100 flex items-center gap-3">
+                <Clock className="text-[#EC5B13]" size={20} />
+                <div>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Enquiry Date & Time</p>
+                  <p className="text-sm font-bold text-gray-900">
+                    {new Date(selectedEnquiry.created_at).toLocaleString(undefined, {
+                      dateStyle: 'full',
+                      timeStyle: 'short'
+                    })}
+                  </p>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Check-in</p>
