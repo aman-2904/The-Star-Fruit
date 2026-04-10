@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Mail, Phone, Clock, Search, RefreshCcw, User, X, Calendar, Trash2, Home, CheckCircle2, AlertCircle } from "lucide-react";
 import { logActivity } from "@/lib/logger";
+import PropertyDetailsModal from "@/components/admin/PropertyDetailsModal";
 
 interface PropertyEnquiry {
   id: string;
@@ -30,6 +31,11 @@ export default function AdminPropertyEnquiries() {
   const [selectedEnquiry, setSelectedEnquiry] = useState<PropertyEnquiry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  // Property details modal state
+  const [selectedProperty, setSelectedProperty] = useState<any | null>(null);
+  const [isPropModalOpen, setIsPropModalOpen] = useState(false);
+  const [fetchingProperty, setFetchingProperty] = useState(false);
 
   const fetchEnquiries = async () => {
     setLoading(true);
@@ -55,11 +61,36 @@ export default function AdminPropertyEnquiries() {
     fetchEnquiries();
   }, []);
 
+  const handleViewProperty = async (e: React.MouseEvent, propertyId: string) => {
+    e.stopPropagation();
+    if (fetchingProperty) return;
+
+    setFetchingProperty(true);
+    try {
+      if (!supabase) throw new Error("Supabase is not configured.");
+
+      const { data, error: fetchError } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('id', propertyId)
+        .single();
+
+      if (fetchError) throw fetchError;
+      
+      setSelectedProperty(data);
+      setIsPropModalOpen(true);
+    } catch (err: any) {
+      alert("Error fetching property details: " + err.message);
+    } finally {
+      setFetchingProperty(false);
+    }
+  };
+
   const handleTogglePaid = async (e: React.MouseEvent, enquiry: PropertyEnquiry) => {
     e.stopPropagation();
     try {
       if (!supabase) return;
-      
+
       const newPaidStatus = !enquiry.is_paid;
       const { error: updateError } = await supabase
         .from('property_enquiries')
@@ -68,11 +99,11 @@ export default function AdminPropertyEnquiries() {
 
       if (updateError) throw updateError;
 
-      setEnquiries(enquiries.map(enq => 
+      setEnquiries(enquiries.map(enq =>
         enq.id === enquiry.id ? { ...enq, is_paid: newPaidStatus } : enq
       ));
 
-      await logActivity("Toggled payment status for property enquiry", { 
+      await logActivity("Toggled payment status for property enquiry", {
         enquiry_id: enquiry.id,
         new_status: newPaidStatus ? "PAID" : "UNPAID",
         guest: enquiry.full_name
@@ -119,15 +150,15 @@ export default function AdminPropertyEnquiries() {
         <div className="flex items-center gap-3">
           <div className="relative flex-1 lg:w-64">
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search by name, email or property..." 
+            <input
+              type="text"
+              placeholder="Search by name, email or property..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-11 pr-4 py-3 bg-white border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
             />
           </div>
-          <button 
+          <button
             onClick={fetchEnquiries}
             className="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-[#EC5B13] hover:border-[#EC5B13]/30 transition-all shadow-sm"
           >
@@ -149,12 +180,12 @@ export default function AdminPropertyEnquiries() {
           <tbody className="divide-y divide-gray-50">
             {loading ? (
               [1, 2, 3].map(i => (
-                 <tr key={i} className="animate-pulse">
-                    <td className="px-8 py-6"><div className="h-12 bg-gray-100 rounded-xl w-64" /></td>
-                    <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-40" /></td>
-                    <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-32" /></td>
-                    <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-20" /></td>
-                 </tr>
+                <tr key={i} className="animate-pulse">
+                  <td className="px-8 py-6"><div className="h-12 bg-gray-100 rounded-xl w-64" /></td>
+                  <td className="px-8 py-6"><div className="h-6 bg-gray-100 rounded-lg w-40" /></td>
+                  <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-32" /></td>
+                  <td className="px-8 py-6"><div className="h-10 bg-gray-100 rounded-xl w-20" /></td>
+                </tr>
               ))
             ) : filteredEnquiries.length === 0 ? (
               <tr>
@@ -164,8 +195,8 @@ export default function AdminPropertyEnquiries() {
               </tr>
             ) : (
               filteredEnquiries.map((enquiry) => (
-                <tr 
-                  key={enquiry.id} 
+                <tr
+                  key={enquiry.id}
                   className="hover:bg-gray-50/50 transition-all group cursor-pointer"
                   onClick={() => { setSelectedEnquiry(enquiry); setIsModalOpen(true); }}
                 >
@@ -176,9 +207,16 @@ export default function AdminPropertyEnquiries() {
                       </div>
                       <div>
                         <p className="font-bold text-gray-900">{enquiry.full_name}</p>
-                        <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
-                          <Home size={12} className="text-[#EC5B13]" /> {enquiry.properties?.listing_title}
-                        </p>
+                        <button 
+                          onClick={(e) => handleViewProperty(e, enquiry.property_id)}
+                          className="text-xs text-gray-400 hover:text-[#EC5B13] transition-colors flex items-center gap-1 group/prop"
+                          title="View property details"
+                        >
+                          <Home size={12} className={fetchingProperty && selectedProperty?.id === enquiry.property_id ? "animate-spin" : "text-[#EC5B13]"} /> 
+                          <span className="group-hover/prop:underline">
+                            {fetchingProperty && selectedProperty?.id === enquiry.property_id ? "Loading..." : enquiry.properties?.listing_title}
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </td>
@@ -194,14 +232,13 @@ export default function AdminPropertyEnquiries() {
                   <td className="px-8 py-6">
                     <button
                       onClick={(e) => handleTogglePaid(e, enquiry)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
-                        enquiry.is_paid 
-                          ? "bg-emerald-50 text-emerald-600 border border-emerald-100" 
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${enquiry.is_paid
+                          ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
                           : "bg-amber-50 text-amber-600 border border-amber-100 hover:bg-amber-100"
-                      }`}
+                        }`}
                     >
                       {enquiry.is_paid ? (
-                        <><CheckCircle2 size={14} /> Paid Received</>
+                        <><CheckCircle2 size={14} /> Payment Received</>
                       ) : (
                         <><AlertCircle size={14} /> Mark as Paid</>
                       )}
@@ -209,15 +246,15 @@ export default function AdminPropertyEnquiries() {
                   </td>
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-2">
-                       <button className="px-4 py-2 bg-gray-50 text-gray-600 hover:text-[#EC5B13] hover:bg-[#FFF0E8]/50 rounded-xl font-bold text-xs transition-all border border-gray-100">
-                         View
-                       </button>
-                       <button 
+                      <button className="px-4 py-2 bg-gray-50 text-gray-600 hover:text-[#EC5B13] hover:bg-[#FFF0E8]/50 rounded-xl font-bold text-xs transition-all border border-gray-100">
+                        View
+                      </button>
+                      <button
                         onClick={(e) => handleDelete(e, enquiry.id)}
                         className="p-2 bg-gray-50 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all border border-gray-100"
-                       >
-                         <Trash2 size={16} />
-                       </button>
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -255,7 +292,7 @@ export default function AdminPropertyEnquiries() {
                 <X size={24} />
               </button>
             </div>
-            
+
             <div className="p-8 space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
@@ -298,13 +335,12 @@ export default function AdminPropertyEnquiries() {
                     </p>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={(e) => handleTogglePaid(e, selectedEnquiry)}
-                  className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${
-                    selectedEnquiry.is_paid 
-                      ? "bg-gray-100 text-gray-500 hover:bg-gray-200" 
+                  className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${selectedEnquiry.is_paid
+                      ? "bg-gray-100 text-gray-500 hover:bg-gray-200"
                       : "bg-[#EC5B13] text-white hover:bg-[#d44f0f] shadow-lg shadow-[#EC5B13]/20"
-                  }`}
+                    }`}
                 >
                   {selectedEnquiry.is_paid ? "Mark Unpaid" : "Verify Payment"}
                 </button>
@@ -312,6 +348,15 @@ export default function AdminPropertyEnquiries() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Property Detail Modal */}
+      {selectedProperty && (
+        <PropertyDetailsModal 
+          property={selectedProperty}
+          isOpen={isPropModalOpen}
+          onClose={() => setIsPropModalOpen(false)}
+        />
       )}
     </div>
   );
