@@ -1,21 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StayCard from "@/components/StayCard";
-import { User, LogOut, Settings, Heart, CalendarDays } from "lucide-react";
+import { User, LogOut, Settings, Heart, CalendarDays, Home, MapPin, Calendar, CheckCircle2, AlertCircle, Clock, Users } from "lucide-react";
 
-export default function ProfilePage() {
+function ProfileContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [session, setSession] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<"saved" | "account" | "bookings">("saved");
   const [loading, setLoading] = useState(true);
   
   // Data states
   const [savedProperties, setSavedProperties] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [fetchingBookings, setFetchingBookings] = useState(false);
+
+  // Handle tab from URL
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'bookings') setActiveTab('bookings');
+    else if (tab === 'account') setActiveTab('account');
+    else if (tab === 'saved') setActiveTab('saved');
+  }, [searchParams]);
 
   useEffect(() => {
     async function fetchUser() {
@@ -24,16 +35,47 @@ export default function ProfilePage() {
       const { data: { session: curSession }, error } = await supabase.auth.getSession();
       
       if (error || !curSession) {
-        router.push("/login"); // Redirect if not logged in
+        router.push("/login?redirect=/profile"); // Redirect if not logged in
         return;
       }
       
       setSession(curSession);
       fetchSavedProperties(curSession.user.id);
+      fetchBookings(curSession.user.id);
     }
     
     fetchUser();
   }, [router]);
+
+  async function fetchBookings(userId: string) {
+    if (!supabase) return;
+    setFetchingBookings(true);
+    try {
+      const { data, error } = await supabase
+        .from('property_enquiries')
+        .select(`
+          *,
+          properties (
+            listing_title,
+            street_address,
+            city,
+            state,
+            pincode,
+            images,
+            category
+          )
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setBookings(data || []);
+    } catch (err) {
+      console.error("Error fetching bookings:", err);
+    } finally {
+      setFetchingBookings(false);
+    }
+  }
 
   async function fetchSavedProperties(userId: string) {
     if (!supabase) return;
@@ -199,10 +241,113 @@ export default function ProfilePage() {
                   )}
 
                   {activeTab === "bookings" && (
-                    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 text-center py-20 bg-white border border-gray-100 rounded-3xl">
-                      <CalendarDays size={48} className="mx-auto text-gray-200 mb-4" />
-                      <h3 className="text-lg font-bold text-gray-900 mb-2">No bookings found</h3>
-                      <p className="text-gray-500 text-sm">You haven't made any bookings yet.</p>
+                    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+                      {fetchingBookings ? (
+                        <div className="flex justify-center items-center h-48">
+                          <span className="w-8 h-8 rounded-full border-4 border-gray-200 border-t-[#EC5B13] animate-spin"></span>
+                        </div>
+                      ) : bookings.length > 0 ? (
+                        <div className="flex flex-col gap-4">
+                          {bookings.map((booking) => (
+                            <div 
+                              key={booking.id} 
+                              onClick={() => router.push(`/stays/${booking.property_id}`)}
+                              className="bg-white border border-gray-100 rounded-[32px] p-4 md:p-6 flex flex-col md:flex-row gap-6 hover:shadow-xl hover:shadow-black/5 transition-all group cursor-pointer active:scale-[0.99]"
+                            >
+                              {/* Property Image */}
+                              <div className="w-full md:w-48 h-32 md:h-32 relative rounded-2xl overflow-hidden shrink-0">
+                                <img 
+                                  src={booking.properties?.images?.[0] || "/images/stays/pool_villa.png"} 
+                                  alt={booking.properties?.listing_title}
+                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                />
+                                <div className="absolute top-3 left-3">
+                                  <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider text-black">
+                                    {booking.properties?.category || "Stay"}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Info */}
+                              <div className="flex-grow flex flex-col justify-between py-1">
+                                <div>
+                                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+                                    <div>
+                                      <h4 className="text-lg font-black text-gray-900 leading-tight">
+                                        {booking.properties?.listing_title}
+                                      </h4>
+                                      <p className="text-[13px] font-bold text-gray-500 flex items-start gap-2 mt-2 leading-relaxed">
+                                        <MapPin size={16} className="text-[#EC5B13] shrink-0 mt-0.5" />
+                                        <span>
+                                          {booking.properties?.street_address && `${booking.properties.street_address}, `}
+                                          {booking.properties?.city}, {booking.properties?.state}
+                                          {booking.properties?.pincode && ` - ${booking.properties.pincode}`}
+                                        </span>
+                                      </p>
+                                    </div>
+                                    <div className="shrink-0">
+                                      {booking.is_paid ? (
+                                        <span className="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 border border-emerald-100">
+                                          <CheckCircle2 size={14} /> Confirmed Booking
+                                        </span>
+                                      ) : (
+                                        <span className="bg-amber-50 text-amber-600 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 border border-amber-100">
+                                          <Clock size={14} /> Enquiry Pending
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                                    <div className="flex items-center gap-2">
+                                      <Calendar size={16} className="text-[#EC5B13]" />
+                                      <div>
+                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Check-in</p>
+                                        <p className="text-sm font-bold text-gray-700">{new Date(booking.check_in).toLocaleDateString()}</p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Calendar size={16} className="text-[#EC5B13]" />
+                                      <div>
+                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Checkout</p>
+                                        <p className="text-sm font-bold text-gray-700">{new Date(booking.check_out).toLocaleDateString()}</p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Users size={16} className="text-[#EC5B13]" />
+                                      <div>
+                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Guests</p>
+                                        <p className="text-sm font-bold text-gray-700">{booking.guests} People</p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Home size={16} className="text-[#EC5B13]" />
+                                      <div>
+                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Inquiry Date</p>
+                                        <p className="text-sm font-bold text-gray-700">{new Date(booking.created_at).toLocaleDateString()}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-24 bg-white border border-dashed border-gray-200 rounded-[40px]">
+                          <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <CalendarDays size={40} className="text-gray-200" />
+                          </div>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">No bookings found</h3>
+                          <p className="text-gray-500 mb-8 max-w-sm mx-auto text-sm">Your property enquiries and confirmed bookings will appear here once you make them.</p>
+                          <button 
+                            onClick={() => router.push("/stays")}
+                            className="bg-black text-white px-8 py-4 rounded-2xl font-bold text-sm hover:translate-y-[-2px] hover:shadow-lg transition-all active:scale-95"
+                          >
+                            Find your next stay
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -231,5 +376,17 @@ export default function ProfilePage() {
       
       <Footer />
     </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <span className="w-8 h-8 rounded-full border-4 border-gray-200 border-t-[#EC5B13] animate-spin"></span>
+      </div>
+    }>
+      <ProfileContent />
+    </Suspense>
   );
 }

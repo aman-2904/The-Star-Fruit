@@ -126,9 +126,13 @@ export default function Navbar() {
                   >
                     My Profile
                   </Link>
-                  <button className="w-full text-left px-5 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors">
+                  <Link 
+                    href="/profile?tab=bookings" 
+                    onClick={() => setShowUserMenu(false)}
+                    className="block w-full text-left px-5 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
                     My Bookings
-                  </button>
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-5 py-2.5 text-sm font-bold text-black hover:bg-gray-50 transition-colors mt-2 border-t border-gray-50 pt-3"
