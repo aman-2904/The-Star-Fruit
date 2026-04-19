@@ -56,8 +56,9 @@ export default function HostLayout({
     }
   };
 
-  // Exclude onboarding from sidebar layout
+  // Exclude onboarding and landing page from sidebar layout
   const isOnboarding = pathname.includes("/host/onboarding");
+  const isLandingPage = pathname === "/host";
 
   if (loading) {
     return (
@@ -67,8 +68,8 @@ export default function HostLayout({
     );
   }
 
-  // If onboarding, just return children (they use their own OnboardingLayout)
-  if (isOnboarding) {
+  // If onboarding or landing page, just return children
+  if (isOnboarding || isLandingPage) {
     return <>{children}</>;
   }
 
