@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { Mail, Phone, Clock, Search, RefreshCcw, User, X, Calendar, Trash2, Home, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mail, Phone, Clock, Search, RefreshCcw, User, X, Calendar, Trash2, Home, CheckCircle2, AlertCircle, MessageSquare } from "lucide-react";
 import { logActivity } from "@/lib/logger";
 import PropertyDetailsModal from "@/components/admin/PropertyDetailsModal";
 
@@ -25,6 +26,7 @@ interface PropertyEnquiry {
 }
 
 export default function AdminPropertyEnquiries() {
+  const router = useRouter();
   const [enquiries, setEnquiries] = useState<PropertyEnquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -259,8 +261,15 @@ export default function AdminPropertyEnquiries() {
                   </td>
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-2">
-                      <button className="px-4 py-2 bg-gray-50 text-gray-600 hover:text-[#EC5B13] hover:bg-[#FFF0E8]/50 rounded-xl font-bold text-xs transition-all border border-gray-100">
-                        View
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/admin/messages?userId=${enquiry.user_id}`);
+                        }}
+                        className="p-2 bg-gray-50 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-xl transition-all border border-gray-100"
+                        title="Chat with traveler"
+                      >
+                        <MessageSquare size={16} />
                       </button>
                       <button
                         onClick={(e) => handleDelete(e, enquiry.id)}

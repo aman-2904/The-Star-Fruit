@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StayCard from "@/components/StayCard";
-import { User, LogOut, Settings, Heart, CalendarDays, Home, MapPin, Calendar, CheckCircle2, AlertCircle, Clock, Users } from "lucide-react";
+import { User, LogOut, Settings, Heart, CalendarDays, Home, MapPin, Calendar, CheckCircle2, AlertCircle, Clock, Users, UserCheck, Lock } from "lucide-react";
 
 function ProfileContent() {
   const router = useRouter();
@@ -285,7 +285,7 @@ function ProfileContent() {
                                         </span>
                                       </p>
                                     </div>
-                                    <div className="shrink-0">
+                                    <div className="shrink-0 flex flex-col items-end gap-2">
                                       {booking.is_paid ? (
                                         <span className="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 border border-emerald-100">
                                           <CheckCircle2 size={14} /> Confirmed Booking
@@ -327,6 +327,48 @@ function ProfileContent() {
                                         <p className="text-sm font-bold text-gray-700">{new Date(booking.created_at).toLocaleDateString()}</p>
                                       </div>
                                     </div>
+                                  </div>
+
+                                  {/* Chat Actions */}
+                                  <div className="mt-8 pt-6 border-t border-gray-50 flex flex-wrap gap-4">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        router.push('/messages?type=admin');
+                                      }}
+                                      className="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all active:scale-95"
+                                    >
+                                      <UserCheck size={16} className="text-orange-500" /> Chat with Admin
+                                    </button>
+                                    
+                                    <button
+                                      disabled={!booking.is_paid}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (booking.is_paid) router.push(`/messages?type=host&id=${booking.property_id}`);
+                                      }}
+                                      className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${
+                                        booking.is_paid 
+                                          ? "bg-blue-50 hover:bg-blue-100 text-blue-700 active:scale-95" 
+                                          : "bg-gray-50 text-gray-400 cursor-not-allowed opacity-60"
+                                      }`}
+                                    >
+                                      {booking.is_paid ? (
+                                        <>
+                                          <Users size={16} className="text-blue-500" /> Chat with Host
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Lock size={16} className="text-gray-400" /> Host Chat Locked
+                                        </>
+                                      )}
+                                    </button>
+
+                                    {!booking.is_paid && (
+                                      <p className="w-full text-[10px] font-bold text-amber-500 flex items-center gap-1.5 mt-1 -mb-2">
+                                        <AlertCircle size={12} /> Chat with host unlocks automatically after payment verification
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                               </div>
