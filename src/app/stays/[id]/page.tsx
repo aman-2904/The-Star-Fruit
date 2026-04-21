@@ -23,6 +23,7 @@ import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ReviewForm from "@/components/ReviewForm";
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 interface Property {
   id: string;
@@ -44,6 +45,8 @@ interface Property {
   amenities?: string[];
   house_rules?: Record<string, boolean>;
   custom_rules?: string[];
+  latitude?: number;
+  longitude?: number;
 }
 
 interface Review {
@@ -140,6 +143,11 @@ const AMENITY_ICONS: Record<string, any> = {
 };
 
 export default function PropertyDetailsPage() {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
+    libraries: ['places'] as any
+  });
   const { id } = useParams();
   const router = useRouter();
   const [property, setProperty] = useState<Property | null>(null);
@@ -1015,6 +1023,50 @@ export default function PropertyDetailsPage() {
                 >
                   Log In to Review
                 </Link>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Where you'll be Section */}
+        <div className="mt-20 pt-16 border-t border-gray-100">
+          <div className="mb-1">
+            <h2 className="text-2xl font-serif text-gray-900 leading-tight">Where you'll be</h2>
+          </div>
+          <p className="text-gray-500 font-medium mb-8 text-sm">
+            {property.city}, {property.state}, India
+          </p>
+          
+          <div className="h-[480px] w-full bg-gray-100 rounded-[32px] overflow-hidden border border-gray-100 shadow-inner relative">
+            {isLoaded ? (
+              <GoogleMap
+                mapContainerStyle={{ width: '100%', height: '100%' }}
+                center={{
+                  lat: property.latitude || 15.2993,
+                  lng: property.longitude || 74.1240
+                }}
+                zoom={14}
+                options={{
+                  disableDefaultUI: false,
+                  mapTypeControl: false,
+                  streetViewControl: false,
+                  fullscreenControl: true,
+                  gestureHandling: 'cooperative',
+                }}
+              >
+                <Marker 
+                  position={{
+                    lat: property.latitude || 15.2993,
+                    lng: property.longitude || 74.1240
+                  }} 
+                  icon={{
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#EC5B13" stroke="#EC5B13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3" fill="white"/></svg>')
+                  }}
+                />
+              </GoogleMap>
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#EC5B13] border-t-transparent"></div>
               </div>
             )}
           </div>

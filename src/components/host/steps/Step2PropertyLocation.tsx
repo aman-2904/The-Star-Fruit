@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Info, MapPin, Plus, Minus } from 'lucide-react';
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
 
 interface Step2PropertyLocationProps {
   onBack: () => void;
@@ -16,10 +16,14 @@ interface Step2PropertyLocationProps {
     hostDescription: string;
     hostPhone: string;
     hostEmail: string;
+    latitude: number;
+    longitude: number;
   };
-  setFormData: (data: any) => void;
+  setFormData: any;
   isSaving?: boolean;
 }
+
+const LIBRARIES: any = ["places"];
 
 export default function Step2PropertyLocation({ 
   onBack, 
@@ -30,18 +34,81 @@ export default function Step2PropertyLocation({
   isSaving
 }: Step2PropertyLocationProps) {
   
-  const [apiKey, setApiKey] = useState("");
-  const [zoom, setZoom] = useState(10);
-  const activeMapKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || apiKey;
+  const [zoom, setZoom] = useState(13);
+  const [autocomplete, setAutocomplete] = useState<any>(null);
+  
+  const activeMapKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: activeMapKey || "fallback-key-to-prevent-crash"
+    googleMapsApiKey: activeMapKey,
+    libraries: LIBRARIES
   });
 
-  const goCenter = {
-    lat: 15.2993,
-    lng: 74.1240
+  const center = {
+    lat: formData.latitude || 15.2993,
+    lng: formData.longitude || 74.1240
+  };
+
+  const onAutocompleteLoad = (autocompleteInstance: any) => {
+    setAutocomplete(autocompleteInstance);
+  };
+
+  const onPlaceChanged = () => {
+    if (autocomplete !== null) {
+      const place = autocomplete.getPlace();
+      if (!place.geometry || !place.geometry.location) return;
+
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+
+      const addressComponents = place.address_components || [];
+      const city = addressComponents.find((c: any) => c.types.includes('locality'))?.long_name || 
+                   addressComponents.find((c: any) => c.types.includes('administrative_area_level_2'))?.long_name || '';
+      const pincode = addressComponents.find((c: any) => c.types.includes('postal_code'))?.long_name || '';
+      const street = place.name || place.formatted_address || '';
+
+      setFormData((prev: any) => ({
+        ...prev,
+        latitude: lat,
+        longitude: lng,
+        street: street,
+        city: city,
+        pincode: pincode
+      }));
+      setZoom(17);
+    }
+  };
+
+  const onMarkerDragEnd = (e: any) => {
+    if (e.latLng) {
+      const lat = e.latLng.lat();
+      const lng = e.latLng.lng();
+      
+      setFormData((prev: any) => ({
+        ...prev,
+        latitude: lat,
+        longitude: lng
+      }));
+
+      // Optional: Reverse geocoding to update fields on drag
+      const geocoder = new (window as any).google.maps.Geocoder();
+      geocoder.geocode({ location: { lat, lng } }, (results: any, status: any) => {
+        if (status === 'OK' && results?.[0]) {
+          const result = results[0];
+          const addressComponents = result.address_components || [];
+          const city = addressComponents.find((c: any) => c.types.includes('locality'))?.long_name || 
+                       addressComponents.find((c: any) => c.types.includes('administrative_area_level_2'))?.long_name || '';
+          const pincode = addressComponents.find((c: any) => c.types.includes('postal_code'))?.long_name || '';
+          
+          setFormData((prev: any) => ({
+            ...prev,
+            city: city || prev.city,
+            pincode: pincode || prev.pincode
+          }));
+        }
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,19 +132,36 @@ export default function Step2PropertyLocation({
               <div>
                 <label className="block text-sm font-bold text-gray-800 mb-2">Street Address</label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                     <svg className="w-4 h-4 text-gray-400 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                   </div>
-                  <input
-                    type="text"
-                    name="street"
-                    value={formData.street}
-                    onChange={handleChange}
-                    placeholder="e.g. 123 Vagator Beach Road"
-                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/20 focus:border-[#EC5B13] transition-all"
-                  />
+                  {isLoaded ? (
+                    <Autocomplete
+                      onLoad={onAutocompleteLoad}
+                      onPlaceChanged={onPlaceChanged}
+                      options={{ types: ['address'], componentRestrictions: { country: 'in' } }}
+                    >
+                      <input
+                        type="text"
+                        name="street"
+                        value={formData.street}
+                        onChange={handleChange}
+                        placeholder="Search for your address..."
+                        className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/20 focus:border-[#EC5B13] transition-all"
+                      />
+                    </Autocomplete>
+                  ) : (
+                    <input
+                      type="text"
+                      name="street"
+                      value={formData.street}
+                      onChange={handleChange}
+                      placeholder="e.g. 123 Vagator Beach Road"
+                      className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/20 focus:border-[#EC5B13] transition-all"
+                    />
+                  )}
                 </div>
               </div>
 
@@ -142,16 +226,27 @@ export default function Step2PropertyLocation({
               <div className="absolute inset-0">
                 <GoogleMap
                   mapContainerStyle={{ width: '100%', height: '100%' }}
-                  center={goCenter}
+                  center={center}
                   zoom={zoom}
                   options={{
                     disableDefaultUI: true,
                     zoomControl: false,
+                    gestureHandling: 'greedy'
+                  }}
+                  onClick={(e: any) => {
+                    if (e.latLng) {
+                      setFormData((prev: any) => ({
+                        ...prev,
+                        latitude: e.latLng.lat(),
+                        longitude: e.latLng.lng()
+                      }));
+                    }
                   }}
                 >
-                  {/* Custom Map Pin Marker */}
                   <Marker 
-                    position={goCenter} 
+                    position={center} 
+                    draggable={true}
+                    onDragEnd={onMarkerDragEnd}
                     icon={{
                       url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#EC5B13" stroke="#EC5B13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3" fill="white"/></svg>')
                     }}
@@ -184,16 +279,6 @@ export default function Step2PropertyLocation({
               </button>
             </div>
 
-            {/* API Key Input (Requested by user for dynamic integration later) */}
-            <div className="relative z-10 w-full mb-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-               <input
-                 type="text"
-                 placeholder="Paste Google Maps API Key here..."
-                 value={apiKey}
-                 onChange={(e) => setApiKey(e.target.value)}
-                 className="w-full bg-white/95 backdrop-blur-sm border border-white/20 text-xs px-3 py-2 rounded-lg shadow-xl focus:outline-none focus:ring-2 focus:ring-[#EC5B13] text-gray-800 font-medium"
-               />
-            </div>
 
             {/* Map Helper Text */}
             <div className="relative z-10 mt-auto bg-white/95 backdrop-blur-md rounded-xl p-3 flex items-center justify-center gap-2 shadow-xl border border-white/40">

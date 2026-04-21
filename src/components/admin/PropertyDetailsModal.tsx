@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { X, MapPin, Users, BedDouble, Bath, ShieldCheck, Info, Globe, Calendar, User, AlignLeft, ListChecks, Phone, Mail } from "lucide-react";
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 interface Property {
   id: string;
@@ -26,6 +27,8 @@ interface Property {
   house_rules: any;
   custom_rules: string[];
   status: string;
+  latitude?: number;
+  longitude?: number;
   created_at: string;
 }
 
@@ -36,7 +39,19 @@ interface PropertyDetailsModalProps {
 }
 
 export default function PropertyDetailsModal({ property, isOpen, onClose }: PropertyDetailsModalProps) {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
+    libraries: ['places'] as any
+  });
+
   if (!isOpen) return null;
+
+  const center = {
+    lat: property.latitude || 15.2993,
+    lng: property.longitude || 74.1240
+  };
+
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
@@ -97,11 +112,41 @@ export default function PropertyDetailsModal({ property, isOpen, onClose }: Prop
                 <MapPin size={20} className="text-[#EC5B13]" />
                 <h3>Location Details</h3>
               </div>
-              <div className="bg-gray-50 rounded-3xl p-6 border border-gray-100/50">
-                 <p className="text-sm font-bold text-gray-700 leading-relaxed">
-                   {property.street_address}<br />
-                   {property.city}, {property.state} {property.pincode}
-                 </p>
+              <div className="flex flex-col gap-4">
+                <div className="bg-gray-50 rounded-3xl p-6 border border-gray-100/50">
+                  <p className="text-sm font-bold text-gray-700 leading-relaxed">
+                    {property.street_address}<br />
+                    {property.city}, {property.state} {property.pincode}
+                  </p>
+                </div>
+                
+                {/* Map Preview */}
+                <div className="h-48 w-full bg-gray-100 rounded-[32px] overflow-hidden border border-gray-100 shadow-inner relative">
+                  {isLoaded ? (
+                    <GoogleMap
+                      mapContainerStyle={{ width: '100%', height: '100%' }}
+                      center={center}
+                      zoom={15}
+                      options={{
+                        disableDefaultUI: true,
+                        zoomControl: false,
+                        gestureHandling: 'none',
+                        draggable: false,
+                      }}
+                    >
+                      <Marker 
+                        position={center} 
+                        icon={{
+                          url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#EC5B13" stroke="#EC5B13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3" fill="white"/></svg>')
+                        }}
+                      />
+                    </GoogleMap>
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#EC5B13] border-t-transparent"></div>
+                    </div>
+                  )}
+                </div>
               </div>
             </section>
 

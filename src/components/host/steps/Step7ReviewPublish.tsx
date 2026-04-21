@@ -13,6 +13,7 @@ import {
   Shield, Thermometer, MapPinIcon, Briefcase, CalendarDays, ShowerHead,
   Phone, Mail
 } from 'lucide-react';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { PhotoItem } from './Step4PropertyPhotos';
 import { Step6SpecificationsData } from './Step6Specifications';
 
@@ -97,7 +98,16 @@ const AMENITY_LABELS: Record<string, { label: string; icon: React.ReactNode }> =
 interface ReviewPublishProps {
   // All collected data
   category: string | null;
-  step2Data: { street: string; city: string; state: string; pincode: string; hostName: string; hostDescription: string; };
+  step2Data: { 
+    street: string; 
+    city: string; 
+    state: string; 
+    pincode: string; 
+    hostName: string; 
+    hostDescription: string;
+    latitude: number;
+    longitude: number;
+  };
   step3Data: { guests: number; bedrooms: number; beds: number; bathrooms: number; };
   photos: PhotoItem[];
   selectedAmenities: string[];
@@ -196,6 +206,17 @@ export default function Step7ReviewPublish({
   onGoToStep,
   isSaving
 }: ReviewPublishProps) {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
+    libraries: ['places'] as any
+  });
+
+  const center = {
+    lat: step2Data.latitude || 15.2993,
+    lng: step2Data.longitude || 74.1240
+  };
+
   const [showModal, setShowModal] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
 
@@ -345,12 +366,33 @@ export default function Step7ReviewPublish({
                   </div>
                 </div>
               </div>
-              {/* Map placeholder */}
-              <div className="hidden sm:flex w-52 h-32 bg-gray-100 rounded-xl items-center justify-center shrink-0 overflow-hidden">
-                <div className="text-gray-400 text-xs text-center px-2">
-                  <MapPin size={20} className="mx-auto mb-1 text-[#EC5B13]" />
-                  {step2Data.city || 'Location'}
-                </div>
+              {/* Map preview */}
+              <div className="hidden sm:flex w-52 h-32 bg-gray-100 rounded-xl items-center justify-center shrink-0 overflow-hidden relative shadow-inner border border-gray-100">
+                {isLoaded ? (
+                  <GoogleMap
+                    mapContainerStyle={{ width: '100%', height: '100%' }}
+                    center={center}
+                    zoom={15}
+                    options={{
+                      disableDefaultUI: true,
+                      zoomControl: false,
+                      gestureHandling: 'none',
+                      draggable: false,
+                    }}
+                  >
+                    <Marker 
+                      position={center} 
+                      icon={{
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#EC5B13" stroke="#EC5B13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3" fill="white"/></svg>')
+                      }}
+                    />
+                  </GoogleMap>
+                ) : (
+                  <div className="text-gray-400 text-xs text-center px-2">
+                    <MapPin size={20} className="mx-auto mb-1 text-[#EC5B13]" />
+                    {step2Data.city || 'Location'}
+                  </div>
+                )}
               </div>
             </div>
           </div>

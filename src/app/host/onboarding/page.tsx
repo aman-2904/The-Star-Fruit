@@ -33,7 +33,9 @@ export default function HostOnboardingPage() {
     hostName: '',
     hostDescription: '',
     hostPhone: '',
-    hostEmail: ''
+    hostEmail: '',
+    latitude: 15.2993, // Default Goa
+    longitude: 74.1240
   });
 
   // Step 3 State
@@ -106,7 +108,9 @@ export default function HostOnboardingPage() {
             hostName: data.host_name || '',
             hostDescription: data.host_description || '',
             hostPhone: data.host_phone || '',
-            hostEmail: data.host_email || ''
+            hostEmail: data.host_email || '',
+            latitude: data.latitude || 15.2993,
+            longitude: data.longitude || 74.1240
           }));
 
           setStep3Data({
@@ -205,6 +209,8 @@ export default function HostOnboardingPage() {
               host_description: step2Data.hostDescription,
               host_phone: step2Data.hostPhone,
               host_email: step2Data.hostEmail,
+              latitude: step2Data.latitude,
+              longitude: step2Data.longitude,
             })
             .eq('id', propertyId);
         }
