@@ -15,7 +15,9 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       <Navbar />
       <Hero />
-      <SearchWidget />
+      <Suspense fallback={null}>
+        <SearchWidget />
+      </Suspense>
       <Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-gray-400">Loading stays...</div>}>
         <StaysSection />
       </Suspense>

@@ -26,7 +26,9 @@ export default function StaysListingPage() {
         </div>
 
         <div className="relative z-10">
-          <SearchWidget isHero={false} />
+          <Suspense fallback={null}>
+            <SearchWidget isHero={false} />
+          </Suspense>
         </div>
       </div>
 
