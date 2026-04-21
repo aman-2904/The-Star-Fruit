@@ -725,21 +725,23 @@ export default function PropertyDetailsPage() {
             {/* Highlights Section */}
             <div className="py-8 space-y-6 border-b border-gray-100">
               <div className="flex items-start gap-4">
-                <ChefHat className="mt-1 text-gray-500" size={24} />
+                <ChefHat className="mt-1 text-gray-500 shrink-0" size={24} />
                 <div>
                   <h4 className="font-bold text-gray-900 leading-tight mb-0.5">{property.host_name || "Maria"} is a Superhost</h4>
-                  <p className="text-gray-500 text-sm">Superhosts are experienced, highly rated hosts who are committed to providing great stays for guests.</p>
+                  <p className="text-gray-500 text-sm">
+                    {property.host_description || "Superhosts are experienced, highly rated hosts who are committed to providing great stays for guests."}
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <MapPin className="mt-1 text-gray-500" size={24} />
+                <MapPin className="mt-1 text-gray-500 shrink-0" size={24} />
                 <div>
                   <h4 className="font-bold text-gray-900 leading-tight mb-0.5">Great location</h4>
                   <p className="text-gray-500 text-sm">95% of recent guests gave the location a 5-star rating.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <Calendar className="mt-1 text-gray-500" size={24} />
+                <Calendar className="mt-1 text-gray-500 shrink-0" size={24} />
                 <div>
                   <h4 className="font-bold text-gray-900 leading-tight mb-0.5">Free cancellation for 48 hours</h4>
                   <p className="text-gray-500 text-sm">Get a full refund if you change your mind.</p>
