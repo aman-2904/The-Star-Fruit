@@ -21,6 +21,7 @@ interface Property {
   // Mocking rating for now as it's not in DB
   rating?: number;
   description?: string;
+  is_trending?: boolean;
 }
 
 const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) => {
@@ -73,7 +74,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
               bedrooms={property.bedrooms}
               image={property.images?.[0]}
               rating={4.8} // Mocked rating
-              trending={parseInt(property.id.slice(-1), 16) > 12} // Deterministic logic
+              trending={property.is_trending}
             />
           </div>
         ))}
@@ -373,7 +374,7 @@ export default function StaysSection({
                 bedrooms={property.bedrooms}
                 image={property.images?.[0]}
                 rating={4.8}
-                trending={parseInt(property.id.slice(-1), 16) > 12}
+                trending={property.is_trending}
               />
             ))}
           </div>

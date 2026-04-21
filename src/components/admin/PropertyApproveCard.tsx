@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { CheckCircle, XCircle, MapPin, Users, BedDouble, Bath, Globe } from 'lucide-react';
+import { CheckCircle, XCircle, MapPin, Users, BedDouble, Bath, Globe, TrendingUp } from 'lucide-react';
 
 interface Property {
   id: string;
@@ -20,6 +20,7 @@ interface Property {
   images: string[];
   status: string;
   created_at: string;
+  is_trending?: boolean;
 }
 
 interface PropertyApproveCardProps {
@@ -27,6 +28,7 @@ interface PropertyApproveCardProps {
   onApprove: (id: string) => Promise<void>;
   onReject: (id: string) => Promise<void>;
   onRevoke: (id: string) => Promise<void>;
+  onToggleTrending?: (id: string, currentStatus: boolean) => Promise<void>;
   onClick: () => void;
   layout?: 'grid' | 'list';
 }
@@ -36,6 +38,7 @@ export default function PropertyApproveCard({
   onApprove, 
   onReject, 
   onRevoke, 
+  onToggleTrending,
   onClick,
   layout = 'grid'
 }: PropertyApproveCardProps) {
@@ -75,10 +78,16 @@ export default function PropertyApproveCard({
               No Image
             </div>
           )}
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 left-3 flex flex-col gap-2">
              <div className="bg-white/90 backdrop-blur-md px-2 py-1 rounded-full shadow-sm">
                <span className="text-[9px] font-black text-gray-900 uppercase tracking-widest">{property.category}</span>
              </div>
+             {property.is_trending && (
+               <div className="bg-orange-500/90 backdrop-blur-md px-2 py-1 rounded-full shadow-sm flex items-center gap-1">
+                 <TrendingUp size={8} className="text-white" />
+                 <span className="text-[8px] font-black text-white uppercase tracking-widest">Trending</span>
+               </div>
+             )}
           </div>
         </div>
 
@@ -134,6 +143,16 @@ export default function PropertyApproveCard({
               <div className="flex-1 flex justify-end gap-3">
                 {property.status === 'published' ? (
                   <div className="flex items-center gap-3">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onToggleTrending?.(property.id, !!property.is_trending); }}
+                      className={`px-4 py-2 rounded-xl font-bold text-[10px] border transition-all flex items-center gap-2 ${
+                        property.is_trending 
+                          ? "bg-orange-500 text-white border-orange-600 shadow-lg shadow-orange-500/20" 
+                          : "bg-white text-gray-400 border-gray-100 hover:border-orange-200 hover:text-orange-500"
+                      }`}
+                    >
+                       <TrendingUp size={14} /> {property.is_trending ? 'Trending' : 'Mark Trending'}
+                    </button>
                     <div className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-[10px] border border-emerald-100 flex items-center gap-2">
                        <CheckCircle size={14} /> Published
                     </div>
@@ -189,10 +208,16 @@ export default function PropertyApproveCard({
             No Image Available
           </div>
         )}
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4 flex flex-col gap-2">
           <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm max-w-fit">
             <span className="text-[10px] font-black text-gray-900 uppercase tracking-widest">{property.category}</span>
           </div>
+          {property.is_trending && (
+            <div className="bg-orange-500/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 max-w-fit">
+              <TrendingUp size={10} className="text-white" />
+              <span className="text-[9px] font-black text-white uppercase tracking-widest">Trending</span>
+            </div>
+          )}
         </div>
         <div className="absolute top-4 right-4">
           <div className={`px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 ${
@@ -242,18 +267,32 @@ export default function PropertyApproveCard({
 
         <div className="flex items-center gap-3">
           {property.status === 'published' ? (
-            <div className="flex-1 flex items-center gap-2">
-              <div className="flex-1 flex items-center justify-center gap-2 py-3 bg-emerald-50 text-emerald-600 rounded-2xl font-bold text-xs border border-emerald-100">
-                <CheckCircle size={16} />
-                Published
+            <div className="flex-1 flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <div className="flex-1 flex items-center justify-center gap-2 py-3 bg-emerald-50 text-emerald-600 rounded-2xl font-bold text-xs border border-emerald-100">
+                  <CheckCircle size={16} />
+                  Published
+                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); onRevoke(property.id); }}
+                  disabled={loading}
+                  className="flex-none px-4 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-xs border border-red-100 hover:bg-red-100 transition-all disabled:opacity-50"
+                  title="Revoke Publication"
+                >
+                  Revoke
+                </button>
               </div>
               <button
-                onClick={(e) => { e.stopPropagation(); onRevoke(property.id); }}
+                onClick={(e) => { e.stopPropagation(); onToggleTrending?.(property.id, !!property.is_trending); }}
                 disabled={loading}
-                className="flex-none px-4 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-xs border border-red-100 hover:bg-red-100 transition-all disabled:opacity-50"
-                title="Revoke Publication"
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-xs transition-all shadow-sm ${
+                  property.is_trending 
+                    ? "bg-orange-500 text-white shadow-orange-500/20 active:scale-95" 
+                    : "bg-white text-gray-500 border border-gray-100 hover:border-orange-200 hover:text-orange-500"
+                }`}
               >
-                Revoke
+                <TrendingUp size={16} />
+                {property.is_trending ? 'Marked as Trending' : 'Mark as Trending'}
               </button>
             </div>
           ) : (

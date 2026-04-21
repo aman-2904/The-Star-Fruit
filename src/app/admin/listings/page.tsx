@@ -107,6 +107,30 @@ export default function AdminListings() {
     }
   };
 
+  const handleToggleTrending = async (id: string, currentStatus: boolean) => {
+    try {
+      if (!supabase) return;
+      const newStatus = !currentStatus;
+      const { error: updateError } = await supabase
+        .from('properties')
+        .update({ is_trending: newStatus })
+        .eq('id', id);
+
+      if (updateError) throw updateError;
+      setProperties(prev => prev.map(p => p.id === id ? { ...p, is_trending: newStatus } : p));
+
+      const prop = properties.find(p => p.id === id);
+      if (prop) {
+        await logActivity(
+          `${newStatus ? 'Marked' : 'Unmarked'} property as trending`, 
+          { property_id: id, title: prop.listing_title }
+        );
+      }
+    } catch (err: any) {
+      alert("Error updating trending status: " + err.message);
+    }
+  };
+
   const filteredProperties = properties.filter(p => {
     // First apply host filter if present
     if (hostIdFilter && p.host_id !== hostIdFilter) return false;
@@ -227,6 +251,7 @@ export default function AdminListings() {
               onApprove={handleApprove}
               onReject={handleReject}
               onRevoke={handleRevoke}
+              onToggleTrending={handleToggleTrending}
               layout={viewMode}
               onClick={() => {
                 setSelectedProperty(property);
