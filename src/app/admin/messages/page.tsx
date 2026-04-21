@@ -107,7 +107,7 @@ function AdminMessagesContent() {
       setCurrentConversation(conv);
       
       // Load messages
-      const history = await chatService.getMessages(selectedChatId);
+      const history = await chatService.getMessages(conv.id);
       const formattedHistory = history.map(m => ({
         id: m.id,
         senderId: m.sender_id,
@@ -119,7 +119,7 @@ function AdminMessagesContent() {
 
       // Subscribe to real-time
       if (subscriptionRef.current) subscriptionRef.current.unsubscribe();
-      subscriptionRef.current = chatService.subscribeToMessages(selectedChatId, (payload: DbMessage) => {
+      subscriptionRef.current = chatService.subscribeToMessages(conv.id, (payload: DbMessage) => {
         setMessages(prev => {
           if (prev.find(p => p.id === payload.id)) return prev;
           return [...prev, {
@@ -144,7 +144,7 @@ function AdminMessagesContent() {
     if (!currentConversation || !session) return;
 
     const sent = await chatService.sendMessage(
-      selectedChatId!,
+      currentConversation.id,
       session.user.id,
       content
     );
