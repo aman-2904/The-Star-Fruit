@@ -178,7 +178,7 @@ export default function PropertyDetailsPage() {
 
   const submitEnquiry = async () => {
     if (!supabase) return;
-    
+
     // Basic validation
     if (!enquiryData.fullName || !enquiryData.email || !enquiryData.phone || !enquiryData.checkIn || !enquiryData.checkOut) {
       setEnquiryError("Please fill in all required fields.");
@@ -265,8 +265,8 @@ export default function PropertyDetailsPage() {
             .select('id')
             .eq('user_id', curSession.user.id)
             .eq('property_id', id)
-            .maybeSingle(); 
-            
+            .maybeSingle();
+
           if (savedData) setIsSaved(true);
 
           // Pre-fill enquiry form
@@ -352,11 +352,11 @@ export default function PropertyDetailsPage() {
       router.push("/login?redirect=/stays/" + id);
       return;
     }
-    
+
     // Optimistic UI Update
     const newSaveState = !isSaved;
     setIsSaved(newSaveState);
-    
+
     try {
       if (!newSaveState) {
         await supabase
@@ -525,8 +525,8 @@ export default function PropertyDetailsPage() {
                   ref={(el) => { thumbnailRefs.current[i] = el; }}
                   onClick={() => setActivePhotoIndex(i)}
                   className={`relative w-16 h-16 md:w-20 md:h-16 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${activePhotoIndex === i
-                      ? "scale-110 ring-4 ring-orange-500 shadow-2xl z-10"
-                      : "opacity-40 hover:opacity-100"
+                    ? "scale-110 ring-4 ring-orange-500 shadow-2xl z-10"
+                    : "opacity-40 hover:opacity-100"
                     }`}
                 >
                   <Image src={img} alt={`Thumb ${i + 1}`} fill className="object-cover" unoptimized />
@@ -592,11 +592,11 @@ export default function PropertyDetailsPage() {
               {isCopied ? <CheckCircle2 size={16} className="text-emerald-600" /> : <Share size={16} />}
               {isCopied ? "Copied!" : "Share"}
             </button>
-            <button 
+            <button
               onClick={handleToggleSave}
               className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline"
             >
-              <Heart size={16} className={isSaved ? "fill-red-500 text-red-500" : ""} /> 
+              <Heart size={16} className={isSaved ? "fill-red-500 text-red-500" : ""} />
               {isSaved ? "Saved" : "Save"}
             </button>
           </div>
@@ -653,17 +653,17 @@ export default function PropertyDetailsPage() {
                 />
               ))
             ) : (
-                <Image
-                  src="/images/stays/pool_villa.png"
-                  alt={property.listing_title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
+              <Image
+                src="/images/stays/pool_villa.png"
+                alt={property.listing_title}
+                fill
+                className="object-cover"
+                priority
+              />
             )}
-            
+
             {/* Interactive Overlay Layer */}
-            <div 
+            <div
               className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-300 z-20 cursor-pointer"
               onClick={() => openGallery(heroImageIndex)}
             />
@@ -849,7 +849,7 @@ export default function PropertyDetailsPage() {
                   <p className="text-emerald-700 text-sm font-medium leading-relaxed">
                     Our team will contact you shortly regarding your stay at {property.listing_title}.
                   </p>
-                  <button 
+                  <button
                     onClick={() => setEnquiryStatus('idle')}
                     className="mt-6 text-emerald-600 font-bold text-sm underline hover:text-emerald-800 transition-colors"
                   >
@@ -861,37 +861,37 @@ export default function PropertyDetailsPage() {
                   <div className="space-y-4 mb-6">
                     {/* User Info Section (Only if not pre-filled/logged in or needs edit) */}
                     <div className="space-y-3">
-                       <input 
+                      <input
                         type="text"
                         name="fullName"
                         placeholder="Full Name"
                         value={enquiryData.fullName}
                         onChange={handleEnquiryChange}
                         className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
-                       />
-                       <input 
+                      />
+                      <input
                         type="email"
                         name="email"
                         placeholder="Email Address"
                         value={enquiryData.email}
                         onChange={handleEnquiryChange}
                         className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
-                       />
-                       <input 
+                      />
+                      <input
                         type="tel"
                         name="phone"
                         placeholder="Phone Number"
                         value={enquiryData.phone}
                         onChange={handleEnquiryChange}
                         className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/10 focus:border-[#EC5B13] transition-all"
-                       />
+                      />
                     </div>
 
                     <div className="border border-gray-300 rounded-[14px] overflow-hidden">
                       <div className="grid grid-cols-2 border-b border-gray-300">
                         <div className="p-3 border-r border-gray-300 hover:bg-gray-50 transition-colors relative">
                           <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Check-in</p>
-                          <input 
+                          <input
                             type="date"
                             name="checkIn"
                             value={enquiryData.checkIn}
@@ -901,7 +901,7 @@ export default function PropertyDetailsPage() {
                         </div>
                         <div className="p-3 hover:bg-gray-50 transition-colors relative">
                           <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Checkout</p>
-                          <input 
+                          <input
                             type="date"
                             name="checkOut"
                             value={enquiryData.checkOut}
@@ -914,14 +914,14 @@ export default function PropertyDetailsPage() {
                         <div className="flex justify-between items-center">
                           <div className="w-full">
                             <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Guests</p>
-                            <select 
+                            <select
                               name="guests"
                               value={enquiryData.guests}
                               onChange={handleEnquiryChange}
                               className="w-full text-sm font-medium text-gray-900 bg-transparent focus:outline-none cursor-pointer appearance-none"
                             >
                               {[...Array(property.max_guests || 10)].map((_, i) => (
-                                <option key={i+1} value={i+1}>{i+1} {i === 0 ? 'guest' : 'guests'}</option>
+                                <option key={i + 1} value={i + 1}>{i + 1} {i === 0 ? 'guest' : 'guests'}</option>
                               ))}
                             </select>
                           </div>
@@ -932,7 +932,7 @@ export default function PropertyDetailsPage() {
                         <div className="flex justify-between items-center">
                           <div className="w-full">
                             <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Purpose</p>
-                            <select 
+                            <select
                               name="purpose"
                               value={enquiryData.purpose}
                               onChange={handleEnquiryChange}
@@ -953,11 +953,11 @@ export default function PropertyDetailsPage() {
 
                   {enquiryStatus === 'error' && (
                     <p className="text-red-500 text-xs font-bold mb-4 flex items-center gap-1">
-                       <AlertCircle size={14} /> {enquiryError}
+                      <AlertCircle size={14} /> {enquiryError}
                     </p>
                   )}
 
-                  <button 
+                  <button
                     onClick={submitEnquiry}
                     disabled={enquiryLoading}
                     className="w-full py-4 bg-[#EC5B13] hover:bg-[#d44f0f] text-white rounded-xl font-bold text-lg transition-all shadow-lg active:scale-[0.98] mb-4 flex items-center justify-center gap-2 disabled:opacity-70"
