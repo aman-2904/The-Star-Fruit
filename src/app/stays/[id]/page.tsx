@@ -154,7 +154,6 @@ export default function PropertyDetailsPage() {
   const [heroImageIndex, setHeroImageIndex] = useState(0);
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [hasMore, setHasMore] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
   // Enquiry Form State
@@ -300,29 +299,6 @@ export default function PropertyDetailsPage() {
     }
   }, [activePhotoIndex, showAllPhotos]);
 
-  // Check for "Show more" description
-  useEffect(() => {
-    const checkClamp = () => {
-      if (descriptionRef.current) {
-        // Tolerant height check for clamping
-        const isClamped = descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight + 1;
-        const textContent = property?.listing_description || property?.description || "";
-        // Lower threshold to 150 characters to be safer
-        setHasMore(isClamped || textContent.length > 150);
-      }
-    };
-
-    checkClamp(); // Initial check
-
-    // Check again after a delay in case custom fonts change layout dimensions
-    const timeoutId = setTimeout(checkClamp, 300);
-    window.addEventListener('resize', checkClamp);
-
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener('resize', checkClamp);
-    };
-  }, [property]);
 
   // Handle Keyboard Navigation
   useEffect(() => {
@@ -759,7 +735,7 @@ export default function PropertyDetailsPage() {
                   {property.listing_description || property.description || "Welcome to our stunning property. This luxury space offers an unparalleled blend of modern architecture and tropical charm..."}
                 </p>
 
-                {hasMore && (
+                {(property.listing_description?.length || property.description?.length || 0) > 250 && (
                   <button
                     onClick={() => setIsExpanded(!isExpanded)}
                     className="flex items-center gap-1 font-bold underline text-gray-900 mt-4 hover:text-[#EC5B13] transition-colors"
