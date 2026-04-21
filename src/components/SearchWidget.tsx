@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, MapPin, Calendar, Users, Hotel, Ship, Home } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
   const tabs = [
@@ -9,15 +10,41 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
     { label: "Stays", icon: <Hotel size={18} /> },
     { label: "Cruise", icon: <Ship size={18} /> },
   ];
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [activeTab, setActiveTab] = useState("Villas");
   const [location, setLocation] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("1");
   
+  // Initialize from URL params
+  useEffect(() => {
+    const loc = searchParams.get('location');
+    const guestCount = searchParams.get('guests');
+    const cin = searchParams.get('checkin');
+    const cout = searchParams.get('checkout');
+
+    if (loc) setLocation(loc);
+    if (guestCount) setGuests(guestCount);
+    if (cin) setCheckIn(cin);
+    if (cout) setCheckOut(cout);
+  }, [searchParams]);
+
   const handleSearch = () => {
-    console.log({ activeTab, location, checkIn, checkOut, guests });
-    // Implement actual search routing/logic here
+    const params = new URLSearchParams();
+    if (location) params.set('location', location);
+    if (checkIn) params.set('checkin', checkIn);
+    if (checkOut) params.set('checkout', checkOut);
+    if (guests) params.set('guests', guests);
+
+    // Maintain existing category filters if on /stays
+    const existingCats = searchParams.get('cats');
+    if (existingCats) params.set('cats', existingCats);
+
+    const queryString = params.toString();
+    router.push(`/stays${queryString ? `?${queryString}` : ''}`);
   };
 
   return (

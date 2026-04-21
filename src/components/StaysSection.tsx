@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import StayCard from "./StayCard";
 import CategoryFilters from "./CategoryFilters";
-import { ChevronLeft, ChevronRight, ChevronDown, SlidersHorizontal, MapPin, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown, SlidersHorizontal, MapPin, Loader2, Search } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 interface Property {
@@ -22,6 +22,7 @@ interface Property {
   rating?: number;
   description?: string;
   is_trending?: boolean;
+  max_guests: number;
 }
 
 const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) => {
@@ -116,6 +117,12 @@ export default function StaysSection({
   });
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState({
+    location: "",
+    guests: 0,
+    checkIn: "",
+    checkOut: ""
+  });
   
   const router = useRouter();
   const pathname = usePathname();
@@ -130,7 +137,19 @@ export default function StaysSection({
     const standout = searchParams.get('standout');
     const catsArr = searchParams.get('cats')?.split(',').filter(Boolean) || [];
 
-    if (type || amenitiesArr.length > 0 || pets || selfCheckin || standout || catsArr.length > 0) {
+    const searchLocation = searchParams.get('location');
+    const searchGuests = searchParams.get('guests');
+    const searchCheckIn = searchParams.get('checkin');
+    const searchCheckOut = searchParams.get('checkout');
+
+    setSearchQuery({
+      location: searchLocation || "",
+      guests: searchGuests ? parseInt(searchGuests) : 0,
+      checkIn: searchCheckIn || "",
+      checkOut: searchCheckOut || ""
+    });
+
+    if (type || amenitiesArr.length > 0 || pets || selfCheckin || standout || catsArr.length > 0 || searchLocation || searchGuests) {
       const filters: AdvancedFilters = {
         propertyType: type || "",
         amenities: amenitiesArr,
@@ -254,6 +273,18 @@ export default function StaysSection({
       if (!matchesCategory) return false;
     }
     
+    // 3. Search Bar Filters
+    if (searchQuery.location) {
+      const search = searchQuery.location.toLowerCase();
+      const cityMatch = prop.city?.toLowerCase().includes(search);
+      const titleMatch = prop.listing_title?.toLowerCase().includes(search);
+      if (!cityMatch && !titleMatch) return false;
+    }
+
+    if (searchQuery.guests > 0) {
+      if ((prop.max_guests || 0) < searchQuery.guests) return false;
+    }
+    
     return true;
   });
 
@@ -322,7 +353,38 @@ export default function StaysSection({
         />
 
 
-        {/* Swapped Content: Title & Description now come AFTER filters */}
+        {/* Search Results Header */}
+        {(searchQuery.location || searchQuery.guests > 0) && (
+          <div className="mb-8 flex items-center justify-between bg-orange-50/50 px-6 py-4 rounded-2xl border border-orange-100/50 animate-in slide-in-from-top duration-500">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                <Search size={18} className="text-[#EC5B13]" />
+              </div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#EC5B13] mb-0.5">Search Results</p>
+                <h3 className="text-sm md:text-base font-bold text-gray-900">
+                  Showing stays {searchQuery.guests > 0 ? `for ${searchQuery.guests} ${searchQuery.guests === 1 ? 'guest' : 'guests'}` : ''} 
+                  {searchQuery.location ? ` in ${searchQuery.location}` : ''}
+                </h3>
+              </div>
+            </div>
+            <button 
+              onClick={() => {
+                const params = new URLSearchParams(searchParams.toString());
+                params.delete('location');
+                params.delete('guests');
+                params.delete('checkin');
+                params.delete('checkout');
+                router.push(`/stays?${params.toString()}`);
+              }}
+              className="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-black transition-colors underline underline-offset-4"
+            >
+              Clear Search
+            </button>
+          </div>
+        )}
+
+        {/* Existing Content */}
         {listingTitle && (
           <div className="mb-12 md:mb-16">
             <h1 className="text-[32px] md:text-[64px] font-serif text-gray-900 tracking-tight leading-tight text-center md:text-left">
