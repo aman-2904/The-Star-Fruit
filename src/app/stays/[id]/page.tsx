@@ -305,10 +305,10 @@ export default function PropertyDetailsPage() {
     const checkClamp = () => {
       if (descriptionRef.current) {
         // Tolerant height check for clamping
-        const isClamped = descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight + 2;
+        const isClamped = descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight + 1;
         const textContent = property?.listing_description || property?.description || "";
-        // Fallback: If text is quite long, show the button anyway to ensure users can expand it
-        setHasMore(isClamped || textContent.length > 250);
+        // Lower threshold to 150 characters to be safer
+        setHasMore(isClamped || textContent.length > 150);
       }
     };
 
