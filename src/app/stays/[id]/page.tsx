@@ -17,7 +17,7 @@ import {
   UserCheck, Baby, Ghost, Layout, Smartphone, Book,
   Gamepad2, GraduationCap, Beer, Wine, CupSoda, Shirt,
   DoorOpen, Lock, Fan, Speaker, CalendarDays, Boxes,
-  ShowerHead, Soup, AlertCircle
+  ShowerHead, Soup, AlertCircle, ConciergeBell, Sprout, Bed
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
@@ -79,6 +79,10 @@ const AMENITY_ICONS: Record<string, any> = {
   sound_system: <Music size={18} />,
   game_console: <Gamepad2 size={18} />,
   barbecue: <Flame size={18} />,
+  shared_pool: <Waves size={18} />,
+  chef_on_request: <ChefHat size={18} />,
+  room_service: <ConciergeBell size={18} />,
+  massage: <Sprout size={18} />,
 
   // Bathroom & Bedroom
   hair_dryer: <Wind size={18} />,
@@ -91,6 +95,8 @@ const AMENITY_ICONS: Record<string, any> = {
   mosquito_net: <Shield size={18} />,
   shower_head: <ShowerHead size={18} />,
   towels: <Home size={18} />,
+  extra_pillows: <Bed size={18} />,
+  darkening_blinds: <Moon size={18} />,
 
   // Kitchen & Dining
   kitchen: <UtensilsCrossed size={18} />,
@@ -125,6 +131,8 @@ const AMENITY_ICONS: Record<string, any> = {
   entrance: <Home size={18} />,
   outdoor_dining: <UtensilsCrossed size={18} />,
   hammock: <Umbrella size={18} />,
+  terrace: <Layout size={18} />,
+  sun_deck: <Sun size={18} />,
 
   // Safety & Services
   first_aid: <HeartPulse size={18} />,

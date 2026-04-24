@@ -6,7 +6,8 @@ import {
   Wind, Tv2, Monitor, WashingMachine, Zap, UserCheck, Bath, Dumbbell, Flame,
   Music, Gamepad2, CupSoda, Thermometer, Shirt, Lock, Shield, ShowerHead,
   UtensilsCrossed, Refrigerator, Microwave, Coffee, Layout, Wine, Baby,
-  Ghost, Book, Car, Trees, HeartPulse, BellElectric, Briefcase, CalendarDays
+  Ghost, Book, Car, Trees, HeartPulse, BellElectric, Briefcase, CalendarDays,
+  Sun, Moon, Bed, ConciergeBell, Sprout
 } from "lucide-react";
 
 export interface AdvancedFilters {
@@ -49,6 +50,10 @@ const allAmenities = [
   { id: 'sound_system', label: 'Sound System', icon: <Music size={20} className="text-gray-400" /> },
   { id: 'game_console', label: 'Game Console', icon: <Gamepad2 size={20} className="text-gray-400" /> },
   { id: 'barbecue', label: 'Fire Pit', icon: <Flame size={20} className="text-gray-400" /> },
+  { id: 'shared_pool', label: 'Shared pool', icon: <Waves size={20} className="text-gray-400" /> },
+  { id: 'chef_on_request', label: 'Chef on Request', icon: <ChefHat size={20} className="text-gray-400" /> },
+  { id: 'room_service', label: 'Room service', icon: <ConciergeBell size={20} className="text-gray-400" /> },
+  { id: 'massage', label: 'Massage', icon: <Sprout size={20} className="text-gray-400" /> },
   // Bathroom & Bedroom
   { id: 'hair_dryer', label: 'Hair Dryer', icon: <Wind size={20} className="text-gray-400" /> },
   { id: 'shampoo', label: 'Toiletries', icon: <CupSoda size={20} className="text-gray-400" /> },
@@ -60,6 +65,8 @@ const allAmenities = [
   { id: 'mosquito_net', label: 'Mosquito Net', icon: <Shield size={20} className="text-gray-400" /> },
   { id: 'shower_head', label: 'Shower head', icon: <ShowerHead size={20} className="text-gray-400" /> },
   { id: 'towels', label: 'Towels', icon: <Home size={20} className="text-gray-400" /> },
+  { id: 'extra_pillows', label: 'Extra pillows', icon: <Bed size={20} className="text-gray-400" /> },
+  { id: 'darkening_blinds', label: 'Room-Darkening Blinds', icon: <Moon size={20} className="text-gray-400" /> },
   // Kitchen & Dining
   { id: 'kitchen', label: 'Full Kitchen', icon: <UtensilsCrossed size={20} className="text-gray-400" /> },
   { id: 'refrigerator', label: 'Fridge', icon: <Refrigerator size={20} className="text-gray-400" /> },
@@ -90,6 +97,8 @@ const allAmenities = [
   { id: 'entrance', label: 'Private Entry', icon: <Home size={20} className="text-gray-400" /> },
   { id: 'outdoor_dining', label: 'Outdoor Dining', icon: <UtensilsCrossed size={20} className="text-gray-400" /> },
   { id: 'hammock', label: 'Hammock', icon: <Umbrella size={20} className="text-gray-400" /> },
+  { id: 'terrace', label: 'Terrace', icon: <Layout size={20} className="text-gray-400" /> },
+  { id: 'sun_deck', label: 'Sun Deck', icon: <Sun size={20} className="text-gray-400" /> },
   // Safety & Services
   { id: 'first_aid', label: 'First Aid Kit', icon: <HeartPulse size={20} className="text-gray-400" /> },
   { id: 'extinguisher', label: 'Extinguisher', icon: <Flame size={20} className="text-gray-400" /> },

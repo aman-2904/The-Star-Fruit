@@ -11,7 +11,7 @@ import {
   Microwave, Coffee, Car, Trees, Home, Music, Zap, Baby, Ghost,
   Layout, Smartphone, Book, Gamepad2, Wine, CupSoda, Shirt, Lock,
   Shield, Thermometer, MapPinIcon, Briefcase, CalendarDays, ShowerHead,
-  Phone, Mail
+  Phone, Mail, Sun, Moon, Bed, ConciergeBell, Sprout
 } from 'lucide-react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { PhotoItem } from './Step4PropertyPhotos';
@@ -39,6 +39,10 @@ const AMENITY_LABELS: Record<string, { label: string; icon: React.ReactNode }> =
   sound_system: { label: 'Sound System', icon: <Music size={14} /> },
   game_console: { label: 'Game Console', icon: <Gamepad2 size={14} /> },
   barbecue: { label: 'Fire Pit', icon: <Flame size={14} /> },
+  shared_pool: { label: 'Shared pool', icon: <Waves size={14} /> },
+  chef_on_request: { label: 'Chef on Request', icon: <ChefHat size={14} /> },
+  room_service: { label: 'Room service', icon: <ConciergeBell size={14} /> },
+  massage: { label: 'Massage', icon: <Sprout size={14} /> },
 
   // Bathroom & Bedroom
   hair_dryer: { label: 'Hair Dryer', icon: <Wind size={14} /> },
@@ -51,6 +55,8 @@ const AMENITY_LABELS: Record<string, { label: string; icon: React.ReactNode }> =
   mosquito_net: { label: 'Mosquito Net', icon: <Shield size={14} /> },
   shower_head: { label: 'Shower head', icon: <ShowerHead size={14} /> },
   towels: { label: 'Towels', icon: <Home size={14} /> },
+  extra_pillows: { label: 'Extra pillows', icon: <Bed size={14} /> },
+  darkening_blinds: { label: 'Room-Darkening Blinds', icon: <Moon size={14} /> },
 
   // Kitchen & Dining
   refrigerator: { label: 'Fridge', icon: <Refrigerator size={14} /> },
@@ -84,6 +90,8 @@ const AMENITY_LABELS: Record<string, { label: string; icon: React.ReactNode }> =
   entrance: { label: 'Private Entry', icon: <Home size={14} /> },
   outdoor_dining: { label: 'Outdoor Dining', icon: <UtensilsCrossed size={14} /> },
   hammock: { label: 'Hammock', icon: <Umbrella size={14} /> },
+  terrace: { label: 'Terrace', icon: <Layout size={14} /> },
+  sun_deck: { label: 'Sun Deck', icon: <Sun size={14} /> },
 
   // Safety & Services
   first_aid: { label: 'First Aid Kit', icon: <HeartPulse size={14} /> },

@@ -10,7 +10,7 @@ import {
   Beer, Wine, CupSoda, Shirt, DoorOpen, Lock,
   Thermometer, Fan, Speaker, MapPin,
   CalendarDays, Briefcase, Boxes, ShowerHead,
-  Soup
+  Soup, Sun, Moon, Bed, ConciergeBell, Sprout
 } from 'lucide-react';
 
 interface Amenity {
@@ -51,11 +51,15 @@ const CATEGORIES: AmenityCategory[] = [
       { id: 'hot_tub',       label: 'Hot Tub/Jacuzzi', icon: <Bath size={22} strokeWidth={1.6} /> },
       { id: 'beachfront',    label: 'Beachfront',     icon: <Umbrella size={22} strokeWidth={1.6} /> },
       { id: 'private_chef',  label: 'Private Chef',   icon: <ChefHat size={22} strokeWidth={1.6} /> },
+      { id: 'chef_on_request', label: 'Chef on Request', icon: <ChefHat size={22} strokeWidth={1.6} /> },
       { id: 'private_gym',   label: 'Private Gym',    icon: <Dumbbell size={22} strokeWidth={1.6} /> },
       { id: 'bbq_grill',     label: 'BBQ Grill',      icon: <Flame size={22} strokeWidth={1.6} /> },
       { id: 'sound_system',  label: 'Sound System',   icon: <Music size={22} strokeWidth={1.6} /> },
       { id: 'game_console',  label: 'Game Console',   icon: <Gamepad2 size={22} strokeWidth={1.6} /> },
       { id: 'barbecue',      label: 'Fire Pit',       icon: <Flame size={22} strokeWidth={1.6} /> },
+      { id: 'shared_pool',   label: 'Shared pool',    icon: <Waves size={22} strokeWidth={1.6} /> },
+      { id: 'room_service',  label: 'Room service',   icon: <ConciergeBell size={22} strokeWidth={1.6} /> },
+      { id: 'massage',       label: 'Massage',        icon: <Sprout size={22} strokeWidth={1.6} /> },
     ]
   },
   {
@@ -70,6 +74,8 @@ const CATEGORIES: AmenityCategory[] = [
       { id: 'iron',         label: 'Iron',           icon: <Shirt size={22} strokeWidth={1.6} /> },
       { id: 'safe',         label: 'Room Safe',      icon: <Lock size={22} strokeWidth={1.6} /> },
       { id: 'bed_linens',   label: 'Bed Linens',     icon: <Home size={22} strokeWidth={1.6} /> },
+      { id: 'extra_pillows', label: 'Extra pillows',  icon: <Bed size={22} strokeWidth={1.6} /> },
+      { id: 'darkening_blinds', label: 'Room-Darkening Blinds', icon: <Moon size={22} strokeWidth={1.6} /> },
       { id: 'mosquito_net', label: 'Mosquito Net',   icon: <Shield size={22} strokeWidth={1.6} /> },
       { id: 'shower_head',  label: 'Shower head',    icon: <ShowerHead size={22} strokeWidth={1.6} /> },
       { id: 'towels',       label: 'Towels',         icon: <Home size={22} strokeWidth={1.6} /> },
@@ -124,6 +130,8 @@ const CATEGORIES: AmenityCategory[] = [
     items: [
       { id: 'patio',        label: 'Patio/Balcony',   icon: <Layout size={22} strokeWidth={1.6} /> },
       { id: 'backyard',     label: 'Backyard',        icon: <Trees size={22} strokeWidth={1.6} /> },
+      { id: 'terrace',      label: 'Terrace',         icon: <Layout size={22} strokeWidth={1.6} /> },
+      { id: 'sun_deck',     label: 'Sun Deck',        icon: <Sun size={22} strokeWidth={1.6} /> },
       { id: 'entrance',     label: 'Private Entry',   icon: <Home size={22} strokeWidth={1.6} /> },
       { id: 'outdoor_dining', label: 'Outdoor Dining', icon: <UtensilsCrossed size={22} strokeWidth={1.6} /> },
       { id: 'hammock',      label: 'Hammock',         icon: <Umbrella size={22} strokeWidth={1.6} /> },
