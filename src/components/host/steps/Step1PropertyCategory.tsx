@@ -36,6 +36,13 @@ const CATEGORIES: CategoryItem[] = [
     description: 'Floating villas on the Mandovi river with private sundecks.',
     subtitle: 'Unique Goan experience',
     image: '/images/stay_cruise.png' // Utilizing existing asset
+  },
+  {
+    id: 'apartment',
+    title: 'Luxury Apartments',
+    description: 'Modern high-rise stays with premium amenities and city views.',
+    subtitle: 'Urban luxury experience',
+    image: '/images/cat_apartment.png'
   }
 ];
 
@@ -57,7 +64,7 @@ export default function Step1PropertyCategory({ selectedCategory, onSelect, onBa
           Select the category that best describes your luxury accommodation in Goa. This helps us tailor your onboarding experience.
         </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
         {CATEGORIES.map((cat) => {
           const isSelected = selectedCategory === cat.id;
 

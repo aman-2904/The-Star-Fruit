@@ -7,7 +7,7 @@ import {
   Music, Gamepad2, CupSoda, Thermometer, Shirt, Lock, Shield, ShowerHead,
   UtensilsCrossed, Refrigerator, Microwave, Coffee, Layout, Wine, Baby,
   Ghost, Book, Car, Trees, HeartPulse, BellElectric, Briefcase, CalendarDays,
-  Sun, Moon, Bed, ConciergeBell, Sprout
+  Sun, Moon, Bed, ConciergeBell, Sprout, Ship
 } from "lucide-react";
 
 export interface AdvancedFilters {
@@ -188,10 +188,12 @@ export default function FilterModal({ isOpen, onClose, initialFilters, draftFilt
           {/* Property Type */}
           <section>
             <h3 className="text-lg font-bold text-gray-900 mb-5">Property Type</h3>
-            <div className="grid grid-cols-3 gap-3 md:gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               {[
                 { id: "Villa", icon: <Home size={24} strokeWidth={1.5} /> },
-                { id: "Hotel", icon: <Hotel size={24} strokeWidth={1.5} /> }
+                { id: "Hotel", icon: <Hotel size={24} strokeWidth={1.5} /> },
+                { id: "Apartment", icon: <Building2 size={24} strokeWidth={1.5} /> },
+                { id: "Cruise", icon: <Ship size={24} strokeWidth={1.5} /> }
               ].map(type => (
                 <button
                   key={type.id}
