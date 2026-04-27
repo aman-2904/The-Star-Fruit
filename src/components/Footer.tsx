@@ -151,7 +151,7 @@ export default function Footer() {
               </div>
 
               <p className="text-gray-500 text-xs">
-                © 2024 the luxevillaz Hospitality Pvt Ltd.
+                © 2024 Luxevillaz Hospitality Pvt Ltd.
               </p>
             </div>
 

@@ -13,7 +13,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "The Starfruit",
+  title: "LuxeVillaz",
   description: "Stays you trust, Flexibility you'll love",
 };
 

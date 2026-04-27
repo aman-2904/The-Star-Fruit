@@ -117,8 +117,8 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <h4 className="font-bold text-[17px] mb-1">Email Us</h4>
-                  <p className="text-white/70 text-[15px]">concierge@thestarfruit.com</p>
-                  <p className="text-white/70 text-[15px]">sales@thestarfruit.com</p>
+                  <p className="text-white/70 text-[15px]">concierge@luxevillaz.com</p>
+                  <p className="text-white/70 text-[15px]">sales@luxevillaz.com</p>
                 </div>
               </div>
 

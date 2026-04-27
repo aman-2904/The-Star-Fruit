@@ -72,7 +72,7 @@ export default function FAQSection() {
 
   const faqs = [
     {
-      question: "What types of stays can I book on The starfruit?",
+      question: "What types of stays can I book on LuxeVillaz?",
       answer: "We offer a wide range of stays including hotels, villas, resorts, apartments, cottages, glamping sites, and boutique stays. Choose the stay style that fits your travel mood and explore verified options near your location."
     },
     {
@@ -85,7 +85,7 @@ export default function FAQSection() {
     },
     {
       question: "Are the stays verified?",
-      answer: "Yes, every property listed on The starfruit undergoes a comprehensive verification process. We personally audit the quality, safety, and amenities to ensure they match our premium standards."
+      answer: "Yes, every property listed on LuxeVillaz undergoes a comprehensive verification process. We personally audit the quality, safety, and amenities to ensure they match our premium standards."
     },
     {
       question: "Do you have long-stay options?",

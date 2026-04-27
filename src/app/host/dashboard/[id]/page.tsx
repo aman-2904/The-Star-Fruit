@@ -333,7 +333,7 @@ export default function PropertyDetailPage() {
         </div>
         <div className="absolute left-1/2 -translate-x-1/2">
           <Link href="/host">
-            <Image src="/images/logo.png" alt="The Star Fruit" width={140} height={35} className="h-8 w-auto" />
+            <Image src="/images/logo.png" alt="LuxeVillaz" width={140} height={35} className="h-8 w-auto" />
           </Link>
         </div>
         <div />

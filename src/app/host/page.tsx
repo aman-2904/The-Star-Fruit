@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 
 const FAQ_DATA = [
   {
-    question: "What types of stays can I book on The starfruit?",
+    question: "What types of stays can I book on LuxeVillaz?",
     answer: "We offer a curated selection of luxury hotels, serviced apartments, private villas, and exclusive resorts across Goa's most prestigious locations."
   },
   {
@@ -24,7 +24,7 @@ const FAQ_DATA = [
   },
   {
     question: "Are the stays verified?",
-    answer: "Yes, every property on The starfruit undergoes a rigorous verification process to ensure it meets our high standards of luxury and hospitality."
+    answer: "Yes, every property on LuxeVillaz undergoes a rigorous verification process to ensure it meets our high standards of luxury and hospitality."
   },
   {
     question: "Do you have long-stay options?",

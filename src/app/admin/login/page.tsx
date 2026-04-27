@@ -93,7 +93,7 @@ export default function AdminLoginPage() {
             {view === 'forgot_password' ? "Enter your email to receive a 6-digit OTP"
              : view === 'verify_otp' ? "Enter the 6-digit OTP sent to your email"
              : view === 'reset_password' ? "Create a new strong password"
-             : "Manage The Star Fruit listings"}
+             : "Manage LuxeVillaz listings"}
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export default function AdminLoginPage() {
               <label className="text-sm font-bold text-gray-700 ml-1">Admin Email</label>
               <input
                 type="email"
-                placeholder="admin@stafruit.com"
+                placeholder="admin@luxevillaz.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#EC5B13]/20 focus:border-[#EC5B13] transition-all"

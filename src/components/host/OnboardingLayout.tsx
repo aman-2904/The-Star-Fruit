@@ -32,7 +32,7 @@ export default function OnboardingLayout({ children, onBack, onContinue, canCont
           <Link href="/host">
             <Image
               src="/images/logo.png"
-              alt="The Starfruit Logo"
+              alt="LuxeVillaz Logo"
               width={160}
               height={40}
               className="h-8 md:h-10 w-auto object-contain"

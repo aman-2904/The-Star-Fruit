@@ -163,7 +163,7 @@ function UnderReviewModal({ open, onClose, coverPhoto, listingTitle, location }:
             Your Villa is under<br />Review!
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed mb-6">
-            Your property is now under review by The Star Fruit,<br />wait for the approval.
+            Your property is now under review by LuxeVillaz,<br />wait for the approval.
           </p>
 
           {/* Property Preview Card */}

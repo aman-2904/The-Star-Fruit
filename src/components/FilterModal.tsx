@@ -307,7 +307,7 @@ export default function FilterModal({ isOpen, onClose, initialFilters, draftFilt
                 { 
                   id: "Guest favourite", 
                   icon: <Award size={24} className="text-gray-700" />,
-                  desc: "The most loved homes on the starfruit" 
+                  desc: "The most loved homes on LuxeVillaz" 
                 },
                 { 
                   id: "Luxe", 
