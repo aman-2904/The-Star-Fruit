@@ -12,6 +12,7 @@ interface Chat {
   isLocked: boolean;
   avatar?: string;
   status: "delivered" | "seen" | "sent";
+  propertyName?: string;
 }
 
 interface ChatSidebarProps {
@@ -73,6 +74,11 @@ export default function ChatSidebar({ chats, selectedChatId, onSelectChat }: Cha
                       {chat.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                     </span>
                   </div>
+                  {chat.propertyName && (
+                    <div className="text-[11px] text-[#EC5B13] font-bold truncate mb-1">
+                      Inquired: {chat.propertyName}
+                    </div>
+                  )}
                   
                   <div className="flex items-center justify-between gap-2">
                     <p className={`text-sm truncate flex-grow ${chat.unreadCount ? "font-bold text-gray-900" : "text-gray-500 font-medium"}`}>

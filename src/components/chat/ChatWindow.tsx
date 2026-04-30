@@ -18,6 +18,7 @@ interface ChatWindowProps {
     type: "admin" | "host";
     isLocked: boolean;
     avatar?: string;
+    propertyName?: string;
   };
   messages: Message[];
   currentUserId: string;
@@ -67,6 +68,11 @@ export default function ChatWindow({ chat, messages, currentUserId }: ChatWindow
                 </span>
               )}
             </div>
+            {chat.propertyName && (
+              <p className="text-[11px] text-[#EC5B13] font-bold mb-0.5">
+                Inquired: {chat.propertyName}
+              </p>
+            )}
             <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
               <span className={`w-1.5 h-1.5 rounded-full ${chat.isLocked ? "bg-gray-300" : "bg-emerald-500 animate-pulse"}`}></span>
               {chat.isLocked ? "Locked" : "Online"}

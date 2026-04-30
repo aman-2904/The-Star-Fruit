@@ -38,9 +38,14 @@ export const chatService = {
 
     if (propertyId) {
       query = query.eq('property_id', propertyId);
+    } else {
+      // Explicitly check for null property_id to avoid matching other property chats
+      query = query.is('property_id', null);
     }
 
-    const { data: existing, error: fetchError } = await query.single();
+    query = query.order('last_message_at', { ascending: false });
+
+    const { data: existing, error: fetchError } = await query.limit(1).maybeSingle();
 
     if (existing) return existing as Conversation;
 

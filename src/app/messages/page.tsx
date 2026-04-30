@@ -74,7 +74,8 @@ function MessagesContent() {
             isLocked: !enq.is_paid,
             status: "delivered",
             host_id: enq.properties?.host_id,
-            property_id: enq.property_id
+            property_id: enq.property_id,
+            propertyName: enq.properties?.listing_title || "General Inquiry"
           });
         });
       }
@@ -147,7 +148,7 @@ function MessagesContent() {
     return () => {
       if (subscriptionRef.current) subscriptionRef.current.unsubscribe();
     };
-  }, [selectedChatId, session, chats]);
+  }, [selectedChatId, session]);
 
   const handleSendMessage = async (content: string) => {
     if (!currentConversation || !session) return;
