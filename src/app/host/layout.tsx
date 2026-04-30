@@ -108,6 +108,14 @@ export default function HostLayout({
           </Link>
 
           <Link 
+            href="/host/messages" 
+            className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/host/messages' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+          >
+            <MessageSquare size={20} />
+            {isSidebarOpen && <span>Messages</span>}
+          </Link>
+
+          <Link 
             href="/host/listings" 
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/host/listings' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >

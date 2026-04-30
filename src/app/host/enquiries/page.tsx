@@ -2,9 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Mail, Phone, Clock, Search, RefreshCcw, User, X, Calendar, Home, CheckCircle2, AlertCircle, Lock, Unlock } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { Mail, Phone, Search, RefreshCcw, X, Calendar, Lock, Unlock, MessageSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface PropertyEnquiry {
@@ -29,14 +27,12 @@ export default function HostPropertyEnquiries() {
   const router = useRouter();
   const [enquiries, setEnquiries] = useState<PropertyEnquiry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedEnquiry, setSelectedEnquiry] = useState<PropertyEnquiry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const fetchEnquiries = async () => {
     setLoading(true);
-    setError(null);
     try {
       if (!supabase) throw new Error("Supabase is not configured.");
 
@@ -55,7 +51,7 @@ export default function HostPropertyEnquiries() {
       if (fetchError) throw fetchError;
       setEnquiries(data || []);
     } catch (err: any) {
-      setError(err.message);
+      console.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -161,13 +157,26 @@ export default function HostPropertyEnquiries() {
                     <p className="text-[10px] font-black text-gray-400 uppercase mt-0.5">{enquiry.guests} Guests</p>
                   </td>
                   <td className="px-8 py-6">
-                    <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                      enquiry.is_paid 
-                        ? "bg-emerald-50 text-emerald-600" 
-                        : "bg-amber-50 text-amber-600"
-                    }`}>
-                      {enquiry.is_paid ? <Unlock size={10} /> : <Lock size={10} />}
-                      {enquiry.is_paid ? "Details Unlocked" : "Awaiting Paid"}
+                    <div className="flex items-center justify-between gap-4">
+                      <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                        enquiry.is_paid 
+                          ? "bg-emerald-50 text-emerald-600" 
+                          : "bg-amber-50 text-amber-600"
+                      }`}>
+                        {enquiry.is_paid ? <Unlock size={10} /> : <Lock size={10} />}
+                        {enquiry.is_paid ? "Details Unlocked" : "Awaiting Paid"}
+                      </div>
+                      
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/host/messages?userId=${enquiry.user_id}&propertyId=${enquiry.property_id}`);
+                        }}
+                        className="p-2 bg-gray-50 text-gray-400 hover:text-[#EC5B13] hover:bg-[#FFF0E8] rounded-xl transition-all border border-gray-100"
+                        title="Chat with guest"
+                      >
+                        <MessageSquare size={18} />
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -267,12 +276,23 @@ export default function HostPropertyEnquiries() {
                 </div>
               )}
 
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                className="w-full py-4 bg-[#1A1A24] text-white rounded-2xl font-black text-base shadow-lg hover:bg-black transition-all active:scale-[0.98]"
-              >
-                Close View
-              </button>
+              <div className="flex gap-4">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/host/messages?userId=${selectedEnquiry.user_id}&propertyId=${selectedEnquiry.property_id}`);
+                  }}
+                  className="flex-1 py-4 bg-[#EC5B13] text-white rounded-2xl font-black text-base shadow-lg shadow-[#EC5B13]/20 hover:bg-[#D44D0F] transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                >
+                  <MessageSquare size={20} /> Chat with Guest
+                </button>
+                <button 
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-8 py-4 bg-gray-100 text-gray-600 rounded-2xl font-black text-base hover:bg-gray-200 transition-all active:scale-[0.98]"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
