@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Mail, Phone, Search, RefreshCcw, X, Calendar, Lock, Unlock, MessageSquare } from "lucide-react";
+import { Mail, Phone, Search, RefreshCcw, X, Calendar, Lock, Unlock, MessageSquare, AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface PropertyEnquiry {
