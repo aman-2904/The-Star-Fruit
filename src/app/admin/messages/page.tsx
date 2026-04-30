@@ -54,7 +54,7 @@ function AdminMessagesContent() {
 
       // Create a map of user_id to name/email/inquiredProperties
       const userMap = new Map();
-      enquiries?.forEach(enq => {
+      enquiries?.forEach((enq: any) => {
         if (enq.user_id) {
           if (!userMap.has(enq.user_id)) {
             userMap.set(enq.user_id, { 
