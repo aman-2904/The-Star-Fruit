@@ -20,7 +20,7 @@ interface Chat {
   status: string;
   user_id: string;
   participant_id: string;
-  property_id: string | null;
+  property_id?: string;
   propertyName: string;
   isPlaceholder?: boolean;
 }
@@ -119,7 +119,7 @@ function HostMessagesContent() {
           status: "seen",
           user_id: conv.user_id,
           participant_id: conv.participant_id,
-          property_id: conv.property_id,
+          property_id: conv.property_id || undefined,
           propertyName: conv.properties?.listing_title || (isGuestChat ? "Property Inquiry" : "Support Chat")
         };
       });
@@ -140,7 +140,7 @@ function HostMessagesContent() {
             status: "delivered",
             user_id: enq.user_id,
             participant_id: curSession.user.id,
-            property_id: enq.property_id,
+            property_id: enq.property_id || undefined,
             propertyName: enq.properties?.listing_title || "Property Inquiry",
             isPlaceholder: true
           });
