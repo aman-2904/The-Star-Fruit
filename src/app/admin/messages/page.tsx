@@ -132,6 +132,8 @@ function AdminMessagesContent() {
 
     init();
 
+    if (!supabase) return;
+
     // Subscribe to all chat_messages globally for the admin to update the sidebar in real-time
     const allMsgsChannel = supabase.channel('all_admin_messages')
       .on('postgres_changes', {
@@ -158,7 +160,9 @@ function AdminMessagesContent() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(allMsgsChannel);
+      if (supabase) {
+        supabase.removeChannel(allMsgsChannel);
+      }
     };
   }, [router, userIdParam]);
 
