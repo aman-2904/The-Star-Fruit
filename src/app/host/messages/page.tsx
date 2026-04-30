@@ -98,7 +98,7 @@ function HostMessagesContent() {
       });
 
       // 3. Format existing conversations for sidebar
-      const existingChats = (conversations || []).map(conv => {
+      const existingChats: Chat[] = (conversations || []).map(conv => {
         const isGuestChat = conv.type === 'host';
         
         let userInfo;
@@ -125,7 +125,7 @@ function HostMessagesContent() {
       });
 
       // 4. Add placeholders for enquiries that don't have conversations yet
-      const finalChats = [...existingChats];
+      const finalChats: Chat[] = [...existingChats];
       enquiries?.forEach((enq: any) => {
         const hasConv = existingChats.find(c => c.user_id === enq.user_id && c.property_id === enq.property_id);
         if (!hasConv) {
