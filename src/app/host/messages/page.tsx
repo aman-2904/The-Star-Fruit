@@ -42,9 +42,9 @@ function HostMessagesContent() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [chats, setChats] = useState<HostChatRoom[]>([]);
-  const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
+  const [selectedChatId, setSelectedChatId] = useState<string | undefined>(undefined);
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
-  const [currentConversation, setCurrentConversation] = useState<HostChatRoom | null>(null);
+  const [currentConversation, setCurrentConversation] = useState<HostChatRoom | undefined>(undefined);
   
   const subscriptionRef = useRef<any>(null);
 
