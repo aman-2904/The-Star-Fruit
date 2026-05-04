@@ -229,12 +229,12 @@ function HostMessagesContent() {
       setCurrentConversation(chat);
       
       const history = await chatService.getMessages(realChatId);
-      const formattedHistory = history.map(m => ({
+      const formattedHistory: DisplayMessage[] = history.map(m => ({
         id: m.id,
         senderId: m.sender_id,
         content: m.content,
         timestamp: new Date(m.created_at),
-        status: m.is_read ? "seen" : "delivered"
+        status: (m.is_read ? "seen" : "delivered") as "seen" | "delivered"
       }));
       setMessages(formattedHistory);
 
@@ -242,13 +242,14 @@ function HostMessagesContent() {
       subscriptionRef.current = chatService.subscribeToMessages(realChatId, (payload: DbMessage) => {
         setMessages(prev => {
           if (prev.find(p => p.id === payload.id)) return prev;
-          return [...prev, {
+          const newMsg: DisplayMessage = {
             id: payload.id,
             senderId: payload.sender_id,
             content: payload.content,
             timestamp: new Date(payload.created_at),
             status: "delivered"
-          }];
+          };
+          return [...prev, newMsg];
         });
       });
     }
@@ -270,7 +271,7 @@ function HostMessagesContent() {
     );
 
     if (sent) {
-      const newMessage = {
+      const newMessage: DisplayMessage = {
         id: sent.id,
         senderId: session.user.id,
         content,
