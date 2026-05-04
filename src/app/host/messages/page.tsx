@@ -9,15 +9,15 @@ import ChatInput from "@/components/chat/ChatInput";
 import { chatService, Message as DbMessage, ADMIN_ID } from "@/lib/chatService";
 import { MessageSquare } from "lucide-react";
 
-interface Chat {
+interface HostChatRoom {
   id: string;
   name: string;
   email: string;
   lastMessage: string;
   timestamp: Date;
-  type: string;
+  type: "admin" | "host";
   isLocked: boolean;
-  status: string;
+  status: "delivered" | "seen" | "sent";
   user_id: string;
   participant_id: string;
   property_id?: string;
@@ -30,7 +30,7 @@ interface DisplayMessage {
   senderId: string;
   content: string;
   timestamp: Date;
-  status: string;
+  status: "sent" | "delivered" | "seen";
 }
 
 function HostMessagesContent() {
@@ -41,10 +41,10 @@ function HostMessagesContent() {
 
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [chats, setChats] = useState<HostChatRoom[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
-  const [currentConversation, setCurrentConversation] = useState<Chat | null>(null);
+  const [currentConversation, setCurrentConversation] = useState<HostChatRoom | null>(null);
   
   const subscriptionRef = useRef<any>(null);
 
@@ -98,7 +98,7 @@ function HostMessagesContent() {
       });
 
       // 3. Format existing conversations for sidebar
-      const existingChats: Chat[] = (conversations || []).map(conv => {
+      const existingChats: HostChatRoom[] = (conversations || []).map(conv => {
         const isGuestChat = conv.type === 'host';
         
         let userInfo;
@@ -114,7 +114,7 @@ function HostMessagesContent() {
           email: userInfo.email,
           lastMessage: "...", 
           timestamp: new Date(conv.last_message_at),
-          type: conv.type,
+          type: conv.type as "admin" | "host",
           isLocked: false,
           status: "seen",
           user_id: conv.user_id,
@@ -125,7 +125,7 @@ function HostMessagesContent() {
       });
 
       // 4. Add placeholders for enquiries that don't have conversations yet
-      const finalChats: Chat[] = [...existingChats];
+      const finalChats: HostChatRoom[] = [...existingChats];
       enquiries?.forEach((enq: any) => {
         const hasConv = existingChats.find(c => c.user_id === enq.user_id && c.property_id === enq.property_id);
         if (!hasConv) {
