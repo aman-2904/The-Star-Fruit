@@ -90,13 +90,19 @@ export default function Footer() {
                 Quick Links
               </h3>
               <ul className="space-y-3">
-                {["Home", "Villas", "Cruise", "Stays", "Become a Host"].map((item) => (
-                  <li key={item}>
+                {[
+                  { name: "Home", href: "/" },
+                  { name: "Villas", href: "/stays?type=Villa" },
+                  { name: "Cruise", href: "#" },
+                  { name: "Stays", href: "/stays?type=Hotel,Apartment" },
+                  { name: "Become a Host", href: "/host" }
+                ].map((item) => (
+                  <li key={item.name}>
                     <Link
-                      href="#"
+                      href={item.href}
                       className="text-gray-300 text-sm hover:text-white transition-colors font-medium"
                     >
-                      {item}
+                      {item.name}
                     </Link>
                   </li>
                 ))}
@@ -109,13 +115,18 @@ export default function Footer() {
                 Support
               </h3>
               <ul className="space-y-3">
-                {["Contact Us", "FAQs", "Terms of Service", "Privacy Policy"].map((item) => (
-                  <li key={item}>
+                {[
+                  { name: "Contact Us", href: "/#contact" },
+                  { name: "FAQs", href: "#" },
+                  { name: "Terms of Service", href: "#" },
+                  { name: "Privacy Policy", href: "#" }
+                ].map((item) => (
+                  <li key={item.name}>
                     <Link
-                      href="#"
+                      href={item.href}
                       className="text-gray-300 text-sm hover:text-white transition-colors font-medium"
                     >
-                      {item}
+                      {item.name}
                     </Link>
                   </li>
                 ))}

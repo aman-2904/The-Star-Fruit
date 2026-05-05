@@ -212,10 +212,15 @@ export default function StaysSection({
   const getFilteredProperties = (advFilters: AdvancedFilters) => properties.filter((prop) => {
     // 1. Advanced Filters from FilterModal
     if (advFilters.propertyType) {
-      if (prop.category?.toLowerCase() !== advFilters.propertyType.toLowerCase() && 
-          !prop.listing_title?.toLowerCase().includes(advFilters.propertyType.toLowerCase())) {
-        return false;
-      }
+      const selectedTypes = advFilters.propertyType.toLowerCase().split(',').map(t => t.trim());
+      const propCategory = prop.category?.toLowerCase() || "";
+      const propTitle = prop.listing_title?.toLowerCase() || "";
+      
+      const matchesType = selectedTypes.some(type => 
+        propCategory === type || propTitle.includes(type)
+      );
+      
+      if (!matchesType) return false;
     }
 
 
