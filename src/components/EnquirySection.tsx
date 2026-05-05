@@ -20,7 +20,15 @@ export default function EnquirySection() {
           <span className="text-[15px] md:text-[18px] font-bold tracking-wide">Goa , India</span>
         </div>
 
-        <button className="px-10 md:px-12 py-5 md:py-6 bg-white text-gray-900 rounded-full text-[15px] md:text-[18px] font-bold shadow-2xl transition-all hover:bg-gray-50 hover:scale-105 active:scale-95">
+        <button 
+          onClick={() => {
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+              contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          className="px-10 md:px-12 py-5 md:py-6 bg-white text-gray-900 rounded-full text-[15px] md:text-[18px] font-bold shadow-2xl transition-all hover:bg-gray-50 hover:scale-105 active:scale-95"
+        >
           Enquire Now
         </button>
       </div>
