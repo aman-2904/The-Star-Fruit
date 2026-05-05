@@ -75,25 +75,29 @@ const CATEGORIES = [
     title: "Hotels",
     description: "Experience full-service comfort with modern rooms, on-site dining, and warm hospitality. Perfect for short trips, business stays, or weekend getaways.",
     image: "/images/cat_hotel.png",
-    linkText: "List Hotels"
+    linkText: "List Hotels",
+    link: "/host/onboarding?type=Hotel"
   },
   {
     title: "Apartments",
     description: "Stay like a local in modern serviced apartments with kitchen and living space. Perfect for long stays or travelers who love home-like comfort.",
     image: "/images/cat_apartment.png",
-    linkText: "List Apartments"
+    linkText: "List Apartments",
+    link: "/host/onboarding?type=Apartment"
   },
   {
     title: "Villas",
     description: "Enjoy spacious private homes designed for relaxation and togetherness. Ideal for families or groups who want luxury, privacy, and a personal touch.",
     image: "/images/cat_villa.png",
-    linkText: "List Villas"
+    linkText: "List Villas",
+    link: "/host/onboarding?type=Villa"
   },
   {
     title: "Resorts",
     description: "Escape to destinations that combine comfort, dining, and leisure in one place. Great for holidays, celebrations, and peaceful retreats.",
     image: "/images/cat_resort.png",
-    linkText: "List Resorts"
+    linkText: "List Resorts",
+    link: "/host/onboarding?type=Resort"
   }
 ];
 
@@ -324,6 +328,7 @@ export default function HostDashboard() {
             {CATEGORIES.map((cat, idx) => (
               <div
                 key={idx}
+                onClick={() => router.push(cat.link)}
                 className="group bg-[#EEEEEE] rounded-[32px] overflow-hidden border border-transparent hover:border-gray-200 hover:shadow-2xl hover:shadow-black/5 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
               >
                 <div className="relative h-64 overflow-hidden m-4 rounded-[24px]">

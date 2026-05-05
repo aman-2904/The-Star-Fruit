@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { MoveRight } from "lucide-react";
 
 const stayTypes = [
@@ -10,13 +11,15 @@ const stayTypes = [
     description: "Experience full-service comfort with modern rooms, on-site dining, and warm hospitality. Perfect for short trips, business stays, or weekend getaways.",
     image: "/images/stay_hotel.png",
     linkText: "View Hotels",
+    link: "/stays?type=Hotel"
   },
   {
-    id: "resorts",
-    title: "Resorts",
-    description: "Escape to destinations that combine comfort, dining, and leisure in one place. Great for holidays, celebrations, and peaceful retreats.",
-    image: "/images/stay_resort.png",
-    linkText: "View Resorts",
+    id: "apartments",
+    title: "Apartments",
+    description: "Enjoy the convenience of city living with fully-equipped modern apartments. Ideal for digital nomads, long-term stays, or travelers seeking a home-away-from-home.",
+    image: "/images/stay_apartment.png",
+    linkText: "View Apartments",
+    link: "/stays?type=Apartment"
   },
   {
     id: "villas",
@@ -24,6 +27,7 @@ const stayTypes = [
     description: "Enjoy spacious private homes designed for relaxation and togetherness. Ideal for families or groups who want luxury, privacy, and a personal touch.",
     image: "/images/stay_villa.png",
     linkText: "View Villas",
+    link: "/stays?type=Villa"
   },
   {
     id: "cruise",
@@ -31,9 +35,8 @@ const stayTypes = [
     description: "Set sail on an unforgettable journey across the seas. Enjoy world-class dining, magnificent ocean views, and premium entertainment all in one place.",
     image: "/images/stay_cruise.png",
     linkText: "View Cruises",
+    link: "#"
   },
-
-
 ];
 
 export default function StayTypesSection() {
@@ -53,9 +56,10 @@ export default function StayTypesSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stayTypes.map((type) => (
-            <div
+            <Link
+              href={type.link}
               key={type.id}
-              className="bg-[#F8F9FA] rounded-[24px] overflow-hidden group hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1 flex flex-col h-full"
+              className="bg-[#F8F9FA] rounded-[24px] overflow-hidden group hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1 flex flex-col h-full cursor-pointer"
             >
               <div className="relative h-[250px] w-full overflow-hidden m-4 rounded-[18px]">
                 <Image
@@ -77,7 +81,7 @@ export default function StayTypesSection() {
                   <MoveRight size={18} className="text-gray-400 group-hover:text-black group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
