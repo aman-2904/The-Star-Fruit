@@ -33,7 +33,7 @@ export default function ContactSection() {
         setIsAuthenticated(true);
         const role = session.user?.user_metadata?.role;
         setUserRole(role);
-        
+
         // Pre-fill user data
         setFormData(prev => ({
           ...prev,
@@ -128,8 +128,8 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <h4 className="font-bold text-[17px] mb-1">Call Us</h4>
-                  <p className="text-white/70 text-[15px]">+91 22 4567 8901</p>
-                  <p className="text-white/70 text-[15px]">+91 9876 543 210</p>
+                  <p className="text-white/70 text-[15px]">+91 9270762462</p>
+
                 </div>
               </div>
             </div>
@@ -140,7 +140,7 @@ export default function ContactSection() {
             <div className="bg-white/95 backdrop-blur-xl rounded-[32px] p-8 md:p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] border border-white/20 min-h-[400px] flex flex-col">
               {authLoading ? (
                 <div className="flex-1 flex items-center justify-center">
-                   <Loader2 size={32} className="animate-spin text-[#FF5A5F]" />
+                  <Loader2 size={32} className="animate-spin text-[#FF5A5F]" />
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -152,7 +152,7 @@ export default function ContactSection() {
                         required
                         placeholder="John Doe"
                         value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
                       />
                     </div>
@@ -162,7 +162,7 @@ export default function ContactSection() {
                         type="email"
                         placeholder="john@example.com"
                         value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
                       />
                     </div>
@@ -173,7 +173,7 @@ export default function ContactSection() {
                         required
                         placeholder="+91 98765 43210"
                         value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
                       />
                     </div>
@@ -183,7 +183,7 @@ export default function ContactSection() {
                         type="text"
                         placeholder="Inquiry about Villa Sol"
                         value={formData.subject}
-                        onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                         className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px]"
                       />
                     </div>
@@ -195,7 +195,7 @@ export default function ContactSection() {
                       placeholder="Tell us more about your requirements..."
                       rows={4}
                       value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]/20 focus:border-[#FF5A5F] transition-all text-[15px] resize-none"
                     ></textarea>
                   </div>
