@@ -6,6 +6,8 @@ import { format } from "date-fns";
 import { Calendar, Clock, ArrowLeft, Tag } from "lucide-react";
 import { blogService } from "@/services/blogService";
 import { calculateReadingTime } from "@/utils/seo";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 // Next.js 15+ requires params to be a Promise
 type Params = Promise<{ slug: string }>;
@@ -51,7 +53,9 @@ export default async function BlogDynamicPage({ params }: { params: Params }) {
   const readingTime = calculateReadingTime(blog.content);
 
   return (
-    <article className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <article className="pt-16 md:pt-24">
       {/* Article Header */}
       <div className="max-w-4xl mx-auto px-4 pt-24 pb-12">
         <Link href="/blogs" className="inline-flex items-center text-sm font-bold text-[#EC5B13] hover:gap-2 transition-all mb-8">
@@ -140,5 +144,7 @@ export default async function BlogDynamicPage({ params }: { params: Params }) {
         </div>
       </div>
     </article>
+      <Footer />
+    </div>
   );
 }

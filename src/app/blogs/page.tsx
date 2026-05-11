@@ -7,6 +7,8 @@ import { blogService } from "@/services/blogService";
 import { Blog } from "@/types/blog";
 import { Search, Calendar, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function PublicBlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -54,8 +56,9 @@ export default function PublicBlogsPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Navbar />
       {/* Hero Section */}
-      <div className="bg-gray-900 text-white py-24 px-4 text-center">
+      <div className="bg-gray-900 text-white py-24 px-4 text-center mt-16 md:mt-24">
         <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">LuxeVillaz Journal</h1>
         <p className="text-gray-400 max-w-2xl mx-auto text-lg">
           Discover insights on luxury living, travel destinations, and real estate investment.
@@ -147,6 +150,7 @@ export default function PublicBlogsPage() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }
