@@ -69,6 +69,56 @@ export default function RichTextEditor({ value, onChange, placeholder = "Start w
     input.click();
   };
 
+  const handlePaste = async (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        e.preventDefault(); // Prevent default base64 paste
+        const file = items[i].getAsFile();
+        if (!file) continue;
+
+        setIsUploading(true);
+        try {
+          const url = await blogService.uploadImage(file);
+          execCommand('insertImage', url);
+        } catch (error) {
+          console.error("Failed to upload pasted image:", error);
+          alert("Failed to upload pasted image");
+        } finally {
+          setIsUploading(false);
+        }
+        break; // Handle one image per paste for safety
+      }
+    }
+  };
+
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    const items = e.dataTransfer?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        e.preventDefault();
+        const file = items[i].getAsFile();
+        if (!file) continue;
+
+        setIsUploading(true);
+        try {
+          const url = await blogService.uploadImage(file);
+          execCommand('insertImage', url);
+        } catch (error) {
+          console.error("Failed to upload dropped image:", error);
+          alert("Failed to upload dropped image");
+        } finally {
+          setIsUploading(false);
+        }
+        break;
+      }
+    }
+  };
+
   const ToolbarButton = ({ 
     icon: Icon, 
     onClick, 
@@ -147,6 +197,8 @@ export default function RichTextEditor({ value, onChange, placeholder = "Start w
         onInput={(e) => onChange(e.currentTarget.innerHTML)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        onPaste={handlePaste}
+        onDrop={handleDrop}
         suppressContentEditableWarning
       />
     </div>

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
-import { Calendar, Clock, ArrowLeft, Facebook, Twitter, Linkedin, Tag } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, Tag } from "lucide-react";
 import { blogService } from "@/services/blogService";
 import { calculateReadingTime } from "@/utils/seo";
 
@@ -99,15 +99,7 @@ export default async function BlogDynamicPage({ params }: { params: Params }) {
 
       {/* Article Content & Sidebar */}
       <div className="max-w-4xl mx-auto px-4 pb-24 flex flex-col md:flex-row gap-12">
-        {/* Share Sidebar (Desktop) */}
-        <div className="hidden md:flex flex-col gap-4 sticky top-32 h-fit text-gray-400">
-          <p className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-2" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
-            Share
-          </p>
-          <button className="p-2 hover:text-[#EC5B13] hover:bg-orange-50 rounded-full transition-colors"><Facebook size={20} /></button>
-          <button className="p-2 hover:text-[#EC5B13] hover:bg-orange-50 rounded-full transition-colors"><Twitter size={20} /></button>
-          <button className="p-2 hover:text-[#EC5B13] hover:bg-orange-50 rounded-full transition-colors"><Linkedin size={20} /></button>
-        </div>
+
 
         {/* Content */}
         <div className="flex-1 max-w-prose w-full mx-auto">
@@ -144,13 +136,7 @@ export default async function BlogDynamicPage({ params }: { params: Params }) {
             </div>
           )}
 
-          {/* Share (Mobile) */}
-          <div className="mt-8 md:hidden flex items-center gap-4 text-gray-400">
-            <span className="text-sm font-bold text-gray-900 uppercase tracking-widest">Share:</span>
-            <button className="p-2 hover:text-[#EC5B13] transition-colors"><Facebook size={20} /></button>
-            <button className="p-2 hover:text-[#EC5B13] transition-colors"><Twitter size={20} /></button>
-            <button className="p-2 hover:text-[#EC5B13] transition-colors"><Linkedin size={20} /></button>
-          </div>
+
         </div>
       </div>
     </article>
