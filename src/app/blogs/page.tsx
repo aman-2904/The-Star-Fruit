@@ -107,7 +107,7 @@ export default function PublicBlogsPage() {
                 placeholder="Search" 
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-12 pr-6 py-3.5 bg-white/95 backdrop-blur-md text-gray-900 placeholder-gray-500 rounded-full focus:outline-none focus:ring-4 focus:ring-[#EC5B13]/30 transition-all font-medium text-sm shadow-lg border border-white/40"
+                className="w-full pl-12 pr-6 py-3.5 bg-[#F3F3F3] text-gray-900 placeholder-gray-500 rounded-full focus:outline-none focus:ring-4 focus:ring-[#EC5B13]/30 transition-all font-medium text-sm shadow-lg border border-transparent"
               />
             </div>
 
