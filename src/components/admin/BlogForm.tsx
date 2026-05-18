@@ -54,6 +54,10 @@ export default function BlogForm({ initialData, isEdit = false }: BlogFormProps)
   const titleValue = watch("title");
   const tagsValue = watch("tags");
   const featuredImageValue = watch("featured_image");
+  const seoTitleValue = watch("seo_title");
+  const seoDescriptionValue = watch("seo_description");
+  const excerptValue = watch("excerpt");
+  const slugValue = watch("slug");
 
   const { fields: faqFields, append: appendFaq, remove: removeFaq } = useFieldArray({
     control,
@@ -370,6 +374,30 @@ export default function BlogForm({ initialData, isEdit = false }: BlogFormProps)
                 <input type="checkbox" className="sr-only peer" {...register("is_indexable")} />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#EC5B13]"></div>
               </label>
+            </div>
+
+            {/* Google Search Preview */}
+            <div className="pt-6 mt-6 border-t border-gray-100">
+              <h4 className="text-sm font-bold text-gray-700 mb-3">Google Search Preview</h4>
+              <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm font-sans max-w-lg">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-7 h-7 bg-gray-100 rounded-full flex items-center justify-center shrink-0 border border-gray-200">
+                    <span className="text-[12px] font-bold text-gray-600">L</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[14px] text-[#202124] font-medium leading-tight truncate">LuxeVillaz</div>
+                    <div className="text-[12px] text-[#4d5156] leading-tight truncate mt-0.5">
+                      https://luxevillaz.com <span className="mx-1 text-[10px]">›</span> blogs <span className="mx-1 text-[10px]">›</span> {slugValue || "your-blog-slug"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-[#1a0dab] text-[20px] leading-snug cursor-pointer hover:underline mb-1">
+                  {seoTitleValue || titleValue || "Your Blog Title Will Appear Here"}
+                </div>
+                <div className="text-[14px] text-[#4d5156] leading-snug line-clamp-2">
+                  {seoDescriptionValue || excerptValue || "Your SEO meta description or blog excerpt will appear here. This gives searchers an idea of what your content is about."}
+                </div>
+              </div>
             </div>
           </div>
 
