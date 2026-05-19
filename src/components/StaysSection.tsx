@@ -268,8 +268,19 @@ export default function StaysSection({
       const matchesCategory = activeCategories.some(cat => {
         if (cat === "pool") return prop.amenities?.some((a: string) => a.toLowerCase().includes("pool"));
         if (cat === "beach") return prop.amenities?.some((a: string) => a.toLowerCase().includes("beach"));
-        if (cat === "pet") return prop.house_rules?.pets_allowed === true;
-        if (cat === "party") return prop.house_rules?.events_allowed === true;
+        if (cat === "pet") {
+          const houseRules = prop.house_rules || {};
+          return (
+            houseRules.pets === true || 
+            houseRules.pets_allowed === true || 
+            houseRules.no_pets === false ||
+            !!prop.amenities?.some((a: string) => a.toLowerCase().includes("pet"))
+          );
+        }
+        if (cat === "party") {
+          const houseRules = prop.house_rules || {};
+          return houseRules.parties === true || houseRules.events_allowed === true;
+        }
         if (cat === "work") return prop.amenities?.some((a: string) => a.toLowerCase().includes("wifi") || a.toLowerCase().includes("workspace") || a.toLowerCase().includes("internet"));
         if (cat === "heritage") return prop.category?.toLowerCase().includes("heritage") || prop.category?.toLowerCase().includes("castle") || prop.listing_title?.toLowerCase().includes("heritage");
         if (cat === "nature") return prop.amenities?.some((a: string) => a.toLowerCase().includes("garden") || a.toLowerCase().includes("backyard") || a.toLowerCase().includes("nature") || a.toLowerCase().includes("farm"));
