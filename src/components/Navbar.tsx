@@ -68,7 +68,7 @@ export default function Navbar() {
         <div className="absolute left-1/2 -translate-x-1/2">
           <Link href="/">
             <Image
-              src="/images/black.png"
+              src="/images/blogo.png"
               alt="LuxeVillaz Logo"
               width={160}
               height={40}
@@ -81,8 +81,8 @@ export default function Navbar() {
         {/* Right: Actions */}
         <div className="flex items-center space-x-2 md:space-x-8">
           {(!session || session.user.user_metadata?.role !== 'user') && (
-            <Link 
-              href={session?.user?.user_metadata?.role === 'host' ? "/host" : "/auth"} 
+            <Link
+              href={session?.user?.user_metadata?.role === 'host' ? "/host" : "/auth"}
               className="hidden sm:block text-[15px] font-bold text-gray-800 hover:text-black transition-colors"
             >
               {session?.user?.user_metadata?.role === 'host' ? "Host Dashboard" : "Become a host"}
@@ -92,10 +92,10 @@ export default function Navbar() {
             <Globe size={20} strokeWidth={2.5} className="w-[18px] h-[18px] md:w-5 md:h-5" />
             <span className="hidden md:inline">English</span>
           </button>
-          
+
           <div className="relative">
             {session ? (
-              <div 
+              <div
                 className="flex items-center space-x-2 cursor-pointer group"
                 onClick={() => setShowUserMenu(!showUserMenu)}
               >
@@ -119,15 +119,15 @@ export default function Navbar() {
                     <p className="text-[10px] uppercase tracking-widest text-gray-400 font-black">Account</p>
                     <p className="text-sm font-bold text-gray-900 truncate capitalize">{userFullName}</p>
                   </div>
-                  <Link 
-                    href="/profile" 
+                  <Link
+                    href="/profile"
                     onClick={() => setShowUserMenu(false)}
                     className="block w-full text-left px-5 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     My Profile
                   </Link>
-                  <Link 
-                    href="/profile?tab=bookings" 
+                  <Link
+                    href="/profile?tab=bookings"
                     onClick={() => setShowUserMenu(false)}
                     className="block w-full text-left px-5 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
                   >
@@ -160,8 +160,8 @@ export default function Navbar() {
             <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Cruise</Link>
             <div className="border-t border-gray-100 pt-4 mt-2">
               {(!session || session.user.user_metadata?.role !== 'user') && (
-                <Link 
-                  href={session?.user?.user_metadata?.role === 'host' ? "/host" : "/auth"} 
+                <Link
+                  href={session?.user?.user_metadata?.role === 'host' ? "/host" : "/auth"}
                   className="text-base font-bold text-[#EC5B13] hover:text-[#D14F10]"
                 >
                   {session?.user?.user_metadata?.role === 'host' ? "Host Dashboard" : "Become a host"}
