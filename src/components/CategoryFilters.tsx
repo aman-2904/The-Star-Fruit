@@ -1,7 +1,8 @@
 import { Umbrella, Laptop, PartyPopper, Trees, Castle, Waves, PawPrint, SlidersHorizontal } from "lucide-react";
 
 const categories = [
-  { id: 'pool', label: "POOL VILLAS", icon: <Waves size={22} strokeWidth={2.5} /> },
+  { id: 'private_pool', label: "PRIVATE POOL", icon: <Waves size={22} strokeWidth={2.5} /> },
+  { id: 'shared_pool', label: "SHARED POOL", icon: <Waves size={22} strokeWidth={2.5} /> },
   { id: 'beach', label: "BEACHFRONT", icon: <Umbrella size={22} strokeWidth={2.5} /> },
   { id: 'pet', label: "PET-FRIENDLY", icon: <PawPrint size={22} strokeWidth={2.5} /> },
   { id: 'heritage', label: "HERITAGE", icon: <Castle size={22} strokeWidth={2.5} /> },

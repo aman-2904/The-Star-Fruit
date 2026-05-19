@@ -266,7 +266,8 @@ export default function StaysSection({
     // 2. Category Icons Filter (OR logic between selected categories)
     if (activeCategories.length > 0) {
       const matchesCategory = activeCategories.some(cat => {
-        if (cat === "pool") return prop.amenities?.some((a: string) => a.toLowerCase().includes("pool"));
+        if (cat === "private_pool") return prop.amenities?.some((a: string) => a.toLowerCase().includes("private_pool") || a.toLowerCase().includes("private pool"));
+        if (cat === "shared_pool") return prop.amenities?.some((a: string) => a.toLowerCase().includes("shared_pool") || a.toLowerCase().includes("shared pool"));
         if (cat === "beach") return prop.amenities?.some((a: string) => a.toLowerCase().includes("beach"));
         if (cat === "pet") {
           const houseRules = prop.house_rules || {};
