@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import StayCard from "./StayCard";
 import CategoryFilters from "./CategoryFilters";
 import { ChevronLeft, ChevronRight, ChevronDown, SlidersHorizontal, MapPin, Loader2, Search } from "lucide-react";
@@ -37,7 +38,9 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
     }
   };
 
-  if (stays.length === 0) return null;
+  const displayStays = stays.filter(stay => stay.is_trending).slice(0, 7);
+
+  if (displayStays.length === 0) return null;
 
   return (
     <div className="mb-16 last:mb-0">
@@ -65,7 +68,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
         ref={scrollRef}
         className="flex gap-6 overflow-x-auto no-scrollbar pb-10 -mx-4 px-4 md:-mx-0 md:px-0 scroll-smooth snap-x snap-mandatory"
       >
-        {stays.map((property: Property) => (
+        {displayStays.map((property: Property) => (
           <div key={property.id} className="flex-shrink-0 w-[80vw] sm:w-[280px] lg:w-[calc((100%-96px)/5)] snap-center">
             <StayCard
               id={property.id}
@@ -79,13 +82,31 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
             />
           </div>
         ))}
+
+        {/* Explore More Stays Card */}
+        <div className="flex-shrink-0 w-[80vw] sm:w-[280px] lg:w-[calc((100%-96px)/5)] snap-center relative rounded-3xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-xl transition-all min-h-[380px]">
+          <Link href="/stays" className="block w-full h-full min-h-[380px]">
+            <Image
+              src="https://images.unsplash.com/photo-1678889284769-b7dcbec1f082?q=80&w=2070&auto=format&fit=crop"
+              alt="Luxury Villa"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] transition-all group-hover:bg-black/50 group-hover:backdrop-blur-sm" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+              <h3 className="text-white text-[28px] font-serif mb-6 leading-tight drop-shadow-md">Explore<br />More Stays</h3>
+              <div className="px-6 py-3 bg-white text-black text-[11px] font-black uppercase tracking-[0.15em] rounded-full group-hover:scale-105 group-active:scale-95 transition-all shadow-lg">
+                View All
+              </div>
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
   );
 };
 
 import FilterModal, { AdvancedFilters } from "./FilterModal";
-import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 interface StaysSectionProps {
@@ -123,7 +144,7 @@ export default function StaysSection({
     checkIn: "",
     checkOut: ""
   });
-  
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -215,11 +236,11 @@ export default function StaysSection({
       const selectedTypes = advFilters.propertyType.toLowerCase().split(',').map(t => t.trim());
       const propCategory = prop.category?.toLowerCase() || "";
       const propTitle = prop.listing_title?.toLowerCase() || "";
-      
-      const matchesType = selectedTypes.some(type => 
+
+      const matchesType = selectedTypes.some(type =>
         propCategory === type || propTitle.includes(type)
       );
-      
+
       if (!matchesType) return false;
     }
 
@@ -244,9 +265,9 @@ export default function StaysSection({
 
     if (advFilters.bookingOptions.allowsPets) {
       const houseRules = prop.house_rules || {};
-      const isAllowed = 
-        houseRules.pets === true || 
-        houseRules.pets_allowed === true || 
+      const isAllowed =
+        houseRules.pets === true ||
+        houseRules.pets_allowed === true ||
         houseRules.no_pets === false ||
         prop.amenities?.some((a: string) => a.toLowerCase().includes("pet"));
       if (!isAllowed) return false;
@@ -256,8 +277,8 @@ export default function StaysSection({
       // Mock logic: e.g. rating > 4.8 or something similar if metadata allows, otherwise hardcode true for now
       if (prop.rating && prop.rating < 4.8) return false;
     } else if (advFilters.standoutStays === "Luxe") {
-      const isLuxe = 
-        prop.category?.toLowerCase().includes("luxe") || 
+      const isLuxe =
+        prop.category?.toLowerCase().includes("luxe") ||
         prop.listing_title?.toLowerCase().includes("luxe") ||
         prop.amenities?.some((a: string) => a.toLowerCase().includes("luxe"));
       if (!isLuxe) return false;
@@ -272,8 +293,8 @@ export default function StaysSection({
         if (cat === "pet") {
           const houseRules = prop.house_rules || {};
           return (
-            houseRules.pets === true || 
-            houseRules.pets_allowed === true || 
+            houseRules.pets === true ||
+            houseRules.pets_allowed === true ||
             houseRules.no_pets === false ||
             !!prop.amenities?.some((a: string) => a.toLowerCase().includes("pet"))
           );
@@ -289,7 +310,7 @@ export default function StaysSection({
       });
       if (!matchesCategory) return false;
     }
-    
+
     // 3. Search Bar Filters
     if (searchQuery.location) {
       const search = searchQuery.location.toLowerCase();
@@ -301,7 +322,7 @@ export default function StaysSection({
     if (searchQuery.guests > 0) {
       if ((prop.max_guests || 0) < searchQuery.guests) return false;
     }
-    
+
     return true;
   });
 
@@ -335,9 +356,9 @@ export default function StaysSection({
             const newCategories = activeCategories.includes(id)
               ? activeCategories.filter(c => c !== id)
               : [...activeCategories, id];
-            
+
             setActiveCategories(newCategories);
-            
+
             // Build current filters into query params
             const params = new URLSearchParams();
             if (advancedFilters.propertyType) params.set('type', advancedFilters.propertyType);
@@ -349,7 +370,7 @@ export default function StaysSection({
 
             const queryString = params.toString();
             const newUrl = `/stays${queryString ? `?${queryString}` : ''}`;
-            
+
             if (pathname !== '/stays') {
               router.push(newUrl);
             } else {
@@ -358,8 +379,8 @@ export default function StaysSection({
           }}
           onFiltersClick={() => setIsFilterModalOpen(true)}
         />
-        
-        <FilterModal 
+
+        <FilterModal
           isOpen={isFilterModalOpen}
           onClose={() => setIsFilterModalOpen(false)}
           initialFilters={advancedFilters}
@@ -380,12 +401,12 @@ export default function StaysSection({
               <div>
                 <p className="text-[10px] font-black uppercase tracking-widest text-[#EC5B13] mb-0.5">Search Results</p>
                 <h3 className="text-sm md:text-base font-bold text-gray-900">
-                  Showing stays {searchQuery.guests > 0 ? `for ${searchQuery.guests} ${searchQuery.guests === 1 ? 'guest' : 'guests'}` : ''} 
+                  Showing stays {searchQuery.guests > 0 ? `for ${searchQuery.guests} ${searchQuery.guests === 1 ? 'guest' : 'guests'}` : ''}
                   {searchQuery.location ? ` in ${searchQuery.location}` : ''}
                 </h3>
               </div>
             </div>
-            <button 
+            <button
               onClick={() => {
                 const params = new URLSearchParams(searchParams.toString());
                 params.delete('location');
