@@ -6,14 +6,6 @@ import { MoveRight } from "lucide-react";
 
 const stayTypes = [
   {
-    id: "hotels",
-    title: "Hotels",
-    description: "Experience full-service comfort with modern rooms, on-site dining, and warm hospitality. Perfect for short trips, business stays, or weekend getaways.",
-    image: "/images/stay_hotel.png",
-    linkText: "View Hotels",
-    link: "/stays?type=Hotel"
-  },
-  {
     id: "apartments",
     title: "Apartments",
     description: "Enjoy the convenience of city living with fully-equipped modern apartments. Ideal for digital nomads, long-term stays, or travelers seeking a home-away-from-home.",
@@ -54,7 +46,7 @@ export default function StayTypesSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {stayTypes.map((type) => (
             <Link
               href={type.link}
