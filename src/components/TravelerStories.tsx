@@ -16,8 +16,8 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    text: "Booked a weekend stay within minutes. Smooth experience and great suggestions based on my location. Really loved how easy the interface felt.",
-    author: "Ananya M.",
+    text: "Found the perfect villa for our family vacation in just a few minutes. The photos matched exactly what we experienced, and the booking process was incredibly smooth.",
+    author: "Priya Sharma",
     location: "From Hyderabad",
     bgColor: "bg-[#D1D1D1]",
     textColor: "text-gray-800",
@@ -25,17 +25,17 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 2,
-    text: "Was traveling for work and needed a clean, trusted place quickly. The verified listings and clear cancellation policy gave me total peace of mind.",
-    author: "Karan M.",
-    location: "From Bengaluru",
+    text: "We were looking for a luxury villa with a private pool for a weekend getaway. LuxeVillaz showed us great options, and the stay exceeded our expectations.",
+    author: "Rahul Verma",
+    location: "From Delhi",
     bgColor: "bg-[#8E93FF]",
     textColor: "text-white",
     starColor: "text-white",
   },
   {
     id: 3,
-    text: "Took my family for a short break and found a beautiful cottage instantly. Safe, clean, and super convenient booking. Highly recommend!",
-    author: "Jaanu K.",
+    text: "The villa recommendations were spot on. I loved how easy it was to compare properties and find something within our budget without compromising on luxury.",
+    author: "Sneha Reddy",
     location: "From Mumbai",
     bgColor: "bg-[#F4F5F7]",
     textColor: "text-gray-800",
@@ -43,8 +43,8 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 4,
-    text: "Tried a glamping site for the first time and it was amazing. Nature vibe with hotel-like comfort. Booking experience was very smooth.",
-    author: "Vikram S.",
+    text: "Booked a villa for a group trip and everything went perfectly. The property was exactly as described, and the support team was responsive throughout.",
+    author: "Arjun Mehta",
     location: "From Pune",
     bgColor: "bg-[#CCD96B]",
     textColor: "text-gray-800",
@@ -52,36 +52,36 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 5,
-    text: "Booked a weekend stay within minutes. Smooth experience and great suggestions based on my location. Really loved how easy the interface felt.",
-    author: "Ananya M.",
-    location: "From Hyderabad",
+    text: "What impressed me most was the quality of the listings. Every villa looked premium, and the filters made it easy to find the right place.",
+    author: "Neha Kapoor",
+    location: "From Pune",
     bgColor: "bg-[#CCD96B]",
     textColor: "text-gray-800",
     starColor: "text-black",
   },
   {
     id: 6,
-    text: "Was traveling for work and needed a clean, trusted place quickly. The verified listings and clear cancellation policy gave me total peace of mind.",
-    author: "Karan M.",
-    location: "From Bengaluru",
+    text: "Our weekend escape became memorable thanks to LuxeVillaz. The booking was quick, secure, and completely hassle-free.",
+    author: "Karan Malhotra",
+    location: "From Chandigarh",
     bgColor: "bg-[#0F1113]",
     textColor: "text-white",
     starColor: "text-white",
   },
   {
     id: 7,
-    text: "Took my family for a short break and found a beautiful cottage instantly. Safe, clean, and super convenient booking. Highly recommend!",
-    author: "Jaanu K.",
-    location: "From Mumbai",
+    text: "I usually spend hours searching across different websites, but LuxeVillaz helped me find the ideal villa in less than ten minutes.",
+    author: "Aditi Singh",
+    location: "From Jaipur",
     bgColor: "bg-[#8E93FF]",
     textColor: "text-white",
     starColor: "text-white",
   },
   {
     id: 8,
-    text: "Tried a glamping site for the first time and it was amazing. Nature vibe with hotel-like comfort. Booking experience was very smooth.",
-    author: "Vikram S.",
-    location: "From Pune",
+    text: "The property details were accurate, the images were genuine, and the villa itself was stunning. Definitely using LuxeVillaz again.",
+    author: "Siddharth Jain",
+    location: "From Gurgaon",
     bgColor: "bg-[#D1D1D1]",
     textColor: "text-gray-800",
     starColor: "text-black",
@@ -101,8 +101,8 @@ export default function TravelerStories() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const visibleTestimonials = isMobile && !isExpanded 
-    ? testimonials.slice(0, 4) 
+  const visibleTestimonials = isMobile && !isExpanded
+    ? testimonials.slice(0, 4)
     : testimonials;
 
   return (
