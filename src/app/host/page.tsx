@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 const FAQ_DATA = [
   {
     question: "What types of stays can I book on LuxeVillaz?",
-    answer: "We offer a curated selection of luxury hotels, serviced apartments, private villas, and exclusive resorts across Goa's most prestigious locations."
+    answer: "We offer a curated selection of serviced apartments, private villas, and exclusive resorts across Goa's most prestigious locations."
   },
   {
     question: "What payment options are available?",
@@ -71,13 +71,6 @@ function FAQItem({ question, answer }: { question: string, answer: string }) {
 }
 
 const CATEGORIES = [
-  {
-    title: "Hotels",
-    description: "Experience full-service comfort with modern rooms, on-site dining, and warm hospitality. Perfect for short trips, business stays, or weekend getaways.",
-    image: "/images/cat_hotel.png",
-    linkText: "List Hotels",
-    link: "/host/onboarding?type=Hotel"
-  },
   {
     title: "Apartments",
     description: "Stay like a local in modern serviced apartments with kitchen and living space. Perfect for long stays or travelers who love home-like comfort.",
@@ -324,7 +317,7 @@ export default function HostDashboard() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {CATEGORIES.map((cat, idx) => (
               <div
                 key={idx}
