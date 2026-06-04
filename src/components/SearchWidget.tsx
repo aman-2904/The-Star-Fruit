@@ -18,7 +18,7 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("1");
-  
+
   // Initialize from URL params
   useEffect(() => {
     const loc = searchParams.get('location');
@@ -69,10 +69,10 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
 
         {/* Search Fields or Maintenance State */}
         {activeTab === "Cruise" ? (
-          <div className="py-12 md:py-16 text-center flex flex-col items-center justify-center fade-in">
-            <Ship size={48} strokeWidth={1.5} className="text-gray-300 mb-4" />
-            <h3 className="text-xl md:text-2xl font-serif text-gray-900 mb-2 tracking-tight">Cruises are under maintenance</h3>
-            <p className="text-gray-500 font-medium text-sm md:text-base max-w-sm">We're actively upgrading our cruise booking experience. Please check back soon!</p>
+          <div className="py-12 md:py-4 text-center flex flex-col items-center justify-center fade-in">
+            <Ship size={48} strokeWidth={1.5} className="text-gray-400 mb-4" />
+            <h3 className="text-xl md:text-2xl font-serif text-gray-900 mb-2 tracking-tight">A New Era of Luxury Cruising.</h3>
+            <p className="text-gray-500 font-medium text-sm md:text-base max-w-sm">Coming Soon</p>
           </div>
         ) : (
           <>
@@ -83,13 +83,13 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                   <MapPin size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
                   <label htmlFor="location" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Location</label>
                 </div>
-                <input 
+                <input
                   id="location"
-                  type="text" 
-                  placeholder="Where to go?" 
+                  type="text"
+                  placeholder="Where to go?"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold text-gray-900 placeholder:text-gray-400 ml-8 md:ml-[42px] pr-4 outline-none border-none p-0 focus:ring-0" 
+                  className="w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold text-gray-900 placeholder:text-gray-400 ml-8 md:ml-[42px] pr-4 outline-none border-none p-0 focus:ring-0"
                 />
               </div>
 
@@ -100,12 +100,12 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                   <label htmlFor="checkin" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Check-in</label>
                 </div>
                 <div className="relative ml-8 md:ml-[42px] pr-4">
-                  <input 
+                  <input
                     id="checkin"
-                    type="date" 
+                    type="date"
                     value={checkIn}
                     onChange={(e) => setCheckIn(e.target.value)}
-                    className={`w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold outline-none border-none p-0 focus:ring-0 cursor-pointer [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer ${checkIn ? 'text-gray-900' : 'text-transparent'}`} 
+                    className={`w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold outline-none border-none p-0 focus:ring-0 cursor-pointer [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer ${checkIn ? 'text-gray-900' : 'text-transparent'}`}
                   />
                   {!checkIn && <span className="absolute left-0 top-1/2 -translate-y-1/2 text-[12.5px] md:text-[14.5px] font-bold text-gray-400 pointer-events-none">Add date</span>}
                 </div>
@@ -118,13 +118,13 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                   <label htmlFor="checkout" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Check-out</label>
                 </div>
                 <div className="relative ml-8 md:ml-[42px] pr-4">
-                  <input 
+                  <input
                     id="checkout"
-                    type="date" 
+                    type="date"
                     value={checkOut}
                     min={checkIn || undefined}
                     onChange={(e) => setCheckOut(e.target.value)}
-                    className={`w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold outline-none border-none p-0 focus:ring-0 cursor-pointer [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer ${checkOut ? 'text-gray-900' : 'text-transparent'}`} 
+                    className={`w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold outline-none border-none p-0 focus:ring-0 cursor-pointer [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer ${checkOut ? 'text-gray-900' : 'text-transparent'}`}
                   />
                   {!checkOut && <span className="absolute left-0 top-1/2 -translate-y-1/2 text-[12.5px] md:text-[14.5px] font-bold text-gray-400 pointer-events-none">Add date</span>}
                 </div>
@@ -136,7 +136,7 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                   <Users size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
                   <label htmlFor="guests" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer pointer-events-none">Guests</label>
                 </div>
-                <select 
+                <select
                   id="guests"
                   value={guests}
                   onChange={(e) => setGuests(e.target.value)}
@@ -150,14 +150,14 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                   <option value="6">6+ Guests</option>
                 </select>
                 <div className="pointer-events-none absolute right-4 md:right-5 top-1/2 -translate-y-1/2 mt-2 md:mt-3 text-gray-400 group-hover:text-black transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 md:w-4 md:h-4"><path d="m6 9 6 6 6-6"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 md:w-4 md:h-4"><path d="m6 9 6 6 6-6" /></svg>
                 </div>
               </div>
             </div>
 
             {/* Search Button */}
             <div className={`flex justify-center px-4 ${isHero ? '-mb-12 md:-mb-16' : 'mt-4 mb-2'}`}>
-              <button 
+              <button
                 onClick={handleSearch}
                 className="w-full sm:w-auto bg-[#1C2024] text-white px-8 md:px-20 py-3.5 md:py-4 rounded-[30px] md:rounded-[48px] flex items-center justify-center gap-3 md:gap-4 hover:bg-[#1C2024] transition-all hover:scale-[1.02] active:scale-[0.98] font-black text-sm md:text-base shadow-2xl border-4 border-[#1C2024] uppercase tracking-widest"
               >
