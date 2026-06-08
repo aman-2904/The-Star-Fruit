@@ -160,7 +160,7 @@ export default function HostDashboard() {
         </div>
 
         <div className="absolute left-1/2 -translate-x-1/2">
-          <Image src="/images/black.png" alt="LuxeVilla" width={140} height={35} className="h-8 w-auto" />
+          <Image src="/images/blogo.png" alt="LuxeVilla" width={140} height={35} className="h-8 w-auto" />
         </div>
 
         <div className="flex items-center space-x-8">

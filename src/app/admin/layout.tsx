@@ -26,7 +26,7 @@ export default function AdminLayout({
       }
 
       const { data: { session } } = await supabase.auth.getSession();
-      
+
       if (!session) {
         if (!pathname.includes("/admin/login") && !pathname.includes("/admin/signup")) {
           router.push("/admin/login");
@@ -78,7 +78,7 @@ export default function AdminLayout({
       <aside className={`fixed inset-y-0 left-0 bg-white border-r border-gray-100 transition-all duration-300 z-50 ${isSidebarOpen ? 'w-64' : 'w-20'}`}>
         <div className="p-6 flex items-center justify-between">
           {isSidebarOpen ? (
-            <Image src="/images/black.png" alt="Logo" width={140} height={35} className="h-7 w-auto" />
+            <Image src="/images/blogo.png" alt="Logo" width={140} height={35} className="h-7 w-auto" />
           ) : (
             <div className="w-8 h-8 bg-[#EC5B13] rounded-lg flex items-center justify-center text-white font-black">S</div>
           )}
@@ -88,50 +88,50 @@ export default function AdminLayout({
         </div>
 
         <nav className="mt-8 px-4 space-y-2">
-          <Link 
-            href="/admin/dashboard" 
+          <Link
+            href="/admin/dashboard"
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/dashboard' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <LayoutDashboard size={20} />
             {isSidebarOpen && <span>Dashboard Overview</span>}
           </Link>
-          <Link 
-            href="/admin/listings" 
+          <Link
+            href="/admin/listings"
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/listings' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <Home size={20} />
             {isSidebarOpen && <span>Property Listings</span>}
           </Link>
-          <Link 
-            href="/admin/users" 
+          <Link
+            href="/admin/users"
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/users' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <Users size={20} />
             {isSidebarOpen && <span>Manage Users</span>}
           </Link>
-          <Link 
-            href="/admin/enquiries" 
+          <Link
+            href="/admin/enquiries"
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/enquiries' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <MessageSquare size={20} />
             {isSidebarOpen && <span>General Enquiries</span>}
           </Link>
-          <Link 
-            href="/admin/messages" 
+          <Link
+            href="/admin/messages"
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/messages' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <MessageSquare size={20} />
             {isSidebarOpen && <span>User Messages</span>}
           </Link>
-          <Link 
-            href="/admin/property-enquiries" 
+          <Link
+            href="/admin/property-enquiries"
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/property-enquiries' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <CheckCircle size={20} />
             {isSidebarOpen && <span>Property Enquiries</span>}
           </Link>
-          <Link 
-            href="/admin/activity-logs" 
+          <Link
+            href="/admin/activity-logs"
             className={`flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${pathname === '/admin/activity-logs' ? 'bg-[#EC5B13] text-white shadow-lg shadow-[#EC5B13]/20' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
           >
             <Clock size={20} />
@@ -140,7 +140,7 @@ export default function AdminLayout({
         </nav>
 
         <div className="absolute bottom-8 left-0 right-0 px-4">
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm text-red-500 hover:bg-red-50 transition-all"
           >
@@ -153,22 +153,22 @@ export default function AdminLayout({
       {/* Main Content */}
       <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-20'}`}>
         <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-40">
-           <div className="flex items-center gap-4">
-             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="hidden md:block p-2 hover:bg-gray-50 rounded-lg transition-colors">
-               <Menu size={20} className="text-gray-400" />
-             </button>
-             <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
-           </div>
-           
-           <div className="flex items-center gap-3">
-             <div className="text-right hidden sm:block">
-               <p className="text-sm font-bold text-gray-900">Super Admin</p>
-               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Administrator</p>
-             </div>
-             <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
-               <span className="font-bold text-[#EC5B13]">A</span>
-             </div>
-           </div>
+          <div className="flex items-center gap-4">
+            <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="hidden md:block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+              <Menu size={20} className="text-gray-400" />
+            </button>
+            <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="text-right hidden sm:block">
+              <p className="text-sm font-bold text-gray-900">Super Admin</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Administrator</p>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
+              <span className="font-bold text-[#EC5B13]">A</span>
+            </div>
+          </div>
         </header>
 
         <div className="p-8">
