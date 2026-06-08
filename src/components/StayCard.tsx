@@ -5,6 +5,7 @@ import { Star, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { slugify } from "@/utils/seo";
 
 interface StayCardProps {
   id: string;
@@ -81,9 +82,11 @@ export default function StayCard({
     }
   };
 
+  const stayUrl = `/stays/${slugify(title)}-${id}`;
+
   return (
     <div className="w-full group cursor-pointer">
-      <Link href={`/stays/${id}`}>
+      <Link href={stayUrl}>
         <div className="relative aspect-[3/4] rounded-[24px] overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-500">
           <Image
             src={image || "/images/stays/pool_villa.png"}
@@ -111,7 +114,7 @@ export default function StayCard({
       </Link>
       
       <div className="flex justify-between items-center mb-1 px-1">
-        <Link href={`/stays/${id}`} className="flex-1 min-w-0">
+        <Link href={stayUrl} className="flex-1 min-w-0">
           <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-black transition-colors truncate pr-2 tracking-tight">{title}</h3>
         </Link>
         <div className="flex items-center gap-1 shrink-0">
@@ -125,7 +128,7 @@ export default function StayCard({
       </p>
       
       <div className="px-1">
-        <Link href={`/stays/${id}`}>
+        <Link href={stayUrl}>
           <button className="px-5 py-2 bg-gray-50 hover:bg-gray-100 text-gray-900 text-[11px] font-bold rounded-full transition-all border border-gray-100 hover:border-gray-200 shadow-sm">
             View Details
           </button>

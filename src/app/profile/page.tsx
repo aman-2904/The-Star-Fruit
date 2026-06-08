@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StayCard from "@/components/StayCard";
 import { User, LogOut, Settings, Heart, CalendarDays, Home, MapPin, Calendar, CheckCircle2, AlertCircle, Clock, Users, UserCheck, Lock } from "lucide-react";
+import { slugify } from "@/utils/seo";
 
 function ProfileContent() {
   const router = useRouter();
@@ -251,7 +252,7 @@ function ProfileContent() {
                           {bookings.map((booking) => (
                             <div 
                               key={booking.id} 
-                              onClick={() => router.push(`/stays/${booking.property_id}`)}
+                              onClick={() => router.push(`/stays/${slugify(booking.properties?.listing_title || "stay")}-${booking.property_id}`)}
                               className="bg-white border border-gray-100 rounded-[32px] p-4 md:p-6 flex flex-col md:flex-row gap-6 hover:shadow-xl hover:shadow-black/5 transition-all group cursor-pointer active:scale-[0.99]"
                             >
                               {/* Property Image */}

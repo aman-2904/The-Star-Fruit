@@ -5,9 +5,15 @@ import PropertyDetailsClient from "./PropertyDetailsClient";
 
 type Params = Promise<{ id: string }>;
 
+const getRealId = (id: string): string => {
+  const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const match = id.match(uuidRegex);
+  return match ? match[0] : id;
+};
+
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const resolvedParams = await params;
-  const { id } = resolvedParams;
+  const realId = getRealId(resolvedParams.id);
 
   if (!supabase) {
     return {
@@ -18,7 +24,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { data: property, error } = await supabase
     .from('properties')
     .select('listing_title, listing_description')
-    .eq('id', id)
+    .eq('id', realId)
     .single();
 
   if (error || !property) {
@@ -35,7 +41,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function PropertyDetailsPage({ params }: { params: Params }) {
   const resolvedParams = await params;
-  const { id } = resolvedParams;
+  const realId = getRealId(resolvedParams.id);
 
   if (!supabase) {
     notFound();
@@ -44,7 +50,7 @@ export default async function PropertyDetailsPage({ params }: { params: Params }
   const { data: property, error } = await supabase
     .from('properties')
     .select('*')
-    .eq('id', id)
+    .eq('id', realId)
     .single();
 
   if (error || !property) {

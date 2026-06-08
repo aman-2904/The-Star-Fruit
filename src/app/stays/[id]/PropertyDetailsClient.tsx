@@ -156,7 +156,11 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
     libraries: ['places'] as any
   });
-  const { id } = useParams();
+  const params = useParams();
+  const rawId = typeof params?.id === "string" ? params.id : "";
+  const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const match = rawId.match(uuidRegex);
+  const id = match ? match[0] : rawId;
   const router = useRouter();
   const [property, setProperty] = useState<Property | null>(initialProperty);
   const [reviews, setReviews] = useState<Review[]>([]);
