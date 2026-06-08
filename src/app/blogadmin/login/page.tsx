@@ -11,14 +11,14 @@ type BlogAdminAuthView = 'login' | 'forgot_password' | 'verify_otp' | 'reset_pas
 
 export default function BlogAdminLoginPage() {
   const [view, setView] = useState<BlogAdminAuthView>('login');
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -59,7 +59,7 @@ export default function BlogAdminLoginPage() {
         setPassword("");
       } else if (view === 'reset_password') {
         if (password !== confirmPassword) {
-            throw new Error("Passwords do not match");
+          throw new Error("Passwords do not match");
         }
         const { error } = await supabase.auth.updateUser({ password });
         if (error) throw error;
@@ -81,19 +81,19 @@ export default function BlogAdminLoginPage() {
       <div className="max-w-md w-full bg-white rounded-[32px] p-8 md:p-12 shadow-xl border border-gray-100">
         <div className="text-center mb-10">
           <Link href="/" className="inline-block mb-8">
-            <Image src="/images/black.png" alt="Logo" width={180} height={45} className="h-10 w-auto" />
+            <Image src="/images/blogo.png" alt="Logo" width={180} height={45} className="h-10 w-auto" />
           </Link>
           <h2 className="text-3xl font-serif font-bold text-gray-900">
             {view === 'forgot_password' ? "Reset Password"
-             : view === 'verify_otp' ? "Enter OTP"
-             : view === 'reset_password' ? "Set New Password"
-             : "SEO Executive Login"}
+              : view === 'verify_otp' ? "Enter OTP"
+                : view === 'reset_password' ? "Set New Password"
+                  : "SEO Executive Login"}
           </h2>
           <p className="text-gray-500 mt-2">
             {view === 'forgot_password' ? "Enter your email to receive a 6-digit OTP"
-             : view === 'verify_otp' ? "Enter the 6-digit OTP sent to your email"
-             : view === 'reset_password' ? "Create a new strong password"
-             : "Manage blog content and SEO"}
+              : view === 'verify_otp' ? "Enter the 6-digit OTP sent to your email"
+                : view === 'reset_password' ? "Create a new strong password"
+                  : "Manage blog content and SEO"}
           </p>
         </div>
 
@@ -113,7 +113,7 @@ export default function BlogAdminLoginPage() {
           )}
 
           {view === 'verify_otp' && (
-             <div className="space-y-2">
+            <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">6-Digit OTP</label>
               <input
                 type="text"
@@ -130,7 +130,7 @@ export default function BlogAdminLoginPage() {
           {(view === 'login' || view === 'reset_password') && (
             <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">
-                 {view === 'reset_password' ? "New Password" : "Password"}
+                {view === 'reset_password' ? "New Password" : "Password"}
               </label>
               <div className="relative">
                 <input
@@ -154,7 +154,7 @@ export default function BlogAdminLoginPage() {
           )}
 
           {view === 'reset_password' && (
-             <div className="space-y-2">
+            <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1">Confirm New Password</label>
               <div className="relative">
                 <input
@@ -201,10 +201,10 @@ export default function BlogAdminLoginPage() {
             className="w-full py-4 bg-[#EC5B13] text-white rounded-2xl font-bold text-lg shadow-lg shadow-[#EC5B13]/20 hover:bg-[#d44f0f] active:scale-[0.98] transition-all disabled:opacity-70"
           >
             {loading ? "Processing..."
-             : view === 'forgot_password' ? "Send OTP"
-             : view === 'verify_otp' ? "Verify OTP"
-             : view === 'reset_password' ? "Update Password"
-             : "Login"}
+              : view === 'forgot_password' ? "Send OTP"
+                : view === 'verify_otp' ? "Verify OTP"
+                  : view === 'reset_password' ? "Update Password"
+                    : "Login"}
           </button>
         </form>
 
