@@ -39,6 +39,43 @@ export default function RootLayout({
             `,
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.luxevillaz.com/#organization",
+                  "name": "Luxevillaz",
+                  "url": "https://www.luxevillaz.com",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "@id": "https://www.luxevillaz.com/#logo",
+                    "url": "https://www.luxevillaz.com/images/blogo.png",
+                    "caption": "Luxevillaz Logo"
+                  },
+                  "description": "Discover exclusive luxury villas, apartments, stays, resorts, and cruises in Goa."
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://www.luxevillaz.com/#website",
+                  "url": "https://www.luxevillaz.com",
+                  "name": "Luxevillaz",
+                  "publisher": {
+                    "@id": "https://www.luxevillaz.com/#organization"
+                  },
+                  "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://www.luxevillaz.com/stays?query={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                  }
+                }
+              ]
+            })
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white text-gray-900`}
