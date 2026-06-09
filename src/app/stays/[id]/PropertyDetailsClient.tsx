@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
+import { slugify } from "@/utils/seo";
 import Footer from "@/components/Footer";
 import ReviewForm from "@/components/ReviewForm";
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
@@ -497,9 +498,101 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
   const galleryImages = property.images?.slice(1, 4) || [];
   const lastImage = property.images?.[4];
 
+  const ratingCount = reviews.length;
+  const ratingValue = avgRating !== "New" ? parseFloat(avgRating) : null;
+
   return (
     <main className="min-h-screen bg-white">
       <Navbar />
+      {/* Rich Results Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://www.luxevillaz.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Stays",
+                  "item": "https://www.luxevillaz.com/stays"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": property.listing_title,
+                  "item": `https://www.luxevillaz.com/stays/${slugify(property.listing_title)}-${id}`
+                }
+              ]
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "House",
+              "name": property.listing_title,
+              "description": property.listing_description || property.description || "",
+              "image": property.images || [],
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": property.street_address || "",
+                "addressLocality": property.city,
+                "addressRegion": property.state,
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": property.latitude || 15.2993,
+                "longitude": property.longitude || 74.1240
+              },
+              ...(ratingValue ? {
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": ratingValue,
+                  "reviewCount": ratingCount,
+                  "bestRating": "5",
+                  "worstRating": "1"
+                }
+              } : {}),
+              ...(reviews.length > 0 ? {
+                "review": reviews.map(rev => ({
+                  "@type": "Review",
+                  "author": {
+                    "@type": "Person",
+                    "name": rev.user_name
+                  },
+                  "datePublished": rev.created_at.split('T')[0],
+                  "reviewBody": rev.comment,
+                  "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": rev.rating,
+                    "bestRating": "5",
+                    "worstRating": "1"
+                  }
+                }))
+              } : {})
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": faqList.map(faq => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": faq.answer
+                }
+              }))
+            }
+          ])
+        }}
+      />
 
       {/* Premium Full Screen Photo Gallery Modal */}
       {showAllPhotos && property?.images && (
