@@ -580,9 +580,22 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
 
         {/* Title & Top Info Row */}
         <div className="mb-6">
-          <h1 className="text-[26px] md:text-[32px] font-serif text-gray-900 tracking-tight leading-tight mb-2">
-            {property.listing_title}
-          </h1>
+          <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4 mb-2">
+            <h1 className="text-[26px] md:text-[32px] font-serif text-gray-900 tracking-tight leading-tight">
+              {property.listing_title}
+            </h1>
+            
+            {/* Breadcrumb */}
+            <nav className="flex items-center gap-2 text-xs md:text-sm text-gray-400 font-medium whitespace-nowrap overflow-x-auto py-1">
+              <Link href="/" className="hover:text-[#EC5B13] transition-colors">Home</Link>
+              <span className="text-gray-300">&gt;</span>
+              <Link href="/stays" className="hover:text-[#EC5B13] transition-colors">Stays</Link>
+              <span className="text-gray-300">&gt;</span>
+              <span className="text-[#EC5B13] font-semibold truncate max-w-[200px] sm:max-w-[300px] md:max-w-[400px]" title={property.listing_title}>
+                {property.listing_title}
+              </span>
+            </nav>
+          </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[14px] font-medium text-gray-700">
             <div className="flex items-center gap-1">
               <Star size={14} className="fill-black" />
