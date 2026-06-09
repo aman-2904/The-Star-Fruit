@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const { data: property, error } = await supabase
     .from('properties')
-    .select('listing_title, listing_description')
+    .select('listing_title, listing_description, city, state')
     .eq('id', realId)
     .single();
 
@@ -34,7 +34,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 
   const desc = property.listing_description || "";
-  const metaDescription = desc.length > 250 ? desc.slice(0, 250) + "..." : desc;
+  const shortDesc = desc.length > 100 ? desc.slice(0, 100) + "..." : desc;
+  const metaDescription = `Book ${property.listing_title} from Luxevillaz, the best property in ${property.state || ""}, ${property.city || ""}.\n${shortDesc}`;
 
   return {
     title: `${property.listing_title} | LuxeVillaz`,
