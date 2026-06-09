@@ -475,7 +475,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
               <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] group-hover/image:brightness-95 transition-all">
                 <Image
                   src={property.images[activePhotoIndex]}
-                  alt={`Slide ${activePhotoIndex + 1}`}
+                  alt={`${property.listing_title}`}
                   fill
                   className="object-contain"
                   unoptimized
