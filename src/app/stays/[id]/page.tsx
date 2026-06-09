@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const { data: property, error } = await supabase
     .from('properties')
-    .select('listing_title, listing_description, city, state')
+    .select('listing_title, listing_description, city, state, category')
     .eq('id', realId)
     .single();
 
@@ -37,9 +37,29 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const shortDesc = desc.length > 100 ? desc.slice(0, 100) + "..." : desc;
   const metaDescription = `Book ${property.listing_title} from Luxevillaz, the best property in ${property.state || ""}, ${property.city || ""}.\n${shortDesc}`;
 
+  const title = property.listing_title || "";
+  const city = property.city || "";
+  const category = property.category || "";
+
+  const keywords = [
+    title,
+    city ? `${title} ${city}` : "",
+    city ? `${title}, ${city}` : "",
+    `${title} Booking`,
+    `${title} Deals`,
+    `${title} Reviews`,
+    `${title} Photos`,
+    `Book ${title}`,
+    category ? `${category} Deals` : "",
+    category ? `${category} Booking` : "",
+    category && city ? `Luxury ${category} in ${city}` : "",
+    category && city ? `Best ${category} in ${city}` : ""
+  ].filter(Boolean);
+
   return {
     title: `${property.listing_title} | LuxeVillaz`,
     description: metaDescription,
+    keywords,
   };
 }
 
