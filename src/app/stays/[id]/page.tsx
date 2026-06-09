@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const { data: property, error } = await supabase
     .from('properties')
-    .select('listing_title, listing_description, city, state, category')
+    .select('listing_title, listing_description, city, state, category, images')
     .eq('id', realId)
     .single();
 
@@ -57,12 +57,27 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     category && city ? `Best ${category} in ${city}` : ""
   ].filter(Boolean);
 
+  const firstImage = property.images && property.images.length > 0 ? property.images[0] : null;
+
   return {
     title: `${property.listing_title} | LuxeVillaz`,
     description: metaDescription,
     keywords,
     alternates: {
       canonical: `https://www.luxevillaz.com/stays/${slugify(title)}-${realId}`,
+    },
+    openGraph: {
+      title: `${property.listing_title} | LuxeVillaz`,
+      description: metaDescription,
+      url: `https://www.luxevillaz.com/stays/${slugify(title)}-${realId}`,
+      type: "website",
+      images: firstImage ? [{ url: firstImage }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${property.listing_title} | LuxeVillaz`,
+      description: metaDescription,
+      images: firstImage ? [firstImage] : [],
     },
   };
 }
