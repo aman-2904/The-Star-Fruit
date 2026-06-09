@@ -33,9 +33,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     };
   }
 
+  const desc = property.listing_description || "";
+  const metaDescription = desc.length > 250 ? desc.slice(0, 250) + "..." : desc;
+
   return {
     title: `${property.listing_title} | LuxeVillaz`,
-    description: property.listing_description,
+    description: metaDescription,
   };
 }
 
