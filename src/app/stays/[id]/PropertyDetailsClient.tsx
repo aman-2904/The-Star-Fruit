@@ -176,6 +176,69 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
   const [isExpanded, setIsExpanded] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
+  const hasParking = property?.amenities?.some(a => {
+    const normalized = a.toLowerCase().replace(/_/g, ' ').replace(/\s+/g, ' ');
+    return normalized.includes('parking') || normalized.includes('free parking');
+  });
+
+  const allowsSmoking = property?.house_rules?.smoking === true || property?.amenities?.some(a => {
+    const normalized = a.toLowerCase().replace(/_/g, ' ');
+    return normalized.includes('smoking allowed') || normalized.includes('smoking');
+  });
+
+  const allowsPets = property?.house_rules?.pets === true ||
+    property?.house_rules?.pets_allowed === true ||
+    property?.house_rules?.no_pets === false ||
+    property?.amenities?.some(a => {
+      const normalized = a.toLowerCase().replace(/_/g, ' ');
+      return normalized.includes('pets allowed') || normalized.includes('pet friendly') || normalized.includes('pets welcome');
+    }) || false;
+
+  const formattedAmenities = property?.amenities && property.amenities.length > 0
+    ? property.amenities.slice(0, 8).map(a => a.replace(/_/g, ' ')).join(', ') + (property.amenities.length > 8 ? ', and more' : '')
+    : 'essential luxury facilities';
+
+  const faqList = property ? [
+    {
+      question: `Where is ${property.listing_title} located?`,
+      answer: `${property.listing_title} is located in ${property.street_address ? property.street_address + ', ' : ''}${property.city}, ${property.state}, India. Guests can enjoy easy access to popular attractions, restaurants, shopping areas, and local experiences nearby.`
+    },
+    {
+      question: `What amenities are available at ${property.listing_title}?`,
+      answer: `${property.listing_title} offers amenities such as ${formattedAmenities}, ensuring a comfortable and memorable stay for all guests.`
+    },
+    {
+      question: `Is parking available at ${property.listing_title}?`,
+      answer: hasParking
+        ? `Yes, parking is available at ${property.listing_title}. Guests can conveniently park their vehicles during their stay. Parking availability may be subject to the property's guidelines and capacity.`
+        : `No, parking is not available at ${property.listing_title}. Guests are advised to use nearby public parking facilities or alternative transportation options during their stay.`
+    },
+    {
+      question: `Is smoking allowed at ${property.listing_title}?`,
+      answer: allowsSmoking
+        ? `Yes, smoking is allowed at ${property.listing_title}. Guests are requested to smoke only in designated smoking areas and follow the property's guidelines to ensure a comfortable environment for all guests.`
+        : `No, smoking is not allowed at ${property.listing_title}. Smoking inside the property is strictly prohibited to maintain a clean and comfortable environment for all guests. Additional charges may apply for violations of this policy.`
+    },
+    {
+      question: `How far is ${property.listing_title} from major attractions?`,
+      answer: `${property.listing_title} is conveniently located near popular attractions in ${property.city}, making it an ideal choice for travelers.`
+    },
+    {
+      question: `What is the cancellation policy for ${property.listing_title}?`,
+      answer: `The cancellation policy varies based on the booking plan selected. Please review the cancellation terms before confirming your reservation.`
+    },
+    {
+      question: `How can I book ${property.listing_title}?`,
+      answer: `You can book ${property.listing_title} directly through Luxevillaz for the best available rates and exclusive offers.`
+    },
+    {
+      question: `Are pets allowed at ${property.listing_title}?`,
+      answer: allowsPets
+        ? `Yes, pets are allowed at ${property.listing_title}. Guests are welcome to bring their pets, subject to the property's guidelines and house rules.`
+        : `No, pets are not allowed at ${property.listing_title}.`
+    }
+  ] : [];
+
   // Enquiry Form State
   const [enquiryData, setEnquiryData] = useState({
     fullName: "",
@@ -1076,9 +1139,57 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
             )}
           </div>
         </div>
+
+        {/* FAQ Section */}
+        {property && (
+          <div className="mt-20 pt-16 border-t border-gray-100">
+            <div className="mb-8">
+              <h2 className="text-2xl font-serif text-gray-900 leading-tight">Frequently Asked Questions</h2>
+            </div>
+            <div className="max-w-4xl">
+              {faqList.map((faq, index) => (
+                <PropertyFAQItem key={index} question={faq.question} answer={faq.answer} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <Footer />
     </main>
+  );
+}
+
+function PropertyFAQItem({ question, answer }: { question: string; answer: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className={`bg-white rounded-2xl mb-4 overflow-hidden border transition-all duration-300 ${isOpen ? 'border-black' : 'border-gray-100 hover:border-gray-200'}`}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-6 py-4 flex items-center justify-between text-left group"
+      >
+        <span className="text-gray-900 font-bold text-base md:text-lg group-hover:text-black transition-colors">
+          {question}
+        </span>
+        <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-black flex items-center justify-center transition-all duration-500 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
+          <div className="relative w-3 h-3">
+            {/* Horizontal line (Minus) */}
+            <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white -translate-y-1/2" />
+            {/* Vertical line (Plus component) */}
+            <div
+              className={`absolute top-0 left-1/2 w-[2px] h-full bg-white -translate-x-1/2 transition-all duration-500 ${isOpen ? 'rotate-90 scale-y-0 opacity-0' : 'rotate-0 scale-y-100 opacity-100'}`}
+            />
+          </div>
+        </div>
+      </button>
+      <div className={`grid transition-all duration-500 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 pb-6' : 'grid-rows-[0fr] opacity-0'}`}>
+        <div className="overflow-hidden px-6">
+          <p className="text-gray-600 font-medium text-sm md:text-base leading-relaxed max-w-3xl">
+            {answer}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
