@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import PropertyDetailsClient from "./PropertyDetailsClient";
+import { slugify } from "@/utils/seo";
 
 type Params = Promise<{ id: string }>;
 
@@ -60,6 +61,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title: `${property.listing_title} | LuxeVillaz`,
     description: metaDescription,
     keywords,
+    alternates: {
+      canonical: `https://www.luxevillaz.com/stays/${slugify(title)}-${realId}`,
+    },
   };
 }
 
