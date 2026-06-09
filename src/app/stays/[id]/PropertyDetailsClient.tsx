@@ -1143,10 +1143,12 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
         {/* FAQ Section */}
         {property && (
           <div className="mt-20 pt-16 border-t border-gray-100">
-            <div className="mb-8">
-              <h2 className="text-2xl font-serif text-gray-900 leading-tight">Frequently Asked Questions</h2>
+            <div className="mb-10 text-center">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 leading-tight">
+                Frequently Asked Questions
+              </h2>
             </div>
-            <div className="max-w-4xl">
+            <div className="max-w-4xl mx-auto">
               {faqList.map((faq, index) => (
                 <PropertyFAQItem key={index} question={faq.question} answer={faq.answer} />
               ))}
