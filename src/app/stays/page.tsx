@@ -152,7 +152,7 @@ export default async function StaysListingPage({
 
   let bgImage = "/images/stays_search_landscape.png";
   if (isCruise) {
-    bgImage = "/images/stay_cruise.png";
+    bgImage = "/images/shipbg1.jpg";
   } else if (isVilla) {
     bgImage = "/images/villa_search_bg1.png";
   } else {
