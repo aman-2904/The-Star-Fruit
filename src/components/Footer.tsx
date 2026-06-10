@@ -70,7 +70,7 @@ export default function Footer() {
 
               {/* Column 1: Brand */}
               <div className="max-w-xs">
-                <Link href="/" className="inline-block mb-5">
+                <Link href="/h1" className="inline-block mb-5">
                   <Image
                     src="/images/footerlogo.png"
                     alt="LuxeVillaz"
@@ -91,9 +91,9 @@ export default function Footer() {
                 </h3>
                 <ul className="space-y-3">
                   {[
-                    { name: "Home", href: "/" },
+                    { name: "Home", href: "/h1" },
                     { name: "Villas", href: "/stays?type=Villa" },
-                    { name: "Cruise", href: "#" },
+                    { name: "Cruise", href: "/stays?type=Cruise" },
                     { name: "Stays", href: "/stays?type=Hotel,Apartment" },
                     { name: "Become a Host", href: "/host" }
                   ].map((item) => (
@@ -116,8 +116,8 @@ export default function Footer() {
                 </h3>
                 <ul className="space-y-3">
                   {[
-                    { name: "Contact Us", href: "/#contact" },
-                    { name: "FAQs", href: "/#faq" },
+                    { name: "Contact Us", href: "/h1#contact" },
+                    { name: "FAQs", href: "/h1#faq" },
                     { name: "Blogs", href: "/blogs" },
                     { name: "Terms of Service", href: "#" },
                     { name: "Privacy Policy", href: "#" }
