@@ -144,7 +144,7 @@ export default async function StaysListingPage({
   const type = typeof rawType === "string" ? rawType : undefined;
 
   // Check which background image exists
-  const hasVillaBg = fs.existsSync(path.join(process.cwd(), "public", "images", "villa_search_bg.png"));
+  const hasVillaBg = fs.existsSync(path.join(process.cwd(), "public", "images", "villa_search_bg1.png"));
   const hasStaysBg = fs.existsSync(path.join(process.cwd(), "public", "images", "stays_search_bg.png"));
 
   const isVilla = type === "Villa" || (typeof type === "string" && type.split(',').includes("Villa"));
@@ -154,7 +154,7 @@ export default async function StaysListingPage({
   if (isCruise) {
     bgImage = "/images/stay_cruise.png";
   } else if (isVilla) {
-    bgImage = "/images/villa_search_bg.png";
+    bgImage = "/images/villa_search_bg1.png";
   } else {
     bgImage = hasStaysBg ? "/images/stays_search_bg.png" : "/images/stays_search_landscape.png";
   }
