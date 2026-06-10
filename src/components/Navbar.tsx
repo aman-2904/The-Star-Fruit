@@ -51,7 +51,7 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center space-x-12">
           <Link href="/stays?type=Villa" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Villas</Link>
           <Link href="/stays?type=Hotel,Apartment" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Stays</Link>
-          <Link href="#" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Cruise</Link>
+          <Link href="/stays?type=Cruise" className="font-semibold text-[15px] text-gray-800 hover:text-black transition-colors">Cruise</Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -157,7 +157,7 @@ export default function Navbar() {
           <div className="flex flex-col space-y-4">
             <Link href="/stays?type=Villa" className="text-base font-bold text-gray-800 hover:text-black">Villas</Link>
             <Link href="/stays?type=Hotel,Apartment" className="text-base font-bold text-gray-800 hover:text-black">Stays</Link>
-            <Link href="#" className="text-base font-bold text-gray-800 hover:text-black">Cruise</Link>
+            <Link href="/stays?type=Cruise" className="text-base font-bold text-gray-800 hover:text-black">Cruise</Link>
             <div className="border-t border-gray-100 pt-4 mt-2">
               {(!session || session.user.user_metadata?.role !== 'user') && (
                 <Link

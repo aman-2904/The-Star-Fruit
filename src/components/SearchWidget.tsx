@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search, MapPin, Calendar, Users, Hotel, Ship, Home } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
   const tabs = [
@@ -12,6 +12,7 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
   ];
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const [activeTab, setActiveTab] = useState("Villas");
   const [location, setLocation] = useState("");
@@ -25,23 +26,64 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
     const guestCount = searchParams.get('guests');
     const cin = searchParams.get('checkin');
     const cout = searchParams.get('checkout');
+    const type = searchParams.get('type');
 
     if (loc) setLocation(loc);
     if (guestCount) setGuests(guestCount);
     if (cin) setCheckIn(cin);
     if (cout) setCheckOut(cout);
-  }, [searchParams]);
+
+    if (type) {
+      if (type.toLowerCase().includes("villa")) {
+        setActiveTab("Villas");
+      } else if (type.toLowerCase().includes("hotel") || type.toLowerCase().includes("apartment")) {
+        setActiveTab("Stays");
+      } else if (type.toLowerCase().includes("cruise")) {
+        setActiveTab("Cruise");
+      }
+    } else {
+      // Default based on current pathname context
+      if (pathname === '/stays') {
+        setActiveTab("Stays");
+      } else {
+        setActiveTab("Villas");
+      }
+    }
+  }, [searchParams, pathname]);
+
+  const handleTabClick = (tabLabel: string) => {
+    setActiveTab(tabLabel);
+    if (pathname === '/stays') {
+      const params = new URLSearchParams(searchParams.toString());
+      if (tabLabel === "Villas") {
+        params.set('type', 'Villa');
+      } else if (tabLabel === "Stays") {
+        params.set('type', 'Hotel,Apartment');
+      } else if (tabLabel === "Cruise") {
+        params.set('type', 'Cruise');
+      }
+      router.push(`/stays?${params.toString()}`);
+    }
+  };
 
   const handleSearch = () => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     if (location) params.set('location', location);
+    else params.delete('location');
     if (checkIn) params.set('checkin', checkIn);
+    else params.delete('checkin');
     if (checkOut) params.set('checkout', checkOut);
+    else params.delete('checkout');
     if (guests) params.set('guests', guests);
+    else params.delete('guests');
 
-    // Maintain existing category filters if on /stays
-    const existingCats = searchParams.get('cats');
-    if (existingCats) params.set('cats', existingCats);
+    if (activeTab === "Villas") {
+      params.set('type', 'Villa');
+    } else if (activeTab === "Stays") {
+      params.set('type', 'Hotel,Apartment');
+    } else if (activeTab === "Cruise") {
+      params.set('type', 'Cruise');
+    }
 
     const queryString = params.toString();
     router.push(`/stays${queryString ? `?${queryString}` : ''}`);
@@ -55,7 +97,7 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
           {tabs.map((tab) => (
             <button
               key={tab.label}
-              onClick={() => setActiveTab(tab.label)}
+              onClick={() => handleTabClick(tab.label)}
               className={`pb-4 md:pb-5 text-[13px] md:text-[15px] font-extrabold transition-all relative flex items-center gap-2 md:gap-2.5 whitespace-nowrap ${activeTab === tab.label
                 ? "text-black border-b-[3px] border-black"
                 : "text-gray-400 hover:text-gray-600"
