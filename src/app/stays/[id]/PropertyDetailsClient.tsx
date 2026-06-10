@@ -176,6 +176,11 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const mapSectionRef = useRef<HTMLDivElement>(null);
+
+  const scrollToMap = () => {
+    mapSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   const hasParking = property?.amenities?.some(a => {
     const normalized = a.toLowerCase().replace(/_/g, ' ').replace(/\s+/g, ' ');
@@ -767,7 +772,10 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
               <ShieldCheck size={14} className="text-[#EC5B13]" />
               <span>Superhost</span>
             </div>
-            <div className="flex items-center gap-1 underline cursor-pointer border-l border-gray-300 pl-4 h-4 my-auto">
+            <div 
+              onClick={scrollToMap}
+              className="flex items-center gap-1 underline cursor-pointer border-l border-gray-300 pl-4 h-4 my-auto"
+            >
               <MapPin size={14} />
               <span>
                 {[
@@ -1190,7 +1198,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
         </div>
 
         {/* Where you'll be Section */}
-        <div className="mt-20 pt-16 border-t border-gray-100">
+        <div ref={mapSectionRef} className="mt-20 pt-16 border-t border-gray-100">
           <div className="mb-1">
             <h2 className="text-2xl font-serif text-gray-900 leading-tight">Where you'll be</h2>
           </div>
