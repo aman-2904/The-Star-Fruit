@@ -63,6 +63,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     title: `${property.listing_title} | LuxeVillaz`,
     description: metaDescription,
     keywords,
+    robots: {
+      index: true,
+      follow: true,
+    },
     alternates: {
       canonical: `https://www.luxevillaz.com/stays/${slugify(title)}-${realId}`,
     },
