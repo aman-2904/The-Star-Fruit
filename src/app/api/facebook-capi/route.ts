@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Tracking configuration missing" }, { status: 400 });
     }
 
-    const payload = {
+    const payload: any = {
       data: [
         {
           event_name: eventName,
@@ -36,6 +36,10 @@ export async function POST(req: Request) {
         },
       ],
     };
+
+    if (process.env.FB_TEST_EVENT_CODE) {
+      payload.test_event_code = process.env.FB_TEST_EVENT_CODE;
+    }
 
     const fbResponse = await fetch(
       `https://graph.facebook.com/v18.0/${pixelId}/events?access_token=${capiToken}`,
