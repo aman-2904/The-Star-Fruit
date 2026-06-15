@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Search, MapPin, Calendar, Users, Hotel, Ship, Home } from "lucide-react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { trackSearch } from "@/lib/fb-track";
 
 export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
   const tabs = [
@@ -84,6 +85,9 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
     } else if (activeTab === "Cruise") {
       params.set('type', 'Cruise');
     }
+
+    // Call dynamic Facebook Conversion & Pixel Search tracking
+    trackSearch(location || "Anywhere", activeTab, checkIn, checkOut, guests);
 
     const queryString = params.toString();
     router.push(`/stays${queryString ? `?${queryString}` : ''}`);

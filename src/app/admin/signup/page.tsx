@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { trackCompleteRegistration } from "@/lib/fb-track";
 import Image from "next/image";
 
 export default function AdminSignupPage() {
@@ -44,6 +45,9 @@ export default function AdminSignupPage() {
       });
 
       if (signupError) throw signupError;
+
+      // Track CompleteRegistration conversion event
+      trackCompleteRegistration(email, fullName, "admin");
 
       alert("Admin account created! Check your email for confirmation.");
       router.push("/admin/login");

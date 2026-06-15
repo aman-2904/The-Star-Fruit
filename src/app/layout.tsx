@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import FacebookPixelTracker from "@/components/FacebookPixelTracker";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -53,7 +54,6 @@ export default function RootLayout({
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
               fbq('init', '${process.env.NEXT_PUBLIC_FB_PIXEL_ID}');
-              fbq('track', 'PageView');
             `,
           }}
         />
@@ -113,6 +113,7 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
+        <FacebookPixelTracker />
         {children}
       </body>
     </html>

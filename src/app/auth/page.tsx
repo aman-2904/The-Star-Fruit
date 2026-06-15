@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { trackCompleteRegistration } from "@/lib/fb-track";
 import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -64,14 +65,16 @@ export default function AuthPage() {
           router.push("/host");
         }
       } else if (view === 'signup') {
-        const { error } = await supabase.auth.signUp({
+        const { error: signUpError } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: { full_name: fullName, role: 'host' }
           }
         });
-        if (error) throw error;
+        if (signUpError) throw signUpError;
+        // Track CompleteRegistration conversion event
+        trackCompleteRegistration(email, fullName, "host");
         alert("Check your email for the confirmation link!");
         setView('login');
       } else if (view === 'forgot_password') {
