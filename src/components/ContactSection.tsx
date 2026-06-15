@@ -72,6 +72,33 @@ export default function ContactSection() {
 
       if (error) throw error;
 
+      // Facebook Pixel & Conversion API dual tracking for Contact
+      const eventId = `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+      // 1. Client-side Pixel trigger
+      if (typeof window !== "undefined" && (window as any).fbq) {
+        (window as any).fbq('track', 'Contact', {
+          content_name: formData.subject || 'General Inquiry',
+        }, { eventID: eventId });
+      }
+
+      // 2. Server-side CAPI trigger via local API route
+      fetch('/api/facebook-capi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventName: 'Contact',
+          eventId: eventId,
+          userData: {
+            email: formData.email,
+            phone: formData.phone,
+          },
+          customData: {
+            content_name: formData.subject || 'General Inquiry',
+          }
+        })
+      }).catch(err => console.error("CAPI dispatch failed:", err));
+
       setStatus('success');
       setFormData(prev => ({ ...prev, phone: "", subject: "", message: "" }));
     } catch (err: any) {

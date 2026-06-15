@@ -296,6 +296,41 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
 
       if (error) throw error;
 
+      // Facebook Pixel & Conversion API dual tracking for Lead
+      const eventId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+      // 1. Client-side Pixel trigger
+      if (typeof window !== "undefined" && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead', {
+          content_name: property.listing_title,
+          content_category: property.category,
+          content_ids: [property.id],
+          value: 0,
+          currency: 'INR'
+        }, { eventID: eventId });
+      }
+
+      // 2. Server-side CAPI trigger via local API route
+      fetch('/api/facebook-capi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventName: 'Lead',
+          eventId: eventId,
+          userData: {
+            email: enquiryData.email,
+            phone: enquiryData.phone,
+          },
+          customData: {
+            content_name: property.listing_title,
+            content_category: property.category,
+            content_ids: [property.id],
+            value: 0,
+            currency: 'INR'
+          }
+        })
+      }).catch(err => console.error("CAPI dispatch failed:", err));
+
       setEnquiryStatus('success');
       // Reset non-user fields
       setEnquiryData(prev => ({
