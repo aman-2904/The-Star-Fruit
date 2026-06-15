@@ -66,7 +66,7 @@ export default function Navbar() {
 
         {/* Center: Logo */}
         <div className="absolute left-1/2 -translate-x-1/2">
-          <Link href="/h1">
+          <Link href="/">
             <Image
               src="/images/blogo.png"
               alt="LuxeVillaz Logo"
