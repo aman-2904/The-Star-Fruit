@@ -340,6 +340,9 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
         guests: "1",
         purpose: ""
       }));
+      
+      // Redirect to thank you page with stay details
+      router.push(`/thankyou?property_name=${encodeURIComponent(property.listing_title)}&property_slug=${encodeURIComponent(rawId)}`);
     } catch (err: any) {
       console.error("Enquiry submission error:", err);
       setEnquiryError(err.message || "Failed to submit enquiry. Please try again.");
