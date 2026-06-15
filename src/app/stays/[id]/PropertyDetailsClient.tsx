@@ -265,7 +265,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
   };
 
   const submitEnquiry = async () => {
-    if (!supabase) return;
+    if (!supabase || !property) return;
 
     // Basic validation
     if (!enquiryData.fullName || !enquiryData.email || !enquiryData.phone || !enquiryData.checkIn || !enquiryData.checkOut) {
