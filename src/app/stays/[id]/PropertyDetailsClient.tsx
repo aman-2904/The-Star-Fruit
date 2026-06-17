@@ -25,6 +25,7 @@ import { slugify } from "@/utils/seo";
 import Footer from "@/components/Footer";
 import ReviewForm from "@/components/ReviewForm";
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { getTrackingSettings } from "@/lib/tracking-settings";
 
 export interface Property {
   id: string;
@@ -299,37 +300,51 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
       // Facebook Pixel & Conversion API dual tracking for Lead
       const eventId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-      // 1. Client-side Pixel trigger
-      if (typeof window !== "undefined" && (window as any).fbq) {
-        (window as any).fbq('track', 'Lead', {
-          content_name: property.listing_title,
-          content_category: property.category,
-          content_ids: [property.id],
-          value: 0,
-          currency: 'INR'
-        }, { eventID: eventId });
-      }
+      const runTracking = async () => {
+        try {
+          const settings = await getTrackingSettings();
 
-      // 2. Server-side CAPI trigger via local API route
-      fetch('/api/facebook-capi', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          eventName: 'Lead',
-          eventId: eventId,
-          userData: {
-            email: enquiryData.email,
-            phone: enquiryData.phone,
-          },
-          customData: {
-            content_name: property.listing_title,
-            content_category: property.category,
-            content_ids: [property.id],
-            value: 0,
-            currency: 'INR'
+          // 1. Client-side Pixel trigger
+          if (settings.pixel_enabled && typeof window !== "undefined") {
+            const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+            if (w.fbq) {
+              w.fbq('track', 'Lead', {
+                content_name: property.listing_title,
+                content_category: property.category,
+                content_ids: [property.id],
+                value: 0,
+                currency: 'INR'
+              }, { eventID: eventId });
+            }
           }
-        })
-      }).catch(err => console.error("CAPI dispatch failed:", err));
+
+          // 2. Server-side CAPI trigger via local API route
+          if (settings.capi_enabled) {
+            fetch('/api/facebook-capi', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                eventName: 'Lead',
+                eventId: eventId,
+                userData: {
+                  email: enquiryData.email,
+                  phone: enquiryData.phone,
+                },
+                customData: {
+                  content_name: property.listing_title,
+                  content_category: property.category,
+                  content_ids: [property.id],
+                  value: 0,
+                  currency: 'INR'
+                }
+              })
+            }).catch(err => console.error("CAPI dispatch failed:", err));
+          }
+        } catch (err) {
+          console.error("Facebook tracking load settings error:", err);
+        }
+      };
+      runTracking();
 
       setEnquiryStatus('success');
       // Reset non-user fields

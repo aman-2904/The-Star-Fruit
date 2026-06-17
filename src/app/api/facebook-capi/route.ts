@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { supabase } from "@/lib/supabase";
 
 function hashData(data: string) {
   return crypto.createHash("sha256").update(data.trim().toLowerCase()).digest("hex");
@@ -7,6 +8,19 @@ function hashData(data: string) {
 
 export async function POST(req: Request) {
   try {
+    // Check if CAPI is enabled in the database settings
+    if (supabase) {
+      const { data: settingsData } = await supabase
+        .from('platform_settings')
+        .select('value')
+        .eq('key', 'facebook_tracking')
+        .maybeSingle();
+
+      if (settingsData && settingsData.value && settingsData.value.capi_enabled === false) {
+        return NextResponse.json({ message: "Conversion API is disabled by administrator." });
+      }
+    }
+
     const body = await req.json();
     const { eventName, eventId, userData, customData } = body;
 
@@ -18,7 +32,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Tracking configuration missing" }, { status: 400 });
     }
 
-    const payload: any = {
+    interface FacebookEventPayload {
+      data: Array<{
+        event_name: string;
+        event_time: number;
+        event_id: string;
+        event_source: string;
+        action_source: string;
+        user_data: {
+          em?: string[];
+          ph?: string[];
+          client_ip_address?: string;
+          client_user_agent?: string;
+        };
+        custom_data: Record<string, unknown>;
+      }>;
+      test_event_code?: string;
+    }
+
+    const payload: FacebookEventPayload = {
       data: [
         {
           event_name: eventName,
@@ -52,8 +84,11 @@ export async function POST(req: Request) {
 
     const result = await fbResponse.json();
     return NextResponse.json(result);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error sending CAPI event:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
