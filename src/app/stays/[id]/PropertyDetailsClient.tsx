@@ -17,7 +17,8 @@ import {
   UserCheck, Baby, Ghost, Layout, Smartphone, Book,
   Gamepad2, GraduationCap, Beer, Wine, CupSoda, Shirt,
   DoorOpen, Lock, Fan, Speaker, CalendarDays, Boxes,
-  ShowerHead, Soup, AlertCircle, ConciergeBell, Sprout, Bed
+  ShowerHead, Soup, AlertCircle, ConciergeBell, Sprout, Bed,
+  Download
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
@@ -26,6 +27,7 @@ import Footer from "@/components/Footer";
 import ReviewForm from "@/components/ReviewForm";
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { getTrackingSettings } from "@/lib/tracking-settings";
+import { generateBrochure } from "@/utils/generateBrochure";
 
 export interface Property {
   id: string;
@@ -179,8 +181,30 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const mapSectionRef = useRef<HTMLDivElement>(null);
 
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [pdfProgress, setPdfProgress] = useState(0);
+
   const scrollToMap = () => {
     mapSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  const handleDownloadBrochure = async () => {
+    if (!property) return;
+    setIsGeneratingPdf(true);
+    setPdfProgress(0);
+    try {
+      const pageUrl = window.location.href;
+      await generateBrochure({
+        property,
+        pageUrl,
+        onProgress: (p) => setPdfProgress(p),
+      });
+    } catch (err) {
+      console.error("Error generating brochure PDF:", err);
+    } finally {
+      setIsGeneratingPdf(false);
+      setPdfProgress(0);
+    }
   };
 
   const hasParking = property?.amenities?.some(a => {
@@ -775,6 +799,23 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
             Back
           </button>
           <div className="flex items-center gap-4">
+            <button
+              onClick={handleDownloadBrochure}
+              disabled={isGeneratingPdf}
+              className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isGeneratingPdf ? (
+                <>
+                  <Loader2 size={16} className="animate-spin text-[#EC5B13]" />
+                  <span>Generating {pdfProgress > 0 ? `(${pdfProgress}%)` : ""}</span>
+                </>
+              ) : (
+                <>
+                  <Download size={16} />
+                  <span>Brochure</span>
+                </>
+              )}
+            </button>
             <button
               onClick={handleShare}
               className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline"
