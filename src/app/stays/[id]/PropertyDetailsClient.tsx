@@ -23,6 +23,7 @@ import {
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
 import { slugify } from "@/utils/seo";
+import CustomDatePicker from "@/components/CustomDatePicker";
 import Footer from "@/components/Footer";
 import ReviewForm from "@/components/ReviewForm";
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
@@ -1130,25 +1131,26 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
                       />
                     </div>
 
-                    <div className="border border-gray-300 rounded-[14px] overflow-hidden">
+                    <div className="border border-gray-300 rounded-[14px]">
                       <div className="grid grid-cols-2 border-b border-gray-300">
-                        <div className="p-3 border-r border-gray-300 hover:bg-gray-50 transition-colors relative">
+                        <div className="p-3 border-r border-gray-300 hover:bg-gray-50 transition-colors relative rounded-tl-[14px]">
                           <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Check-in</p>
-                          <input
-                            type="date"
-                            name="checkIn"
+                          <CustomDatePicker
+                            id="checkin"
                             value={enquiryData.checkIn}
-                            onChange={handleEnquiryChange}
+                            onChange={(val) => setEnquiryData(prev => ({ ...prev, checkIn: val }))}
+                            placeholder="dd/mm/yyyy"
                             className="w-full text-xs font-bold text-gray-900 bg-transparent focus:outline-none cursor-pointer"
                           />
                         </div>
-                        <div className="p-3 hover:bg-gray-50 transition-colors relative">
+                        <div className="p-3 hover:bg-gray-50 transition-colors relative rounded-tr-[14px]">
                           <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Checkout</p>
-                          <input
-                            type="date"
-                            name="checkOut"
+                          <CustomDatePicker
+                            id="checkout"
                             value={enquiryData.checkOut}
-                            onChange={handleEnquiryChange}
+                            min={enquiryData.checkIn || undefined}
+                            onChange={(val) => setEnquiryData(prev => ({ ...prev, checkOut: val }))}
+                            placeholder="dd/mm/yyyy"
                             className="w-full text-xs font-bold text-gray-900 bg-transparent focus:outline-none cursor-pointer"
                           />
                         </div>
@@ -1171,7 +1173,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
                           <ChevronRight className="rotate-90 text-gray-400 pointer-events-none" size={16} />
                         </div>
                       </div>
-                      <div className="p-3 hover:bg-gray-50 transition-colors">
+                      <div className="p-3 hover:bg-gray-50 transition-colors rounded-b-[14px]">
                         <div className="flex justify-between items-center">
                           <div className="w-full">
                             <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Purpose</p>

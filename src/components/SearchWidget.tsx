@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Search, MapPin, Calendar, Users, Hotel, Ship, Home } from "lucide-react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { trackSearch } from "@/lib/fb-track";
+import CustomDatePicker from "./CustomDatePicker";
 
 export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
   const tabs = [
@@ -146,14 +147,13 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                   <label htmlFor="checkin" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Check-in</label>
                 </div>
                 <div className="relative ml-8 md:ml-[42px] pr-4">
-                  <input
+                  <CustomDatePicker
                     id="checkin"
-                    type="date"
                     value={checkIn}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    className={`w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold outline-none border-none p-0 focus:ring-0 cursor-pointer [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer ${checkIn ? 'text-gray-900' : 'text-transparent'}`}
+                    onChange={(val) => setCheckIn(val)}
+                    placeholder="dd/mm/yyyy"
+                    className="w-full"
                   />
-                  {!checkIn && <span className="absolute left-0 top-1/2 -translate-y-1/2 text-[12.5px] md:text-[14.5px] font-bold text-gray-400 pointer-events-none">Add date</span>}
                 </div>
               </div>
 
@@ -164,15 +164,14 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                   <label htmlFor="checkout" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer">Check-out</label>
                 </div>
                 <div className="relative ml-8 md:ml-[42px] pr-4">
-                  <input
+                  <CustomDatePicker
                     id="checkout"
-                    type="date"
                     value={checkOut}
                     min={checkIn || undefined}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                    className={`w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold outline-none border-none p-0 focus:ring-0 cursor-pointer [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer ${checkOut ? 'text-gray-900' : 'text-transparent'}`}
+                    onChange={(val) => setCheckOut(val)}
+                    placeholder="dd/mm/yyyy"
+                    className="w-full"
                   />
-                  {!checkOut && <span className="absolute left-0 top-1/2 -translate-y-1/2 text-[12.5px] md:text-[14.5px] font-bold text-gray-400 pointer-events-none">Add date</span>}
                 </div>
               </div>
 
