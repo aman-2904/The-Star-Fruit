@@ -65,7 +65,7 @@ export default function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
           {!message && !disabled && (
             <div className="absolute right-0 flex items-center gap-1 md:gap-2">
               <button className="p-2 text-gray-400 hover:text-orange-500 transition-colors"><Smile size={18} /></button>
-              <button className="p-2 text-gray-400 hover:text-blue-500 transition-colors"><ImageIcon size={18} /></button>
+              <button className="p-2 text-gray-400 hover:text-blue-500 transition-colors"><ImageIcon size={18}/></button>
               <button className="p-2 text-gray-400 hover:text-emerald-500 transition-colors"><MapPin size={18} /></button>
             </div>
           )}

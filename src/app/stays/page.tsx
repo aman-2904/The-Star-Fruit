@@ -172,9 +172,7 @@ export default async function StaysListingPage({
               src={bgImage}
               alt="Search Background"
               fill
-              className="object-cover object-center"
-              priority
-            />
+              className="object-cover object-center"              unoptimized/>
             {/* Soft White Overlay for readability */}
             <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
           </div>

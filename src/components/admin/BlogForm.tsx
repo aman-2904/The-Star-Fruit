@@ -285,7 +285,7 @@ export default function BlogForm({ initialData, isEdit = false }: BlogFormProps)
             
             {featuredImageValue ? (
               <div className="relative aspect-video rounded-xl overflow-hidden group">
-                <Image src={featuredImageValue} alt="Featured" fill className="object-cover" />
+                <Image src={featuredImageValue} alt="Featured" fill className="object-cover"  unoptimized/>
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
                     type="button"
@@ -306,7 +306,7 @@ export default function BlogForm({ initialData, isEdit = false }: BlogFormProps)
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
                 />
                 <div className="flex flex-col items-center text-gray-500">
-                  <ImageIcon size={32} className="mb-2 text-gray-400" />
+                  <ImageIcon size={32} className="mb-2 text-gray-400"/>
                   <span className="text-sm font-medium">
                     {isUploadingImage ? "Uploading..." : "Click to upload image"}
                   </span>

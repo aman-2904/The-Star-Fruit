@@ -333,7 +333,7 @@ export default function PropertyDetailPage() {
         </div>
         <div className="absolute left-1/2 -translate-x-1/2">
           <Link href="/host">
-            <Image src="/images/logo.webp" alt="LuxeVillaz" width={140} height={35} className="h-8 w-auto" />
+            <Image src="/images/logo.webp" alt="LuxeVillaz" width={140} height={35} className="h-8 w-auto"  unoptimized/>
           </Link>
         </div>
         <div />
@@ -408,7 +408,7 @@ export default function PropertyDetailPage() {
               })}
               {photos.length === 1 && (
                 <div className="flex-1 rounded-2xl bg-gray-100 flex items-center justify-center">
-                  <ImageOff size={20} className="text-gray-300" />
+                  <ImageOff size={20} className="text-gray-300"/>
                 </div>
               )}
             </div>

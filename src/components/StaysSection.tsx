@@ -91,7 +91,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
               alt="Luxury Villa"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
-            />
+             unoptimized/>
             <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] transition-all group-hover:bg-black/50 group-hover:backdrop-blur-sm" />
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
               <h3 className="text-white text-[28px] font-serif mb-6 leading-tight drop-shadow-md">Explore<br />More Stays</h3>

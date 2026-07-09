@@ -94,7 +94,7 @@ export default function StayCard({
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-1000"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
-          />
+           unoptimized/>
           <button 
             onClick={handleToggleSave}
             className={`absolute top-4 right-4 p-2.5 backdrop-blur-xl rounded-full transition-all shadow-lg duration-300 ${

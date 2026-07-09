@@ -90,9 +90,7 @@ export default async function BlogDynamicPage({ params }: { params: Params }) {
                 src={blog.featured_image}
                 alt={blog.title}
                 fill
-                className="object-cover"
-                priority
-              />
+                className="object-cover"                unoptimized/>
             </div>
           </div>
         )}

@@ -160,7 +160,7 @@ export default function HostDashboardClient() {
         </div>
 
         <div className="absolute left-1/2 -translate-x-1/2">
-          <Image src="/images/blogo.webp" alt="LuxeVilla" width={140} height={35} className="h-8 w-auto" />
+          <Image src="/images/blogo.webp" alt="LuxeVilla" width={140} height={35} className="h-8 w-auto"  unoptimized/>
         </div>
 
         <div className="flex items-center space-x-8">
@@ -232,9 +232,7 @@ export default function HostDashboardClient() {
             src="/images/contactus.webp"
             alt="Host Background"
             fill
-            className="object-cover"
-            priority
-          />
+            className="object-cover"            unoptimized/>
           <div className="absolute inset-0 bg-black/60" />
 
           <div className="relative z-10 px-6 mt-12">
@@ -330,7 +328,7 @@ export default function HostDashboardClient() {
                     alt={cat.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                   unoptimized/>
                 </div>
                 <div className="p-8 pt-4">
                   <h3 className="text-2xl font-black text-gray-900 mb-4">{cat.title}</h3>
@@ -407,7 +405,7 @@ export default function HostDashboardClient() {
                 alt="Luxury Reception"
                 fill
                 className="object-cover"
-              />
+               unoptimized/>
             </div>
           </div>
         </div>
@@ -435,7 +433,7 @@ export default function HostDashboardClient() {
             alt="Luxury Villa Golden Hour"
             fill
             className="object-cover"
-          />
+           unoptimized/>
           <div className="absolute inset-0 bg-black/30" />
 
           <div className="relative z-10 w-full max-w-4xl py-12">

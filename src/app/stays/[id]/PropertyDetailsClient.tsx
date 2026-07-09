@@ -716,9 +716,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
                   alt={`${property.listing_title}`}
                   fill
                   className="object-contain"
-                  unoptimized
-                  priority
-                />
+                  unoptimized                 />
               </div>
             </div>
 
@@ -904,9 +902,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
                 src="/images/stays/pool_villa.webp"
                 alt={property.listing_title}
                 fill
-                className="object-cover"
-                priority
-              />
+                className="object-cover"                unoptimized/>
             )}
 
             {/* Interactive Overlay Layer */}

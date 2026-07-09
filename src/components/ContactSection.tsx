@@ -121,9 +121,7 @@ export default function ContactSection() {
             src="/images/contactus.webp"
             alt="Luxury Villa Background"
             fill
-            className="object-cover"
-            priority
-          />
+            className="object-cover"            unoptimized/>
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px]" />
         </div>
 

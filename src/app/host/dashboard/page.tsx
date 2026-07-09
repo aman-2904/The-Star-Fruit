@@ -58,7 +58,7 @@ function PropertyPreview({ property }: { property: Property }) {
           <Image src={coverPhoto} alt={title} fill className="object-cover" unoptimized />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-            <ImageOff size={18} />
+            <ImageOff size={18}/>
           </div>
         )}
       </div>

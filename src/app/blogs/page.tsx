@@ -72,9 +72,7 @@ export default function PublicBlogsPage() {
             src="/images/stay_villa.webp"
             alt="Luxevillaz Blogs Background"
             fill
-            className="object-cover object-center z-0"
-            priority
-          />
+            className="object-cover object-center z-0"            unoptimized/>
 
           {/* Subtle Dynamic Gradients for absolute text readability */}
           <div className="absolute inset-0 bg-black/30 z-10" />
@@ -166,10 +164,10 @@ export default function PublicBlogsPage() {
                         alt={blog.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                      />
+                       unoptimized/>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-50">
-                        <Image src="/images/blogo.webp" alt="Logo placeholder" width={100} height={25} className="opacity-15" />
+                        <Image src="/images/blogo.webp" alt="Logo placeholder" width={100} height={25} className="opacity-15"  unoptimized/>
                       </div>
                     )}
 

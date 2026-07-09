@@ -10,6 +10,7 @@ export default function Hero() {
           src="/images/hero_bg_v2.webp"
           alt="Luxury villa with pool"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />

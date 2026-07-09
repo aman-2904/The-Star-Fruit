@@ -245,7 +245,7 @@ export default function Step4PropertyPhotos({
             onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
             className="flex items-center gap-2 bg-[#1A1A24] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-black transition-colors shadow-md"
           >
-            <ImagePlus size={16} />
+            <ImagePlus size={16}/>
             Upload from device
           </button>
           <input

@@ -59,7 +59,7 @@ export default function StayTypesSection() {
                   alt={type.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+                 unoptimized/>
               </div>
               <div className="px-8 pb-8 flex flex-col flex-1">
                 <h3 className="text-[20px] font-bold text-gray-900 mb-3">{type.title}</h3>

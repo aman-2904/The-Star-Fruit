@@ -58,7 +58,7 @@ function PropertyCard({ property }: { property: Property }) {
           <Image src={coverPhoto} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-300 gap-2">
-            <ImageOff size={28} />
+            <ImageOff size={28}/>
             <span className="text-xs font-medium">No photo uploaded</span>
           </div>
         )}

@@ -11,7 +11,7 @@ export default function EnquirySection() {
         alt="Luxury Villa Goa"
         fill
         className="object-cover transition-transform duration-700 group-hover:scale-105"
-      />
+       unoptimized/>
       <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-black/20" />
 
       <div className="absolute inset-x-8 md:inset-x-16 bottom-8 md:bottom-16 flex justify-between items-end">

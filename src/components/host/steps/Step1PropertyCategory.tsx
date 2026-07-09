@@ -86,7 +86,7 @@ export default function Step1PropertyCategory({ selectedCategory, onSelect, onBa
                     alt={cat.title} 
                     fill 
                     className="object-cover"
-                  />
+                   unoptimized/>
                 </div>
               </div>
               <div className="p-6 pt-3">
