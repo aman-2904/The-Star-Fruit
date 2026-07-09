@@ -7,7 +7,7 @@ export default function EnquirySection() {
   return (
     <div className="mt-16 relative w-full h-[400px] md:h-[550px] overflow-hidden group">
       <Image
-        src="/images/stays/hotel.png"
+        src="/images/stays/hotel.webp"
         alt="Luxury Villa Goa"
         fill
         className="object-cover transition-transform duration-700 group-hover:scale-105"

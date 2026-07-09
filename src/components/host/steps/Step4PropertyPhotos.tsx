@@ -4,6 +4,7 @@ import React, { useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { CloudUpload, ImagePlus, X, Lightbulb, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { convertImageToWebp } from '@/utils/imageUtils';
 
 export interface PhotoItem {
   id: string;
@@ -29,12 +30,20 @@ const STORAGE_BUCKET = 'property-images';
 async function uploadToSupabase(file: File, propertyId: string): Promise<string> {
   if (!supabase) throw new Error('Supabase not initialized');
 
-  const ext = file.name.split('.').pop();
+  // Convert image to WebP before uploading
+  let processedFile = file;
+  try {
+    processedFile = await convertImageToWebp(file, 0.8);
+  } catch (err) {
+    console.warn('Failed to convert image to WebP, falling back to original:', err);
+  }
+
+  const ext = processedFile.name.split('.').pop() || 'webp';
   const path = `${propertyId}/${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
 
   const { error } = await supabase.storage
     .from(STORAGE_BUCKET)
-    .upload(path, file, { cacheControl: '3600', upsert: false });
+    .upload(path, processedFile, { cacheControl: '3600', upsert: false });
 
   if (error) throw error;
 

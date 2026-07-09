@@ -78,7 +78,7 @@ export default function AdminLayout({
       <aside className={`fixed inset-y-0 left-0 bg-white border-r border-gray-100 transition-all duration-300 z-50 ${isSidebarOpen ? 'w-64' : 'w-20'}`}>
         <div className="p-6 flex items-center justify-between">
           {isSidebarOpen ? (
-            <Image src="/images/blogo.png" alt="Logo" width={140} height={35} className="h-7 w-auto" />
+            <Image src="/images/blogo.webp" alt="Logo" width={140} height={35} className="h-7 w-auto" />
           ) : (
             <div className="w-8 h-8 bg-[#EC5B13] rounded-lg flex items-center justify-center text-white font-black">S</div>
           )}

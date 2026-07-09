@@ -576,7 +576,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
     ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(2)
     : "New";
 
-  const mainImage = property.images?.[0] || "/images/stays/pool_villa.png";
+  const mainImage = property.images?.[0] || "/images/stays/pool_villa.webp";
   const galleryImages = property.images?.slice(1, 4) || [];
   const lastImage = property.images?.[4];
 
@@ -901,7 +901,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
               ))
             ) : (
               <Image
-                src="/images/stays/pool_villa.png"
+                src="/images/stays/pool_villa.webp"
                 alt={property.listing_title}
                 fill
                 className="object-cover"

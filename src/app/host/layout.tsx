@@ -80,7 +80,7 @@ export default function HostLayout({
         <div className="p-6 flex items-center justify-between">
           {isSidebarOpen ? (
             <Link href="/">
-              <Image src="/images/blogo.png" alt="Logo" width={140} height={35} className="h-7 w-auto" />
+              <Image src="/images/blogo.webp" alt="Logo" width={140} height={35} className="h-7 w-auto" />
             </Link>
           ) : (
             <div className="w-8 h-8 bg-[#EC5B13] rounded-lg flex items-center justify-center text-white font-black">H</div>

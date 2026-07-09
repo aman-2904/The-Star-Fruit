@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/hero_bg.png",
+        url: "/images/hero_bg.webp",
         width: 1200,
         height: 630,
         alt: "Villas Goa Blog",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Villas Goa Blog | Discover the Best Villas in Goa",
     description: "Explore the Villas Goa Blog for expert travel tips, luxury villa recommendations, booking advice, and insider guides to make your Goa vacation unforgettable.",
-    images: ["/images/hero_bg.png"],
+    images: ["/images/hero_bg.webp"],
   },
 };
 

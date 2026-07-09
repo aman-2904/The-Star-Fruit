@@ -7,7 +7,7 @@ export default function Hero() {
       <div className="relative w-full max-w-[1877px] h-[500px] lg:h-[695px] overflow-hidden rounded-[20px] shadow-2xl mx-auto">
         {/* Background Image */}
         <Image
-          src="/images/hero_bg_v2.jpg"
+          src="/images/hero_bg_v2.webp"
           alt="Luxury villa with pool"
           fill
           className="object-cover"

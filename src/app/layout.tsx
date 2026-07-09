@@ -71,7 +71,7 @@ export default function RootLayout({
                   "logo": {
                     "@type": "ImageObject",
                     "@id": "https://www.luxevillaz.com/#logo",
-                    "url": "https://www.luxevillaz.com/images/blogo.png",
+                    "url": "https://www.luxevillaz.com/images/blogo.webp",
                     "caption": "Luxevillaz Logo"
                   },
                   "description": "Discover exclusive luxury villas, apartments, stays, resorts, and cruises in Goa."

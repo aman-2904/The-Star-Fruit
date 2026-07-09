@@ -23,7 +23,7 @@ export default function MaintenancePage() {
       <header className="relative z-10 px-6 py-6 md:px-12 md:py-8 flex justify-center items-center max-w-7xl mx-auto w-full">
         <div className="flex items-center justify-center">
           <Image
-            src="/images/footerlogo.png"
+            src="/images/footerlogo.webp"
             alt="LuxeVillaz"
             width={160}
             height={40}

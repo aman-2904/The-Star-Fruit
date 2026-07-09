@@ -606,13 +606,13 @@ export const generateBrochure = async ({
   if (onProgress) onProgress(10);
 
   // 2. Fetch and convert all images to base64
-  const logoFooterBase64 = await fetchImageAsBase64("/images/footerlogo.png");
-  const logoBlogoBase64 = await fetchImageAsBase64("/images/blogo.png");
+  const logoFooterBase64 = await fetchImageAsBase64("/images/footerlogo.webp");
+  const logoBlogoBase64 = await fetchImageAsBase64("/images/blogo.webp");
   if (onProgress) onProgress(20);
 
   // Fetch cover and gallery images (up to 15 images to avoid endless downloads)
   const allImages = property.images || [];
-  const coverUrl = allImages[0] || "/images/stays/pool_villa.png";
+  const coverUrl = allImages[0] || "/images/stays/pool_villa.webp";
   const coverBase64 = await fetchImageAsBase64(coverUrl);
   if (onProgress) onProgress(35);
 

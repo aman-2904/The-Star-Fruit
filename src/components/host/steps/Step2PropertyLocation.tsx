@@ -256,7 +256,7 @@ export default function Step2PropertyLocation({
             ) : (
               /* Map Placeholder UI */
               <>
-                <div className="absolute inset-0 opacity-80 mix-blend-overlay" style={{ backgroundImage: 'url("/images/hero_bg.png")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+                <div className="absolute inset-0 opacity-80 mix-blend-overlay" style={{ backgroundImage: 'url("/images/hero_bg.webp")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 drop-shadow-xl animate-bounce-slow">
                   <MapPin className="text-[#EC5B13]" fill="#EC5B13" size={48} strokeWidth={1.5} />
                 </div>

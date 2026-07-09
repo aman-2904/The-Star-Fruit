@@ -81,7 +81,7 @@ export default function BlogAdminLoginPage() {
       <div className="max-w-md w-full bg-white rounded-[32px] p-8 md:p-12 shadow-xl border border-gray-100">
         <div className="text-center mb-10">
           <Link href="/" className="inline-block mb-8">
-            <Image src="/images/blogo.png" alt="Logo" width={180} height={45} className="h-10 w-auto" />
+            <Image src="/images/blogo.webp" alt="Logo" width={180} height={45} className="h-10 w-auto" />
           </Link>
           <h2 className="text-3xl font-serif font-bold text-gray-900">
             {view === 'forgot_password' ? "Reset Password"

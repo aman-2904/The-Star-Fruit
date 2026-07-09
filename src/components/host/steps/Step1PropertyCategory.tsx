@@ -21,28 +21,28 @@ const CATEGORIES: CategoryItem[] = [
     description: 'Entire homes with private pools and personalized staff.',
     tag: { text: 'POPULAR', type: 'popular' },
     subtitle: 'Selected by 60% of hosts',
-    image: '/images/cat_villa.png'
+    image: '/images/cat_villa.webp'
   },
   {
     id: 'hotel',
     title: 'Boutique Hotel',
     description: 'Refined suites, curated experiences, and premium shared amenities.',
     subtitle: 'Perfect for small resorts',
-    image: '/images/cat_hotel.png'
+    image: '/images/cat_hotel.webp'
   },
   {
     id: 'cruise',
     title: 'Luxury Cruise',
     description: 'Floating villas on the Mandovi river with private sundecks.',
     subtitle: 'Unique Goan experience',
-    image: '/images/stay_cruise.png' // Utilizing existing asset
+    image: '/images/stay_cruise.webp' // Utilizing existing asset
   },
   {
     id: 'apartment',
     title: 'Luxury Apartments',
     description: 'Modern high-rise stays with premium amenities and city views.',
     subtitle: 'Urban luxury experience',
-    image: '/images/cat_apartment.png'
+    image: '/images/cat_apartment.webp'
   }
 ];
 

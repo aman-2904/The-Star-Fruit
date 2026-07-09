@@ -31,7 +31,7 @@ export default function OnboardingLayout({ children, onBack, onContinue, canCont
         <div className="absolute left-1/2 -translate-x-1/2">
           <Link href="/host">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.webp"
               alt="LuxeVillaz Logo"
               width={160}
               height={40}

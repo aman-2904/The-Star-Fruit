@@ -118,7 +118,7 @@ export default function ContactSection() {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/contactus.jpg"
+            src="/images/contactus.webp"
             alt="Luxury Villa Background"
             fill
             className="object-cover"

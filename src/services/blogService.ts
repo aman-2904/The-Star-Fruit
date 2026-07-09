@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { Blog, CreateBlogDTO } from '@/types/blog';
+import { convertImageToWebp } from '@/utils/imageUtils';
 
 export const blogService = {
   async getPublishedBlogs(): Promise<Blog[]> {
@@ -103,13 +104,20 @@ export const blogService = {
   },
 
   async uploadImage(file: File): Promise<string> {
-    const fileExt = file.name.split('.').pop();
+    let processedFile = file;
+    try {
+      processedFile = await convertImageToWebp(file, 0.8);
+    } catch (err) {
+      console.warn('Failed to convert image to WebP:', err);
+    }
+
+    const fileExt = processedFile.name.split('.').pop() || 'webp';
     const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
 
     const { error: uploadError } = await supabase.storage
       .from('blog-images')
-      .upload(filePath, file);
+      .upload(filePath, processedFile);
 
     if (uploadError) throw uploadError;
 

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/contact_bg.png",
+        url: "/images/contact_bg.webp",
         width: 1200,
         height: 630,
         alt: "Login to Luxevillaz",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Login to Luxevillaz | Access Your Account",
     description: "Discover luxury villas, apartments, stays, resorts, and cruises on Luxevillaz. Find the perfect getaway, compare options, and book unforgettable travel experiences with ease.",
-    images: ["/images/contact_bg.png"],
+    images: ["/images/contact_bg.webp"],
   },
 };
 

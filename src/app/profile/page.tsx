@@ -221,7 +221,7 @@ function ProfileContent() {
                               location={`${prop.city || ""}${prop.state ? `, ${prop.state}` : ""}`}
                               category={prop.category || "Entire Home"}
                               bedrooms={prop.bedrooms}
-                              image={prop.images?.[0] || "/images/stays/pool_villa.png"}
+                              image={prop.images?.[0] || "/images/stays/pool_villa.webp"}
                             />
                           ))}
                         </div>
@@ -258,7 +258,7 @@ function ProfileContent() {
                               {/* Property Image */}
                               <div className="w-full md:w-48 h-32 md:h-32 relative rounded-2xl overflow-hidden shrink-0">
                                 <img 
-                                  src={booking.properties?.images?.[0] || "/images/stays/pool_villa.png"} 
+                                  src={booking.properties?.images?.[0] || "/images/stays/pool_villa.webp"} 
                                   alt={booking.properties?.listing_title}
                                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                 />

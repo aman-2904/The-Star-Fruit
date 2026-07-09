@@ -68,7 +68,7 @@ export default function Navbar() {
         <div className="absolute left-1/2 -translate-x-1/2">
           <Link href="/">
             <Image
-              src="/images/blogo.png"
+              src="/images/blogo.webp"
               alt="LuxeVillaz Logo"
               width={160}
               height={40}

@@ -74,21 +74,21 @@ const CATEGORIES = [
   {
     title: "Apartments",
     description: "Stay like a local in modern serviced apartments with kitchen and living space. Perfect for long stays or travelers who love home-like comfort.",
-    image: "/images/cat_apartment.png",
+    image: "/images/cat_apartment.webp",
     linkText: "List Apartments",
     link: "/host/onboarding?type=Apartment"
   },
   {
     title: "Villas",
     description: "Enjoy spacious private homes designed for relaxation and togetherness. Ideal for families or groups who want luxury, privacy, and a personal touch.",
-    image: "/images/cat_villa.png",
+    image: "/images/cat_villa.webp",
     linkText: "List Villas",
     link: "/host/onboarding?type=Villa"
   },
   {
     title: "Resorts",
     description: "Escape to destinations that combine comfort, dining, and leisure in one place. Great for holidays, celebrations, and peaceful retreats.",
-    image: "/images/cat_resort.png",
+    image: "/images/cat_resort.webp",
     linkText: "List Resorts",
     link: "/host/onboarding?type=Resort"
   }
@@ -160,7 +160,7 @@ export default function HostDashboardClient() {
         </div>
 
         <div className="absolute left-1/2 -translate-x-1/2">
-          <Image src="/images/blogo.png" alt="LuxeVilla" width={140} height={35} className="h-8 w-auto" />
+          <Image src="/images/blogo.webp" alt="LuxeVilla" width={140} height={35} className="h-8 w-auto" />
         </div>
 
         <div className="flex items-center space-x-8">
@@ -229,7 +229,7 @@ export default function HostDashboardClient() {
       <main className="p-4 md:p-8">
         <div className="max-w-[1400px] mx-auto relative rounded-[40px] overflow-hidden min-h-[650px] flex items-center justify-center text-center">
           <Image
-            src="/images/contactus.jpg"
+            src="/images/contactus.webp"
             alt="Host Background"
             fill
             className="object-cover"
@@ -403,7 +403,7 @@ export default function HostDashboardClient() {
 
             <div className="order-1 lg:order-2 w-full h-[300px] md:h-[500px] relative rounded-[32px] overflow-hidden shadow-2xl">
               <Image
-                src="/images/reception.png"
+                src="/images/reception.webp"
                 alt="Luxury Reception"
                 fill
                 className="object-cover"
@@ -431,7 +431,7 @@ export default function HostDashboardClient() {
       <section className="px-6 md:px-20 py-14 bg-white">
         <div className="max-w-[1400px] mx-auto relative rounded-[48px] overflow-hidden min-h-[450px] flex flex-col items-center justify-center text-center px-6">
           <Image
-            src="/images/hostCTA.jpg"
+            src="/images/hostCTA.webp"
             alt="Luxury Villa Golden Hour"
             fill
             className="object-cover"

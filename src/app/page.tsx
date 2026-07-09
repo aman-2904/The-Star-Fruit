@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/host_cta_bg.png",
+        url: "/images/host_cta_bg.webp",
         width: 1200,
         height: 630,
         alt: "Luxevillaz",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Luxevillaz | #1 Best Villas in Goa at upto 70% off",
     description: "Tired of crowded hotels? Discover exclusive Villas in Goa with Luxevillaz for a stunning stay, private comfort, and memorable experiences. Reserve your dream villa today!",
-    images: ["/images/host_cta_bg.png"],
+    images: ["/images/host_cta_bg.webp"],
   },
 };
 

@@ -69,7 +69,7 @@ export default function PublicBlogsPage() {
         <div className="relative rounded-3xl overflow-hidden h-[400px] md:h-[460px] w-full shadow-xl border border-gray-100 flex flex-col items-center justify-center text-white px-4">
           {/* Background Image */}
           <Image
-            src="/images/stay_villa.png"
+            src="/images/stay_villa.webp"
             alt="Luxevillaz Blogs Background"
             fill
             className="object-cover object-center z-0"
@@ -169,7 +169,7 @@ export default function PublicBlogsPage() {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-50">
-                        <Image src="/images/blogo.png" alt="Logo placeholder" width={100} height={25} className="opacity-15" />
+                        <Image src="/images/blogo.webp" alt="Logo placeholder" width={100} height={25} className="opacity-15" />
                       </div>
                     )}
 

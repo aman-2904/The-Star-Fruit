@@ -60,7 +60,7 @@ export async function generateMetadata({
         type: "website",
         images: [
           {
-            url: "/images/cat_resort.png",
+            url: "/images/cat_resort.webp",
             width: 1200,
             height: 630,
             alt: "Luxury Apartments in Goa",
@@ -71,7 +71,7 @@ export async function generateMetadata({
         card: "summary_large_image",
         title,
         description,
-        images: ["/images/cat_resort.png"],
+        images: ["/images/cat_resort.webp"],
       },
     };
   }
@@ -108,7 +108,7 @@ export async function generateMetadata({
         type: "website",
         images: [
           {
-            url: "/images/host_hero.png",
+            url: "/images/host_hero.webp",
             width: 1200,
             height: 630,
             alt: "Luxury Villas in Goa",
@@ -119,7 +119,7 @@ export async function generateMetadata({
         card: "summary_large_image",
         title,
         description,
-        images: ["/images/host_hero.png"],
+        images: ["/images/host_hero.webp"],
       },
     };
   }
@@ -150,13 +150,13 @@ export default async function StaysListingPage({
   const isVilla = type === "Villa" || (typeof type === "string" && type.split(',').includes("Villa"));
   const isCruise = type === "Cruise";
 
-  let bgImage = "/images/stays_search_landscape.png";
+  let bgImage = "/images/stays_search_landscape.webp";
   if (isCruise) {
-    bgImage = "/images/shipbg1.jpg";
+    bgImage = "/images/shipbg1.webp";
   } else if (isVilla) {
-    bgImage = "/images/villa_search_bg1.png";
+    bgImage = "/images/villa_search_bg1.webp";
   } else {
-    bgImage = hasStaysBg ? "/images/stays_search_bg.png" : "/images/stays_search_landscape.png";
+    bgImage = hasStaysBg ? "/images/stays_search_bg.webp" : "/images/stays_search_landscape.webp";
   }
 
   return (

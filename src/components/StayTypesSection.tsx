@@ -9,7 +9,7 @@ const stayTypes = [
     id: "apartments",
     title: "Apartments",
     description: "Enjoy the convenience of city living with fully-equipped modern apartments. Ideal for digital nomads, long-term stays, or travelers seeking a home-away-from-home.",
-    image: "/images/stay_apartment.png",
+    image: "/images/stay_apartment.webp",
     linkText: "View Apartments",
     link: "/stays?type=Apartment"
   },
@@ -17,7 +17,7 @@ const stayTypes = [
     id: "villas",
     title: "Villas",
     description: "Enjoy spacious private homes designed for relaxation and togetherness. Ideal for families or groups who want luxury, privacy, and a personal touch.",
-    image: "/images/stay_villa.png",
+    image: "/images/stay_villa.webp",
     linkText: "View Villas",
     link: "/stays?type=Villa"
   },
@@ -25,7 +25,7 @@ const stayTypes = [
     id: "cruise",
     title: "Cruise",
     description: "Set sail on an unforgettable journey across the seas. Enjoy world-class dining, magnificent ocean views, and premium entertainment all in one place.",
-    image: "/images/stay_cruise.png",
+    image: "/images/stay_cruise.webp",
     linkText: "View Cruises",
     link: "#"
   },

@@ -72,7 +72,7 @@ export default function Footer() {
               <div className="max-w-xs">
                 <Link href="/" className="inline-block mb-5">
                   <Image
-                    src="/images/footerlogo.png"
+                    src="/images/footerlogo.webp"
                     alt="LuxeVillaz"
                     width={160}
                     height={40}

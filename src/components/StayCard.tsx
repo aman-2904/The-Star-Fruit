@@ -89,7 +89,7 @@ export default function StayCard({
       <Link href={stayUrl}>
         <div className="relative aspect-[3/4] rounded-[24px] overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-500">
           <Image
-            src={image || "/images/stays/pool_villa.png"}
+            src={image || "/images/stays/pool_villa.webp"}
             alt={title}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-1000"
