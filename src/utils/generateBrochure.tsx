@@ -605,40 +605,56 @@ export const generateBrochure = async ({
   loadGoogleFont();
   if (onProgress) onProgress(10);
 
-  // 2. Fetch and convert all images to base64
-  const logoFooterBase64 = await fetchImageAsBase64("/images/footerlogo.webp");
-  const logoBlogoBase64 = await fetchImageAsBase64("/images/blogo.webp");
-  if (onProgress) onProgress(20);
-
-  // Fetch cover and gallery images (up to 15 images to avoid endless downloads)
+  // 2. Parallelize all image fetching to drastically reduce download times
   const allImages = property.images || [];
   const coverUrl = allImages[0] || "/images/stays/pool_villa.webp";
-  const coverBase64 = await fetchImageAsBase64(coverUrl);
-  if (onProgress) onProgress(35);
-
-  const galleryBase64: string[] = [];
-  const galleryUrls = allImages.slice(1, 13); // fetch next 12 images
-  for (let i = 0; i < galleryUrls.length; i++) {
-    const base64 = await fetchImageAsBase64(galleryUrls[i]);
-    galleryBase64.push(base64);
-    if (onProgress) onProgress(35 + Math.round((i / galleryUrls.length) * 30));
-  }
-
-  // Generate QR Code URL and fetch base64
+  const galleryUrls = allImages.slice(1, 13);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(pageUrl)}`;
-  const qrBase64 = await fetchImageAsBase64(qrUrl);
-  if (onProgress) onProgress(70);
-
-  // Google Maps Static API (fallback if key is not present)
-  let mapBase64 = "";
+  
+  let mapUrl = "";
   const mapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
   const lat = property.latitude || 15.2993;
   const lng = property.longitude || 74.1240;
   if (mapsApiKey) {
-    const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=640x320&scale=2&markers=color:0xEC5B13%7C${lat},${lng}&key=${mapsApiKey}`;
-    mapBase64 = await fetchImageAsBase64(mapUrl);
+    mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=640x320&scale=2&markers=color:0xEC5B13%7C${lat},${lng}&key=${mapsApiKey}`;
   }
-  if (onProgress) onProgress(80);
+
+  const totalImages = 5 + galleryUrls.length; // footer, blogo, cover, qr, map
+  let fetchedCount = 0;
+
+  const fetchWithProgress = async (url: string) => {
+    if (!url) {
+      fetchedCount++;
+      return "";
+    }
+    try {
+      const res = await fetchImageAsBase64(url);
+      fetchedCount++;
+      if (onProgress) {
+        onProgress(10 + Math.round((fetchedCount / totalImages) * 70));
+      }
+      return res;
+    } catch (e) {
+      fetchedCount++;
+      return "";
+    }
+  };
+
+  const [
+    logoFooterBase64,
+    logoBlogoBase64,
+    coverBase64,
+    qrBase64,
+    mapBase64,
+    ...galleryBase64
+  ] = await Promise.all([
+    fetchWithProgress("/images/footerlogo.webp"),
+    fetchWithProgress("/images/blogo.webp"),
+    fetchWithProgress(coverUrl),
+    fetchWithProgress(qrUrl),
+    fetchWithProgress(mapUrl),
+    ...galleryUrls.map(url => fetchWithProgress(url))
+  ]);
 
   // Combine preloaded base64 resources
   const base64Images = {
@@ -694,7 +710,7 @@ export const generateBrochure = async ({
       const pageEl = pages[index] as HTMLElement;
       
       const canvas = await html2canvas(pageEl, {
-        scale: 3.0, // Retina ultra-high-definition scale
+        scale: 2.0, // Reduced from 3.0 to 2.0 for faster rendering while retaining good quality
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
