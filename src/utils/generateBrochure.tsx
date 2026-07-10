@@ -154,7 +154,10 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
           <img src={cover} alt={property.listing_title} className="w-full h-full object-cover" />
           
           {/* Overlay info box */}
-          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black via-black/80 to-transparent p-8 pt-20">
+          <div 
+            className="absolute inset-0 flex flex-col justify-end p-8"
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 25%, rgba(0,0,0,0) 60%)" }}
+          >
             <h1 className="text-4xl font-serif font-normal text-white mb-2 tracking-wide capitalize leading-tight">
               {property.listing_title}
             </h1>
