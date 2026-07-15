@@ -1165,9 +1165,12 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
                               onChange={handleEnquiryChange}
                               className="w-full text-sm font-medium text-gray-900 bg-transparent focus:outline-none cursor-pointer appearance-none"
                             >
-                              {[...Array(property.max_guests || 10)].map((_, i) => (
-                                <option key={i + 1} value={i + 1}>{i + 1} {i === 0 ? 'guest' : 'guests'}</option>
-                              ))}
+                              <option value="1">1 guest</option>
+                              <option value="2">2 guests</option>
+                              <option value="3">3 guests</option>
+                              <option value="4">4 guests</option>
+                              <option value="5">5 guests</option>
+                              <option value="6">6+ guests</option>
                             </select>
                           </div>
                           <ChevronRight className="rotate-90 text-gray-400 pointer-events-none" size={16} />
