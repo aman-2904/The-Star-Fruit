@@ -165,7 +165,7 @@ export default async function StaysListingPage({
         <Navbar />
 
         {/* Search Header Section with Cinematic Landscape Background */}
-        <div className="relative pt-12 md:pt-16 pb-8 overflow-hidden min-h-[300px] md:min-h-[350px]">
+        <div className="relative pt-12 md:pt-16 pb-8 min-h-[300px] md:min-h-[350px]">
           {/* Background Image Container */}
           <div className="absolute inset-0 z-0">
             <Image
