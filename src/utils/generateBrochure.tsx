@@ -651,8 +651,8 @@ export const generateBrochure = async ({
     mapBase64,
     ...galleryBase64
   ] = await Promise.all([
-    fetchWithProgress("/images/footerlogo.webp"),
-    fetchWithProgress("/images/blogo.webp"),
+    fetchWithProgress("/images/luxewhite.png"),
+    fetchWithProgress("/images/luxewhite.png"),
     fetchWithProgress(coverUrl),
     fetchWithProgress(qrUrl),
     fetchWithProgress(mapUrl),
