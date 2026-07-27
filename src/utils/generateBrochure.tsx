@@ -84,7 +84,7 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
 
   // Pre-process and dynamically split description to prevent A4 page overflow while keeping full text
   const rawDescription = property.listing_description || property.description || "Welcome to our stunning property. This luxury space offers an unparalleled blend of modern architecture and tropical charm, meticulously designed to cater to your every comfort.";
-  
+
   // A description is considered long if it exceeds 500 characters or contains more than 8 lines
   const isDescriptionLong = rawDescription.length > 500 || rawDescription.split("\n").length > 8;
 
@@ -93,11 +93,11 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
     const paragraphs = rawDescription.split("\n");
     let currentChunk = "";
     let lineCount = 0;
-    
+
     paragraphs.forEach((line) => {
       // Estimate lines needed (assuming ~90 characters per line on A4 width)
       const linesNeeded = Math.max(1, Math.ceil(line.length / 90));
-      
+
       // A dedicated description page can comfortably fit ~38 lines of text
       if (lineCount + linesNeeded > 38) {
         descriptionPages.push(currentChunk.trim());
@@ -152,17 +152,17 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
         {/* Cover Photo card */}
         <div className="relative w-[700px] h-[520px] rounded-[24px] overflow-hidden mx-auto border border-[#B4975A]/15 shadow-2xl">
           <img src={cover} alt={property.listing_title} className="w-full h-full object-cover" />
-          
+
           {/* Overlay info box */}
-          <div 
-            className="absolute inset-0 flex flex-col justify-end p-8"
+          <div
+            className="absolute -inset-1 flex flex-col justify-end p-9"
             style={{ background: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 25%, rgba(0,0,0,0) 60%)" }}
           >
             <h1 className="text-4xl font-serif font-normal text-white mb-2 tracking-wide capitalize leading-tight">
               {property.listing_title}
             </h1>
             <p className="text-gray-300 text-sm font-medium tracking-wider mb-6 flex items-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
               {property.city}, {property.state}, India
             </p>
 
@@ -170,25 +170,25 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
             <div className="grid grid-cols-4 gap-3 border-t border-white/10 pt-5">
               <div className="flex flex-col items-center text-center">
                 <div className="w-8 h-8 rounded-full border border-[#B4975A]/30 flex items-center justify-center mb-1.5 bg-black/40">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
                 </div>
                 <span className="text-[9px] font-bold text-gray-300 tracking-wider uppercase truncate w-full">Entire {property.category}</span>
               </div>
               <div className="flex flex-col items-center text-center">
                 <div className="w-8 h-8 rounded-full border border-[#B4975A]/30 flex items-center justify-center mb-1.5 bg-black/40">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></svg>
                 </div>
                 <span className="text-[9px] font-bold text-gray-300 tracking-wider uppercase">Superhost</span>
               </div>
               <div className="flex flex-col items-center text-center">
                 <div className="w-8 h-8 rounded-full border border-[#B4975A]/30 flex items-center justify-center mb-1.5 bg-black/40">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="6" cy="8" r="2"/><circle cx="13" cy="10" r="2"/><path d="M12 20c-2 0-3.5-1.5-3.5-3.5 0-1 1-2 2-2h3c1 0 2 1 2 2 0 2-1.5 3.5-3.5 3.5z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="4" r="2" /><circle cx="18" cy="8" r="2" /><circle cx="6" cy="8" r="2" /><circle cx="13" cy="10" r="2" /><path d="M12 20c-2 0-3.5-1.5-3.5-3.5 0-1 1-2 2-2h3c1 0 2 1 2 2 0 2-1.5 3.5-3.5 3.5z" /></svg>
                 </div>
                 <span className="text-[9px] font-bold text-gray-300 tracking-wider uppercase truncate w-full">{allowsPets ? "Pet Friendly" : "Luxury Stay"}</span>
               </div>
               <div className="flex flex-col items-center text-center">
                 <div className="w-8 h-8 rounded-full border border-[#B4975A]/30 flex items-center justify-center mb-1.5 bg-black/40">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.886L4.2 9.176l5.068 3.845L7.356 19 12 15.228 16.644 19l-1.912-5.979 5.068-3.845-5.888-.29L12 3z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.886L4.2 9.176l5.068 3.845L7.356 19 12 15.228 16.644 19l-1.912-5.979 5.068-3.845-5.888-.29L12 3z" /></svg>
                 </div>
                 <span className="text-[9px] font-bold text-gray-300 tracking-wider uppercase">Premium stay</span>
               </div>
@@ -199,7 +199,7 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
         {/* Short welcome description */}
         <div className="text-center px-12 mb-4">
           <p className="text-gray-400 text-sm leading-relaxed font-medium">
-            Welcome to {property.listing_title} by LuxeVillaz, a refined retreat blending Spanish-Portuguese charm with modern luxury. Perfect for families and groups looking for a premium stay in {property.city}.
+            Welcome to {property.listing_title}, a refined retreat blending Spanish-Portuguese charm with modern luxury. Perfect for families and groups looking for a premium stay in {property.city}.
           </p>
           <GoldOrnament />
         </div>
@@ -216,32 +216,32 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
 
           <div className="grid grid-cols-3 gap-4 mt-6">
             <div className="bg-white border border-[#B4975A]/15 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
               <span className="text-xs font-bold text-gray-900">{property.max_guests} Guests</span>
               <span className="text-[10px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5">Capacity</span>
             </div>
             <div className="bg-white border border-[#B4975A]/15 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><circle cx="6" cy="12" r="2"/><circle cx="14" cy="12" r="2"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><path d="M2 4v16" /><path d="M2 8h18a2 2 0 0 1 2 2v10" /><path d="M2 17h20" /><circle cx="6" cy="12" r="2" /><circle cx="14" cy="12" r="2" /></svg>
               <span className="text-xs font-bold text-gray-900">{property.bedrooms} Bedrooms</span>
               <span className="text-[10px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5">Rooms</span>
             </div>
             <div className="bg-white border border-[#B4975A]/15 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h12"/><path d="M6 12h12"/><path d="M6 16h12"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M6 8h12" /><path d="M6 12h12" /><path d="M6 16h12" /></svg>
               <span className="text-xs font-bold text-gray-900">{property.beds} Beds</span>
               <span className="text-[10px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5">Sleeping</span>
             </div>
             <div className="bg-white border border-[#B4975A]/15 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L6 9"/><path d="M2 16h20"/><path d="M4 12a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v3H4Z"/><path d="m5 16-.5 3.5A1.5 1.5 0 0 0 6 21h12a1.5 1.5 0 0 0 1.5-1.5L19 16"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-2.12 0l-.88.88a1.5 1.5 0 0 0 0 2.12L6 9" /><path d="M2 16h20" /><path d="M4 12a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v3H4Z" /><path d="m5 16-.5 3.5A1.5 1.5 0 0 0 6 21h12a1.5 1.5 0 0 0 1.5-1.5L19 16" /></svg>
               <span className="text-xs font-bold text-gray-900">{property.bathrooms} Bathrooms</span>
               <span className="text-[10px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5">Baths</span>
             </div>
             <div className="bg-white border border-[#B4975A]/15 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
               <span className="text-xs font-bold text-gray-900 capitalize">{property.category}</span>
               <span className="text-[10px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5">Property Type</span>
             </div>
             <div className="bg-white border border-[#B4975A]/15 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="1.5" className="mb-2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
               <span className="text-xs font-bold text-gray-900">2:00 PM / 11:00 AM</span>
               <span className="text-[10px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5">In / Out Times</span>
             </div>
@@ -332,7 +332,7 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
                 : ["Private pool", "Air conditioning", "High speed Wifi", "Fully equipped kitchen", "Television", "Lawn/Garden", "Washing machine", "24/7 Security"]
               ).map((item, index) => (
                 <div key={index} className="flex items-center gap-3 border-b border-gray-100 pb-1.5 text-gray-700">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><polyline points="20 6 9 17 4 12" /></svg>
                   <span className="text-xs font-semibold capitalize tracking-wide">{item.replace(/_/g, " ")}</span>
                 </div>
               ))}
@@ -413,7 +413,7 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
                 : ["Private pool", "Air conditioning", "High speed Wifi", "Fully equipped kitchen", "Television", "Lawn/Garden", "Washing machine", "24/7 Security"]
               ).map((item, index) => (
                 <div key={index} className="flex items-center gap-3.5 border-b border-gray-100 pb-2 text-gray-700">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><polyline points="20 6 9 17 4 12" /></svg>
                   <span className="text-xs font-semibold capitalize tracking-wide">{item.replace(/_/g, " ")}</span>
                 </div>
               ))}
@@ -479,7 +479,7 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
               </div>
               <div className="mt-3 text-center px-4">
                 <p className="text-[11px] font-bold text-gray-700 leading-normal flex items-center justify-center gap-1.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2" className="shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2" className="shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
                   <span>{[property.street_address, property.city, property.state, "India"].filter(Boolean).join(", ")}</span>
                 </p>
               </div>
@@ -502,22 +502,22 @@ export const BrochureTemplate: React.FC<BrochureTemplateProps> = ({
               ) : (
                 <h3 className="text-base font-bold uppercase tracking-[0.25em] text-[#B4975A] mb-3">LUXE VILLAZ</h3>
               )}
-              
+
               <div className="space-y-2 text-gray-600 font-semibold text-[11px]">
                 <p className="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
                   www.luxevillaz.com
                 </p>
                 <p className="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
                   support@luxevillaz.com
                 </p>
                 <p className="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B4975A" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                   +91 9270762462
                 </p>
                 <p className="flex items-center gap-2 text-emerald-600">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                   24/7 Guest Concierge Support
                 </p>
               </div>
@@ -613,7 +613,7 @@ export const generateBrochure = async ({
   const coverUrl = allImages[0] || "/images/stays/pool_villa.webp";
   const galleryUrls = allImages.slice(1, 13);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(pageUrl)}`;
-  
+
   let mapUrl = "";
   const mapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
   const lat = property.latitude || 15.2993;
@@ -711,7 +711,7 @@ export const generateBrochure = async ({
     // 6. Draw each page to canvas and add to PDF
     for (let index = 0; index < pages.length; index++) {
       const pageEl = pages[index] as HTMLElement;
-      
+
       const canvas = await html2canvas(pageEl, {
         scale: 2.0, // Reduced from 3.0 to 2.0 for faster rendering while retaining good quality
         useCORS: true,
@@ -727,7 +727,7 @@ export const generateBrochure = async ({
       }
 
       pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, undefined, "NONE");
-      
+
       if (onProgress) {
         onProgress(85 + Math.round(((index + 1) / pages.length) * 12));
       }
@@ -736,7 +736,7 @@ export const generateBrochure = async ({
     // 7. Save PDF file
     const fileName = `${property.listing_title.toLowerCase().replace(/[^a-z0-9]+/g, "_")}_brochure.pdf`;
     pdf.save(fileName);
-    
+
     if (onProgress) onProgress(100);
   } catch (error) {
     console.error("PDF generation failed:", error);
