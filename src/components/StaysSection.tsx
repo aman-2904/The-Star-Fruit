@@ -7,6 +7,7 @@ import StayCard from "./StayCard";
 import CategoryFilters from "./CategoryFilters";
 import { ChevronLeft, ChevronRight, ChevronDown, SlidersHorizontal, MapPin, Loader2, Search } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { formatPropertyTitle } from "@/utils/formatPropertyTitle";
 
 interface Property {
   id: string;
@@ -24,6 +25,7 @@ interface Property {
   description?: string;
   is_trending?: boolean;
   max_guests: number;
+  ls_id?: string;
 }
 
 const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) => {
@@ -72,7 +74,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
           <div key={property.id} className="flex-shrink-0 w-[80vw] sm:w-[280px] lg:w-[calc((100%-96px)/5)] snap-center">
             <StayCard
               id={property.id}
-              title={property.listing_title}
+              title={formatPropertyTitle(property.listing_title, property.ls_id)}
               location={property.city}
               category={property.category}
               bedrooms={property.bedrooms}
@@ -468,7 +470,7 @@ export default function StaysSection({
               <StayCard
                 key={property.id}
                 id={property.id}
-                title={property.listing_title}
+                title={formatPropertyTitle(property.listing_title, property.ls_id)}
                 location={property.city}
                 category={property.category}
                 bedrooms={property.bedrooms}

@@ -29,6 +29,7 @@ import ReviewForm from "@/components/ReviewForm";
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { getTrackingSettings } from "@/lib/tracking-settings";
 import { generateBrochure } from "@/utils/generateBrochure";
+import { formatPropertyTitle } from "@/utils/formatPropertyTitle";
 
 export interface Property {
   id: string;
@@ -52,6 +53,7 @@ export interface Property {
   custom_rules?: string[];
   latitude?: number;
   longitude?: number;
+  ls_id?: string;
 }
 
 interface Review {
@@ -836,7 +838,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
         <div className="mb-6">
           <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4 mb-2">
             <h1 className="text-[26px] md:text-[32px] font-serif text-gray-900 tracking-tight leading-tight">
-              {property.listing_title}
+              {formatPropertyTitle(property.listing_title, property.ls_id)}
             </h1>
             
             {/* Breadcrumb */}
@@ -845,8 +847,8 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
               <span className="text-gray-300">&gt;</span>
               <Link href="/stays" className="hover:text-[#EC5B13] transition-colors">Stays</Link>
               <span className="text-gray-300">&gt;</span>
-              <span className="text-[#EC5B13] font-semibold truncate max-w-[200px] sm:max-w-[300px] md:max-w-[400px]" title={property.listing_title}>
-                {property.listing_title}
+              <span className="text-[#EC5B13] font-semibold truncate max-w-[200px] sm:max-w-[300px] md:max-w-[400px]" title={formatPropertyTitle(property.listing_title, property.ls_id)}>
+                {formatPropertyTitle(property.listing_title, property.ls_id)}
               </span>
             </nav>
           </div>

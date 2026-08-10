@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { CheckCircle, XCircle, MapPin, Users, BedDouble, Bath, Globe, TrendingUp } from 'lucide-react';
+import { formatPropertyTitle } from '@/utils/formatPropertyTitle';
 
 interface Property {
   id: string;
@@ -21,6 +22,7 @@ interface Property {
   status: string;
   created_at: string;
   is_trending?: boolean;
+  ls_id?: string;
 }
 
 interface PropertyApproveCardProps {
@@ -95,7 +97,7 @@ export default function PropertyApproveCard({
            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                   <h3 className="text-lg font-bold text-gray-900 leading-tight">{property.listing_title || 'Untitled Property'}</h3>
+                   <h3 className="text-lg font-bold text-gray-900 leading-tight">{formatPropertyTitle(property.listing_title, property.ls_id) || 'Untitled Property'}</h3>
                    <div className={`px-2 py-0.5 rounded-full flex items-center gap-1 ${
                       property.status === 'published' ? 'bg-emerald-500 text-white' : 
                       property.status === 'pending_review' ? 'bg-amber-500 text-white' : 
@@ -237,7 +239,7 @@ export default function PropertyApproveCard({
       <div className="p-6">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{property.listing_title || 'Untitled Property'}</h3>
+            <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{formatPropertyTitle(property.listing_title, property.ls_id) || 'Untitled Property'}</h3>
             <div className="flex items-center gap-1.5 text-gray-500 mt-1">
               <MapPin size={12} className="text-[#EC5B13]" />
               <span className="text-[11px] font-semibold">{property.city}, {property.state}</span>

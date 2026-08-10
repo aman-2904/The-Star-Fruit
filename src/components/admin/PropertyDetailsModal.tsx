@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { X, MapPin, Users, BedDouble, Bath, ShieldCheck, Info, Globe, Calendar, User, AlignLeft, ListChecks, Phone, Mail } from "lucide-react";
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { formatPropertyTitle } from '@/utils/formatPropertyTitle';
 
 interface Property {
   id: string;
@@ -30,6 +31,7 @@ interface Property {
   latitude?: number;
   longitude?: number;
   created_at: string;
+  ls_id?: string;
 }
 
 interface PropertyDetailsModalProps {
@@ -79,7 +81,7 @@ export default function PropertyDetailsModal({ property, isOpen, onClose }: Prop
           <div className="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-md z-10">
             <div>
                <span className="text-[10px] font-black text-[#EC5B13] uppercase tracking-[0.2em]">{property.category}</span>
-               <h2 className="text-2xl font-black text-gray-900 mt-1">{property.listing_title || 'Untitled Property'}</h2>
+               <h2 className="text-2xl font-black text-gray-900 mt-1">{formatPropertyTitle(property.listing_title, property.ls_id) || 'Untitled Property'}</h2>
             </div>
             <button 
               onClick={onClose}
