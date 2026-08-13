@@ -1165,22 +1165,18 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
                       <div className="p-3 border-b border-gray-300 hover:bg-gray-50 transition-colors">
                         <div className="flex justify-between items-center">
                           <div className="w-full">
-                            <p className="text-[10px] font-black uppercase text-gray-900 mb-1">Guests</p>
-                            <select
+                            <label htmlFor="inquiry-guests" className="block text-[10px] font-black uppercase text-gray-900 mb-1 cursor-pointer">Guests</label>
+                            <input
+                              type="number"
+                              id="inquiry-guests"
                               name="guests"
+                              min="1"
+                              placeholder="Add guests"
                               value={enquiryData.guests}
                               onChange={handleEnquiryChange}
-                              className="w-full text-sm font-medium text-gray-900 bg-transparent focus:outline-none cursor-pointer appearance-none"
-                            >
-                              <option value="1">1 guest</option>
-                              <option value="2">2 guests</option>
-                              <option value="3">3 guests</option>
-                              <option value="4">4 guests</option>
-                              <option value="5">5 guests</option>
-                              <option value="6">6+ guests</option>
-                            </select>
+                              className="w-full text-sm font-medium text-gray-900 bg-transparent focus:outline-none placeholder:text-gray-400 placeholder:font-normal appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                            />
                           </div>
-                          <ChevronRight className="rotate-90 text-gray-400 pointer-events-none" size={16} />
                         </div>
                       </div>
                       <div className="p-3 hover:bg-gray-50 transition-colors rounded-b-[14px]">

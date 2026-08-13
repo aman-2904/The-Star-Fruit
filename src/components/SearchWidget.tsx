@@ -182,22 +182,15 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                   <Users size={16} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] group-focus-within:text-black transition-colors" />
                   <label htmlFor="guests" className="text-[9.5px] md:text-[10.5px] font-black uppercase tracking-[0.12em] md:tracking-[0.15em] text-black cursor-pointer pointer-events-none">Guests</label>
                 </div>
-                <select
+                <input
+                  type="number"
                   id="guests"
+                  min="1"
+                  placeholder="Add guests"
                   value={guests}
                   onChange={(e) => setGuests(e.target.value)}
-                  className="w-full appearance-none bg-transparent text-[12.5px] md:text-[14.5px] font-bold text-gray-900 pl-8 md:pl-[42px] pr-8 outline-none border-none p-0 focus:ring-0 cursor-pointer -ml-2 select-none"
-                >
-                  <option value="1">1 Guest</option>
-                  <option value="2">2 Guests</option>
-                  <option value="3">3 Guests</option>
-                  <option value="4">4 Guests</option>
-                  <option value="5">5 Guests</option>
-                  <option value="6">6+ Guests</option>
-                </select>
-                <div className="pointer-events-none absolute right-4 md:right-5 top-1/2 -translate-y-1/2 mt-2 md:mt-3 text-gray-400 group-hover:text-black transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 md:w-4 md:h-4"><path d="m6 9 6 6 6-6" /></svg>
-                </div>
+                  className="w-full bg-transparent text-[12.5px] md:text-[14.5px] font-bold text-gray-900 pl-8 md:pl-[42px] pr-8 outline-none border-none p-0 focus:ring-0 -ml-2 placeholder:text-gray-400 placeholder:font-semibold appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
               </div>
             </div>
 
