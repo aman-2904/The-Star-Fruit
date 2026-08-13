@@ -791,44 +791,44 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
 
       <div className="max-w-[1280px] mx-auto px-4 md:px-10 pt-6 pb-20">
         {/* Header Navigation */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4 md:mb-6">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors font-medium text-sm"
+            className="flex items-center gap-1 md:gap-2 text-gray-600 hover:text-black transition-colors font-medium text-xs md:text-sm shrink-0"
           >
-            <ArrowLeft size={18} />
+            <ArrowLeft size={16} className="md:w-[18px] md:h-[18px]" />
             Back
           </button>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1 md:gap-4">
             <button
               onClick={handleDownloadBrochure}
               disabled={isGeneratingPdf}
-              className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-1 md:gap-2 text-gray-800 hover:bg-gray-100 px-2 md:px-3 py-1.5 rounded-lg transition-all text-xs md:text-sm font-semibold underline disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
             >
               {isGeneratingPdf ? (
                 <>
-                  <Loader2 size={16} className="animate-spin text-[#EC5B13]" />
+                  <Loader2 size={14} className="animate-spin text-[#EC5B13] md:w-4 md:h-4" />
                   <span>Generating {pdfProgress > 0 ? `(${pdfProgress}%)` : ""}</span>
                 </>
               ) : (
                 <>
-                  <Download size={16} />
+                  <Download size={14} className="md:w-4 md:h-4" />
                   <span>Brochure</span>
                 </>
               )}
             </button>
             <button
               onClick={handleShare}
-              className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline"
+              className="flex items-center gap-1 md:gap-2 text-gray-800 hover:bg-gray-100 px-2 md:px-3 py-1.5 rounded-lg transition-all text-xs md:text-sm font-semibold underline whitespace-nowrap"
             >
-              {isCopied ? <CheckCircle2 size={16} className="text-emerald-600" /> : <Share size={16} />}
+              {isCopied ? <CheckCircle2 size={14} className="text-emerald-600 md:w-4 md:h-4" /> : <Share size={14} className="md:w-4 md:h-4" />}
               {isCopied ? "Copied!" : "Share"}
             </button>
             <button
               onClick={handleToggleSave}
-              className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all text-sm font-semibold underline"
+              className="flex items-center gap-1 md:gap-2 text-gray-800 hover:bg-gray-100 px-2 md:px-3 py-1.5 rounded-lg transition-all text-xs md:text-sm font-semibold underline whitespace-nowrap"
             >
-              <Heart size={16} className={isSaved ? "fill-red-500 text-red-500" : ""} />
+              <Heart size={14} className={`md:w-4 md:h-4 ${isSaved ? "fill-red-500 text-red-500" : ""}`} />
               {isSaved ? "Saved" : "Save"}
             </button>
           </div>
