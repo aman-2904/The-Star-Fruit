@@ -681,66 +681,71 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
 
       {/* Premium Full Screen Photo Gallery Modal */}
       {showAllPhotos && property?.images && (
-        <div className="fixed inset-0 z-[100] bg-black flex flex-col animate-in fade-in zoom-in duration-300">
-
-          {/* Top Bar: Counter and Close */}
-          <div className="p-6 flex justify-between items-center text-white z-10">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-bold tracking-widest uppercase opacity-80">
-                Photo {activePhotoIndex + 1} of {property.images.length}
-              </span>
-            </div>
-            <button
-              onClick={() => setShowAllPhotos(false)}
-              className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all group active:scale-90"
-            >
-              <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
-            </button>
-          </div>
-
+        <div className="fixed inset-0 z-[100] bg-black animate-in fade-in zoom-in duration-300">
+          
           {/* Main Stage (Image Area) */}
-          <div className="relative flex-1 w-full max-w-7xl mx-auto flex items-center justify-center px-4 md:px-10 group overflow-hidden">
-            {/* Navigation Arrows */}
-            <button
-              onClick={prevPhoto}
-              className="absolute left-6 md:left-10 p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 z-10 border border-white/20 active:scale-95"
-            >
-              <ChevronLeft size={32} />
-            </button>
-
+          <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden">
             <div
-              className="relative w-full h-full max-h-[80vh] flex items-center justify-center cursor-pointer group/image"
+              className="relative w-full h-full flex items-center justify-center cursor-pointer"
               onClick={nextPhoto}
               title="Next photo"
             >
-              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] group-hover/image:brightness-95 transition-all">
+              <div className="relative w-full h-full md:p-10">
                 <Image
                   src={property.images[activePhotoIndex]}
                   alt={`${property.listing_title}`}
                   fill
                   className="object-contain"
-                  unoptimized                 />
+                  unoptimized
+                />
               </div>
             </div>
+          </div>
 
+          {/* Top Bar: Counter and Close */}
+          <div className="absolute top-0 left-0 right-0 p-4 md:p-6 flex justify-between items-center text-white z-10 bg-gradient-to-b from-black/60 to-transparent pointer-events-none">
+            <div className="flex items-center gap-2 pointer-events-auto">
+              <span className="text-xs md:text-sm font-bold tracking-widest uppercase opacity-80 drop-shadow-md">
+                Photo {activePhotoIndex + 1} of {property.images.length}
+              </span>
+            </div>
+            <button
+              onClick={() => setShowAllPhotos(false)}
+              className="p-2 md:p-3 bg-white/10 hover:bg-white/20 rounded-full transition-all group active:scale-90 pointer-events-auto backdrop-blur-sm"
+            >
+              <X size={20} className="md:w-6 md:h-6 group-hover:rotate-90 transition-transform duration-300" />
+            </button>
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="absolute inset-y-0 left-2 md:left-10 flex items-center z-10 pointer-events-none">
+            <button
+              onClick={prevPhoto}
+              className="p-2 md:p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all border border-white/20 active:scale-95 pointer-events-auto backdrop-blur-sm"
+            >
+              <ChevronLeft size={24} className="md:w-8 md:h-8" />
+            </button>
+          </div>
+
+          <div className="absolute inset-y-0 right-2 md:right-10 flex items-center z-10 pointer-events-none">
             <button
               onClick={nextPhoto}
-              className="absolute right-6 md:right-10 p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 z-10 border border-white/20 active:scale-95"
+              className="p-2 md:p-4 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all border border-white/20 active:scale-95 pointer-events-auto backdrop-blur-sm"
             >
-              <ChevronRight size={32} />
+              <ChevronRight size={24} className="md:w-8 md:h-8" />
             </button>
           </div>
 
           {/* Thumbnail Strip */}
-          <div className="p-10 pb-16 flex flex-col items-center gap-4 w-full">
-            <div className="flex items-center gap-4 overflow-x-auto py-6 scrollbar-hide max-w-full px-10 no-scrollbar">
+          <div className="absolute bottom-0 left-0 right-0 pb-4 md:pb-10 pt-10 flex flex-col items-center w-full bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none">
+            <div className="flex items-center gap-2 md:gap-4 overflow-x-auto py-2 scrollbar-hide max-w-full px-4 md:px-10 no-scrollbar pointer-events-auto">
               {property.images.map((img, i) => (
                 <button
                   key={i}
                   ref={(el) => { thumbnailRefs.current[i] = el; }}
                   onClick={() => setActivePhotoIndex(i)}
-                  className={`relative w-16 h-16 md:w-20 md:h-16 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${activePhotoIndex === i
-                    ? "scale-110 ring-4 ring-orange-500 shadow-2xl z-10"
+                  className={`relative w-12 h-12 md:w-20 md:h-16 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${activePhotoIndex === i
+                    ? "scale-110 ring-2 md:ring-4 ring-orange-500 shadow-2xl z-10"
                     : "opacity-40 hover:opacity-100"
                     }`}
                 >
