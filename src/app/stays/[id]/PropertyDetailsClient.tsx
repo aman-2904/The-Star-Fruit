@@ -769,7 +769,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
 
             {/* Content */}
             <div className="p-6 overflow-y-auto">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 gap-y-6 gap-x-4">
                 {property.amenities?.map((id) => {
                   const normalizedId = id.toLowerCase().replace(/\s+/g, '_');
                   return (
@@ -1020,8 +1020,8 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
             {/* Amenities Section */}
             <div className="py-8 border-b border-gray-100">
               <h3 className="text-[22px] font-bold text-gray-900 mb-6">What this place offers</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                {property.amenities?.slice(0, 6).map((id) => {
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {property.amenities?.slice(0, 10).map((id) => {
                   const normalizedId = id.toLowerCase().replace(/\s+/g, '_');
                   return (
                     <div key={id} className="flex items-center gap-4 text-gray-700">
@@ -1030,7 +1030,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
                     </div>
                   );
                 }) || (
-                    ["Private infinity pool", "Chef on call", "Gourmet kitchen", "Fast wifi - 500 Mbps", "Central air conditioning", "Free parking on premises"].map(item => (
+                    ["Private infinity pool", "Chef on call", "Gourmet kitchen", "Fast wifi - 500 Mbps", "Central air conditioning", "Free parking on premises", "Smart TV", "Washing machine", "Dedicated workspace", "BBQ grill"].map(item => (
                       <div key={item} className="flex items-center gap-4 text-gray-700">
                         <span className="text-gray-500"><CheckCircle2 size={18} /></span>
                         <span className="font-medium">{item}</span>
