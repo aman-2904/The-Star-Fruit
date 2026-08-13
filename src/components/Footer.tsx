@@ -66,10 +66,10 @@ export default function Footer() {
 
           {/* Main content */}
           <div className="relative z-10 px-8 md:px-16 pt-36 pb-24 md:pb-44">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 md:gap-16">
 
               {/* Column 1: Brand */}
-              <div className="max-w-xs">
+              <div className="col-span-2 md:col-span-1 max-w-xs">
                 <Link href="/" className="inline-block mb-5">
                   <Image
                     src="/images/footerlogo.webp"
@@ -85,7 +85,7 @@ export default function Footer() {
               </div>
 
               {/* Column 2: Quick Links */}
-              <div>
+              <div className="col-span-1">
                 <h3 className="text-[#EC5B13] font-bold text-sm uppercase tracking-wider mb-5">
                   Quick Links
                 </h3>
@@ -110,7 +110,7 @@ export default function Footer() {
               </div>
 
               {/* Column 3: Support */}
-              <div>
+              <div className="col-span-1">
                 <h3 className="text-[#EC5B13] font-bold text-sm uppercase tracking-wider mb-5">
                   Support
                 </h3>
@@ -135,7 +135,7 @@ export default function Footer() {
               </div>
 
               {/* Column 4: Follow Us */}
-              <div>
+              <div className="col-span-2 md:col-span-1">
                 <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-5">
                   Follow Us
                 </h3>
