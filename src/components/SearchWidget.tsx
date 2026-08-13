@@ -171,6 +171,7 @@ export default function SearchWidget({ isHero = true }: { isHero?: boolean }) {
                     onChange={(val) => setCheckOut(val)}
                     placeholder="dd/mm/yyyy"
                     className="w-full"
+                    popoverAlignment="right"
                   />
                 </div>
               </div>

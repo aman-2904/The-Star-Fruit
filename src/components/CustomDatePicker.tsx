@@ -11,9 +11,10 @@ interface CustomDatePickerProps {
   min?: string;
   placeholder?: string;
   className?: string;
+  popoverAlignment?: "left" | "right";
 }
 
-export default function CustomDatePicker({ id, value, onChange, min, placeholder = "Add date", className = "" }: CustomDatePickerProps) {
+export default function CustomDatePicker({ id, value, onChange, min, placeholder = "Add date", className = "", popoverAlignment = "left" }: CustomDatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(value ? startOfMonth(parseISO(value)) : startOfMonth(new Date()));
   const containerRef = useRef<HTMLDivElement>(null);
@@ -102,8 +103,17 @@ export default function CustomDatePicker({ id, value, onChange, min, placeholder
       </div>
 
       {isOpen && (
-        <div className="absolute top-[120%] left-0 p-4 md:p-5 bg-white rounded-3xl shadow-2xl border border-gray-100 z-[100] w-[280px] md:w-[320px] animate-in fade-in slide-in-from-top-2">
-          {/* Header */}
+        <>
+          <div className="fixed inset-0 z-[90] md:hidden" onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} />
+          <div 
+            className={`
+              fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+              md:absolute md:top-[120%] md:transform-none
+              ${popoverAlignment === 'right' ? 'md:right-[-10px] md:left-auto' : 'md:left-0 md:right-auto'}
+              p-4 md:p-5 bg-white rounded-3xl shadow-2xl border border-gray-100 z-[100] w-[280px] md:w-[320px] animate-in fade-in zoom-in-95 md:slide-in-from-top-2
+            `}
+          >
+            {/* Header */}
           <div className="flex justify-between items-center mb-4">
             <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
               <ChevronLeft size={20} className="text-gray-600" />
@@ -130,6 +140,7 @@ export default function CustomDatePicker({ id, value, onChange, min, placeholder
             {renderCells()}
           </div>
         </div>
+        </>
       )}
     </div>
   );
