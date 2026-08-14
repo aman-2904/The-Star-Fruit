@@ -60,7 +60,10 @@ export default function CustomDatePicker({ id, value, onChange, min, placeholder
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
-        const isDisabled = min ? isBefore(day, startOfDay(parseISO(min))) : false;
+        const today = startOfDay(new Date());
+        const isPast = isBefore(day, today);
+        const isBeforeMin = min ? isBefore(day, startOfDay(parseISO(min))) : false;
+        const isDisabled = isPast || isBeforeMin;
         const isSelected = value ? isSameDay(day, parseISO(value)) : false;
         const isCurrentMonth = isSameMonth(day, monthStart);
 
