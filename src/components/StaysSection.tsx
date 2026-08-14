@@ -28,6 +28,11 @@ interface Property {
   ls_id?: string;
 }
 
+const generateRating = (id: string) => {
+  const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return Number((4.5 + (sum % 6) / 10).toFixed(1));
+};
+
 const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -79,7 +84,7 @@ const StayCarousel = ({ title, stays }: { title: string, stays: Property[] }) =>
               category={property.category}
               bedrooms={property.bedrooms}
               image={property.images?.[0]}
-              rating={4.8} // Mocked rating
+              rating={generateRating(property.id)}
               trending={property.is_trending}
             />
           </div>
@@ -475,7 +480,7 @@ export default function StaysSection({
                 category={property.category}
                 bedrooms={property.bedrooms}
                 image={property.images?.[0]}
-                rating={4.8}
+                rating={generateRating(property.id)}
                 trending={property.is_trending}
               />
             ))}

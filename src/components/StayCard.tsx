@@ -18,19 +18,27 @@ interface StayCardProps {
   trending?: boolean;
 }
 
+const generateRating = (id: string) => {
+  if (!id) return 4.8;
+  const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return Number((4.5 + (sum % 6) / 10).toFixed(1));
+};
+
 export default function StayCard({ 
   id, 
   title, 
   location, 
   category, 
   bedrooms, 
-  rating = 4.8, 
+  rating, 
   image, 
   trending 
 }: StayCardProps) {
   const router = useRouter();
   const [isSaved, setIsSaved] = useState(false);
   const [session, setSession] = useState<any>(null);
+  
+  const displayRating = rating ?? generateRating(id);
 
   useEffect(() => {
     async function checkSavedStatus() {
@@ -119,7 +127,7 @@ export default function StayCard({
         </Link>
         <div className="flex items-center gap-1 shrink-0">
           <Star size={13} className="fill-[#FFB400] text-[#FFB400]" />
-          <span className="text-[13px] font-bold text-gray-800">{rating.toFixed(1)}</span>
+          <span className="text-[13px] font-bold text-gray-800">{displayRating.toFixed(1)}</span>
         </div>
       </div>
       
