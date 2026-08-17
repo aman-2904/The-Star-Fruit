@@ -79,11 +79,11 @@ export default function Navbar() {
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center space-x-2 md:space-x-8">
+        <div className="flex items-center space-x-2 sm:space-x-4 lg:space-x-8">
           {(!session || session.user.user_metadata?.role !== 'user') && (
             <Link
               href={session?.user?.user_metadata?.role === 'host' ? "/host" : "/auth"}
-              className="hidden sm:block text-[15px] font-bold text-gray-800 hover:text-black transition-colors"
+              className="hidden lg:block text-[15px] font-bold text-gray-800 hover:text-black transition-colors"
             >
               {session?.user?.user_metadata?.role === 'host' ? "Host Dashboard" : "Become a host"}
             </Link>
