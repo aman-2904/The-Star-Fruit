@@ -107,13 +107,13 @@ export default function CustomDatePicker({ id, value, onChange, min, placeholder
 
       {isOpen && (
         <>
-          <div className="fixed inset-0 z-[90] md:hidden" onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} />
+          <div className="fixed inset-0 z-[90] lg:hidden" onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} />
           <div 
             className={`
               fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-              md:absolute md:top-[120%] md:transform-none
-              ${popoverAlignment === 'right' ? 'md:right-[-10px] md:left-auto' : 'md:left-0 md:right-auto'}
-              p-4 md:p-5 bg-white rounded-3xl shadow-2xl border border-gray-100 z-[100] w-[280px] md:w-[320px] animate-in fade-in zoom-in-95 md:slide-in-from-top-2
+              lg:absolute lg:top-[120%] lg:transform-none
+              ${popoverAlignment === 'right' ? 'lg:right-[-10px] lg:left-auto' : 'lg:left-0 lg:right-auto'}
+              p-4 md:p-5 bg-white rounded-3xl shadow-2xl border border-gray-100 z-[100] w-[280px] md:w-[320px] animate-in fade-in zoom-in-95 lg:slide-in-from-top-2
             `}
           >
             {/* Header */}
