@@ -77,7 +77,7 @@ export default function Footer() {
                     width={160}
                     height={40}
                     className="h-10 md:h-12 w-auto object-contain"
-                   unoptimized/>
+                    unoptimized />
                 </Link>
                 <p className="text-gray-400 text-sm leading-relaxed">
                   Curating the finest staycations in Goa since 2022. Luxury, privacy, and local charm in every stay.
@@ -159,7 +159,7 @@ export default function Footer() {
                 </div>
 
                 <p className="text-gray-500 text-xs">
-                  © 2022 Luxevillaz Pvt Ltd.
+                  © 2022 Luxevillaz
                 </p>
               </div>
 
