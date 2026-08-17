@@ -3,8 +3,8 @@ import { Star, ShieldCheck } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="relative h-[85vh] min-h-[700px] w-full pt-2 px-4 md:px-6">
-      <div className="relative w-full max-w-[1877px] h-[500px] lg:h-[695px] overflow-hidden rounded-[20px] shadow-2xl mx-auto">
+    <section className="relative w-full pt-2 px-4 md:px-6 mb-4 md:mb-8">
+      <div className="relative w-full max-w-[1877px] h-[550px] lg:h-[695px] overflow-hidden rounded-[20px] shadow-2xl mx-auto">
         {/* Background Image */}
         <Image
           src="/images/hero_bg_v2.webp"
