@@ -14,10 +14,10 @@ export default function EnquirySection() {
        unoptimized/>
       <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-black/20" />
 
-      <div className="absolute inset-x-8 md:inset-x-16 bottom-8 md:bottom-16 flex justify-between items-end">
-        <div className="bg-white/20 backdrop-blur-md px-6 py-3 rounded-full flex items-center gap-2 text-white border border-white/30 shadow-xl transition-all hover:bg-white/30">
-          <MapPin size={20} fill="white" />
-          <span className="text-[15px] md:text-[18px] font-bold tracking-wide">Goa , India</span>
+      <div className="absolute inset-x-4 md:inset-x-16 bottom-6 md:bottom-16 flex justify-between items-end">
+        <div className="bg-white/20 backdrop-blur-md px-4 py-2 md:px-6 md:py-3 rounded-full flex items-center gap-1.5 md:gap-2 text-white border border-white/30 shadow-xl transition-all hover:bg-white/30">
+          <MapPin className="w-[16px] h-[16px] md:w-[20px] md:h-[20px]" fill="white" />
+          <span className="text-[12px] sm:text-[15px] md:text-[18px] font-bold tracking-wide">Goa , India</span>
         </div>
 
         <button 
@@ -27,7 +27,7 @@ export default function EnquirySection() {
               contactSection.scrollIntoView({ behavior: 'smooth' });
             }
           }}
-          className="px-10 md:px-12 py-5 md:py-6 bg-white text-gray-900 rounded-full text-[15px] md:text-[18px] font-bold shadow-2xl transition-all hover:bg-gray-50 hover:scale-105 active:scale-95"
+          className="px-6 py-3 md:px-12 md:py-6 bg-white text-gray-900 rounded-full text-[12px] sm:text-[15px] md:text-[18px] font-bold shadow-2xl transition-all hover:bg-gray-50 hover:scale-105 active:scale-95"
         >
           Enquire Now
         </button>
