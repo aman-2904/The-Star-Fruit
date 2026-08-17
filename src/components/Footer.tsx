@@ -30,6 +30,12 @@ export default function Footer() {
         }
         @media (min-width: 768px) { 
           .wm-letter { 
+            font-size: clamp(60px, 11vw, 150px); 
+            letter-spacing: -0.04em;
+          } 
+        }
+        @media (min-width: 1024px) { 
+          .wm-letter { 
             font-size: clamp(80px, 18vw, 220px); 
             letter-spacing: -0.02em;
           } 
