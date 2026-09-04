@@ -64,6 +64,54 @@ interface Review {
   created_at: string;
 }
 
+// DEMO/TEST REVIEWS ONLY
+// These are intentionally labeled as demo data and should not be presented as real guest reviews.
+const DEMO_REVIEWS: Review[] = [
+  {
+    id: "demo-review-1",
+    user_name: "Demo Guest 1",
+    rating: 5,
+    comment: "Beautiful villa with spacious rooms and a very comfortable stay. Great property for a relaxing Goa trip.",
+    created_at: "2026-08-20T10:00:00Z",
+  },
+  {
+    id: "demo-review-2",
+    user_name: "Demo Guest 2",
+    rating: 5,
+    comment: "Amazing property and lovely ambience. The villa was clean, peaceful and perfect for our family stay.",
+    created_at: "2026-08-15T10:00:00Z",
+  },
+  {
+    id: "demo-review-3",
+    user_name: "Demo Guest 3",
+    rating: 4,
+    comment: "Really nice villa with good interiors and a great overall experience. We enjoyed our stay.",
+    created_at: "2026-08-10T10:00:00Z",
+  },
+  {
+    id: "demo-review-4",
+    user_name: "Demo Guest 4",
+    rating: 5,
+    comment: "Very comfortable property with plenty of space. The location was convenient and the stay was enjoyable.",
+    created_at: "2026-08-05T10:00:00Z",
+  },
+  {
+    id: "demo-review-5",
+    user_name: "Demo Guest 5",
+    rating: 4,
+    comment: "Lovely place for a group trip. The rooms were comfortable and the property had everything we needed.",
+    created_at: "2026-07-28T10:00:00Z",
+  },
+  {
+    id: "demo-review-6",
+    user_name: "Demo Guest 6",
+    rating: 5,
+    comment: "Fantastic stay for testing the property experience. Spacious, comfortable and nicely maintained.",
+    created_at: "2026-07-20T10:00:00Z",
+  },
+];
+
+
 const AMENITY_ICONS: Record<string, any> = {
   // Essentials
   wifi: <Wifi size={18} />,
@@ -404,7 +452,10 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setReviews(data || []);
+
+      // TESTING MODE:
+      // Use clearly labeled demo reviews instead of database reviews.
+      setReviews(DEMO_REVIEWS);
     } catch (err) {
       console.error("Error fetching reviews:", err);
     }
@@ -1276,7 +1327,8 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
             )}
           </div>
 
-          {/* Review Submission Form */}
+          {/*
+          // REVIEW SUBMISSION FORM DISABLED FOR TESTING
           <div className="max-w-2xl">
             {session ? (
               <ReviewForm propertyId={property.id} onReviewSubmitted={fetchReviews} />
@@ -1293,6 +1345,7 @@ export default function PropertyDetailsClient({ initialProperty }: { initialProp
               </div>
             )}
           </div>
+          */}
         </div>
 
         {/* Where you'll be Section */}
