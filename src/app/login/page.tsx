@@ -53,8 +53,24 @@ export default function UserLoginPage() {
       }
 
       if (view === 'login') {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        
+        const user = data.user;
+        if (user) {
+          // Check active status
+          const { data: statusData } = await supabase
+            .from('user_status')
+            .select('is_active')
+            .eq('user_id', user.id)
+            .single();
+            
+          if (statusData && statusData.is_active === false) {
+            await supabase.auth.signOut();
+            throw new Error("Your account has been deactivated by the administrator.");
+          }
+        }
+        
         router.push("/");
       } else if (view === 'signup') {
         const { error: signUpError } = await supabase.auth.signUp({

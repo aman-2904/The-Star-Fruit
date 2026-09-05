@@ -42,6 +42,19 @@ export default function BlogAdminLoginPage() {
           await supabase.auth.signOut();
           throw new Error("Unauthorized. This login is for blog executives only.");
         }
+
+        // Check active status
+        const { data: statusData } = await supabase
+          .from('user_status')
+          .select('is_active')
+          .eq('user_id', user.id)
+          .single();
+          
+        if (statusData && statusData.is_active === false) {
+          await supabase.auth.signOut();
+          throw new Error("Your account has been deactivated by the administrator.");
+        }
+
         router.push("/blogadmin/dashboard");
       } else if (view === 'forgot_password') {
         const { error } = await supabase.auth.resetPasswordForEmail(email);
